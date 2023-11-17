@@ -1,10 +1,20 @@
 from typing import Union
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pymongo import MongoClient
-import jwt, hashlib, datetime, certifi
+import jwt, hashlib, datetime, certifi, jsonify
 
 app = FastAPI()
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 ca = certifi.where()
 client = MongoClient("mongodb+srv://chunws:<password>@chunws.w8zkw9b.mongodb.net/?retryWrites=true&w=majority", tlsCAFile=ca)
 db = client.chunws
@@ -44,10 +54,10 @@ def signup(Users: Users):
 @app.post("/api/login")
 def login(Users: Users):
     id, password = Users.id, Users.password
-    
     hash_pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
     
-    if id not in db or db[id]["password"] != hash_pw:
+    find_id = db.users.find_one({"id": id})
+    if find_id is None or find_id['password'] != hash_pw:
         return {"error" : "아이디 혹은 비밀번호를 확인해주세요"}
     
     payload = {"id" : id,
