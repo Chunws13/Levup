@@ -1,12 +1,15 @@
 from fastapi import APIRouter
 from models.users import Users
 from pymongo import MongoClient
-import certifi, hashlib, datetime, jwt
+from dotenv import load_dotenv
+import certifi, hashlib, datetime, jwt, os
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 ca = certifi.where()
-client = MongoClient("mongodb+srv://chunws:password@chunws.w8zkw9b.mongodb.net/?retryWrites=true&w=majority", tlsCAFile=ca)
+client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 db = client.chunws
 
 @router.post("/signup")

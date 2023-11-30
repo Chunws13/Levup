@@ -10,7 +10,7 @@ function Login() {
     
     const postData = {id, password, "email": "test@naver.com"};
 
-    axios.post("http://127.0.0.1:8000/api/login", postData)
+    axios.post("http://127.0.0.1:8000/api/users/login", postData)
         .then(response => {
             cookie.set("token", response.data.token)
             window.location.reload()  
