@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react'
-import {Cookies} from "react-cookie";
+import { Cookies } from "react-cookie";
+import EachMemo from "./EachMemo"
+import "../css/Memo.css"
 
 function Memo() {
     const cookie = new Cookies();
@@ -34,18 +36,22 @@ function Memo() {
     }, []);
 
     return (
-        <div>
-            <div>
+        <div className='totalMemo'>
+            <div className='memoField'>
                 {memo.map((item, index) => {
                     return (
-                        <div key={index}> 
-                            {item._id.$oid} {item.content}
+                        <div key={index} className='eachMemo'>
+                            <EachMemo
+                                memoId={item._id.$oid}
+                                content={item.content}
+                                token={token}
+                            />
                         </div>)
                 })}
             </div>
-            <form onSubmit={SubmitMemo}> 
+            <form className='memoInput' onSubmit={SubmitMemo}> 
                 <input type='text' name='memo' placeholder=''/>
-                <button type='submit'> submit</button>
+                <button type='submit'> Submit</button>
             </form>
         </div>
     )

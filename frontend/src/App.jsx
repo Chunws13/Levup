@@ -1,6 +1,6 @@
 import './App.css';
-import Login from './Login';
-import Memo from './Memo';
+import Login from './components/Login';
+import Memo from './components/Memo';
 import { Cookies } from "react-cookie"
 function App() {
   const cookie = new Cookies();
@@ -10,7 +10,7 @@ function App() {
     window.location.reload();
   }
 
-  if (token == undefined){
+  if (token === undefined){
     return (
       <div>
         <Login/>
@@ -19,9 +19,15 @@ function App() {
   } else {
     return (
       <div>
-        You're Logined
-        <button onClick={RemoveCookie}> logout </button>
-        <Memo/>
+        <div className='header'> 
+          <span> You're Logined </span>
+          <button onClick={RemoveCookie}> logout </button>
+        </div>
+
+        <div className='memoBoard'>
+          <Memo/>
+        </div>
+
       </div>
     )
   }

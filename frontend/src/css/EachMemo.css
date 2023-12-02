@@ -1,0 +1,11 @@
+.memo {
+    width: 150px;
+    display: inline-block;
+}
+
+.eachMemo button {
+    background-color: white;
+    border-radius: 3px;
+    border: solid black;
+    margin-left: 5px;
+}
