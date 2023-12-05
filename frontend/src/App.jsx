@@ -12,9 +12,9 @@ function App() {
 
   if (token === undefined){
     return (
-      <div>
-        <Login/>
-      </div>
+      
+      <Login/>
+      
     );
   } else {
     return (
@@ -24,10 +24,9 @@ function App() {
           <button onClick={RemoveCookie}> logout </button>
         </div>
 
-        <div className='memoBoard'>
-          <Memo/>
-        </div>
-
+        
+        <Memo/>
+        
       </div>
     )
   }

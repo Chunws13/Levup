@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Cookies} from "react-cookie";
-import { Form, Button, Container, Row, Col } from 'react-bootstrap'
+import { Form, Button, Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {

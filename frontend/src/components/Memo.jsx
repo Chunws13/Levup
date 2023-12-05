@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react'
 import { Cookies } from "react-cookie";
+import { Form, Button, Container, Stack, Row, Col } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import EachMemo from "./EachMemo"
-import "../css/Memo.css"
 
 function Memo() {
     const cookie = new Cookies();
@@ -33,27 +34,42 @@ function Memo() {
         }}).then(response => {
             setMemo(response.data.data);
         })
-    }, []);
+    }, [EachMemo]);
 
     return (
-        <div className='totalMemo'>
-            <div className='memoField'>
-                {memo.map((item, index) => {
-                    return (
-                        <div key={index} className='eachMemo'>
-                            <EachMemo
-                                memoId={item._id.$oid}
-                                content={item.content}
-                                token={token}
-                            />
-                        </div>)
-                })}
-            </div>
-            <form className='memoInput' onSubmit={SubmitMemo}> 
-                <input type='text' name='memo' placeholder=''/>
-                <button type='submit'> Submit</button>
-            </form>
-        </div>
+        <Container className="border border-secondary border-2 rounded-3 p-5"
+            style={{ width: "40%"}}>    
+            <Container style={{ height: '40vh', overflow: "auto"}}>
+                <Stack gap={1}>
+                    {memo.map((item, index) => {
+                        return (
+                            <div key={index} className='eachMemo'>
+                                <EachMemo
+                                    memoId={item._id.$oid}
+                                    content={item.content}
+                                    token={token}
+                                />
+                            </div>)
+                    })}
+
+                </Stack>
+                
+            </Container>
+            <Container>
+                <Form onSubmit={SubmitMemo}>
+                    <Row>
+                        <Col xs={8}>
+                            <Form.Control type="text" name="memo" placeholder=''/>
+                        </Col>
+                        <Col>
+                            <div className="d-grid gap-2">
+                                <Button variant="success" type='submit'> 메모 </Button>
+                            </div>
+                        </Col>
+                    </Row>
+                </Form>
+            </Container>
+        </Container>
     )
 }
 
