@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 from typing import Union, Annotated
 from models.memo import Memo
 from auth.login_auth import User_Auth
@@ -56,7 +56,7 @@ def edit_memo(memo_id: str, Memo: Memo, Authorization : Annotated[Union[str, Non
     if result["status"] == "success":
         target_id = ObjectId(memo_id)
         if db.memo.find_one({"_id": target_id}) == None:
-            return {"status": "fail", "data" : "메모가 없습니다."}
+            raise HTTPException(status_code=404, detail="메모가 없습니다")
         
         try:
             db.memo.update_one({"_id" : target_id}, {"$set" : { "content" : Memo.content }})

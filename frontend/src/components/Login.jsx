@@ -4,19 +4,21 @@ import { Form, Button, Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
-  const SubmitFunc = (event) => {
+  const SubmitFunc = async(event) => {
     event.preventDefault();
     const cookie = new Cookies();
     const id = event.target.id.value;
     const password = event.target.pw.value;
     
     const postData = {id, password, "email": "test@naver.com"};
-    console.log(postData)
-    axios.post("http://127.0.0.1:8000/api/users/login", postData)
-        .then(response => {
-            cookie.set("token", response.data.token)
-            window.location.reload()  
-        });
+    
+    const login_request = await axios.post("http://127.0.0.1:8000/api/users/login", postData)
+    try {
+        cookie.set("token", login_request.data.token)
+        window.location.reload()
+    } catch {
+        alert("아이디 또는 비밀번호를 확인하세요")
+    }
   }
 
   return (

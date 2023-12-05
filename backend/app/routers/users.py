@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from models.users import Users
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -38,7 +38,7 @@ def login(Users: Users):
     
     find_id = db.users.find_one({"id": id})
     if find_id is None or find_id['password'] != hash_pw:
-        return {"error" : "아이디 혹은 비밀번호를 확인해주세요"}
+        raise HTTPException(status_code=404, detail="아이디 또는 비밀번호를 확인하세요")
     
     payload = {"id" : id,
                "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}

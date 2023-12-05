@@ -2,7 +2,7 @@ import './App.css';
 import Login from './components/Login';
 import Memo from './components/Memo';
 import { Cookies } from "react-cookie"
-function App() {
+const App = () => {
   const cookie = new Cookies();
   const token = cookie.get("token");
   const RemoveCookie = () =>{
@@ -23,10 +23,7 @@ function App() {
           <span> You're Logined </span>
           <button onClick={RemoveCookie}> logout </button>
         </div>
-
-        
         <Memo/>
-        
       </div>
     )
   }

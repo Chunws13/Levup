@@ -10,36 +10,61 @@ function Memo() {
     const token = cookie.get("token");
     const [memo, setMemo] = useState([]);
 
-    const SubmitMemo = (event) => {
+    const SubmitMemo = async(event) => {
         event.preventDefault();
         const content = event.target.memo.value;
         
-        axios.post("http://127.0.0.1:8000/api/memo", 
+        try { await axios.post("http://127.0.0.1:8000/api/memo", 
             { content },
             { headers : {
                 "Authorization" : token,
                 "Content-Type": "application/json"
-                }}
-        ).then(response => {
-            window.location.reload();
-        }).catch( error => {
-                alert("에러 발생");
-            }
-        )
+                }});
+
+            } catch {
+            alert("에러 발생");
+        }
     };
 
+    const EditMemo = async(memoId, content, token) => {
+        try { await axios.put(`http://127.0.0.1:8000/api/memo/${memoId}`,
+            { content },
+            { headers : {
+            "Authorization" : token,
+            "Content-Type": "application/json"
+            }});
+
+        } catch {
+            alert("에러가 발생했습니다");
+        }}
+    
+    const DeleteMemo = async(memoId, token) =>{
+        try { await axios.delete(`http://127.0.0.1:8000/api/memo/${memoId}`,
+                { headers : {
+                "Authorization" : token,
+                "Content-Type": "application/json"
+                }});
+        } catch {
+            alert("에러가 발생했습니다.");
+        }}
+
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/api/memo", { headers : {
-            "Authorization" : token
-        }}).then(response => {
-            setMemo(response.data.data);
-        })
-    }, [EachMemo]);
+        const get_memo = async() => {
+            let response = await axios.get("http://127.0.0.1:8000/api/memo", { headers : {"Authorization" : token }})
+            try {
+                setMemo(response.data.data);
+            } catch{
+                alert("에러 발생");
+            }}
+        
+        get_memo();
+
+    }, [SubmitMemo, EditMemo, DeleteMemo]);
 
     return (
         <Container className="border border-secondary border-2 rounded-3 p-5"
-            style={{ width: "40%"}}>    
-            <Container style={{ height: '40vh', overflow: "auto"}}>
+            style={{ width: "80%"}}>    
+            <Container style={{ minHeight: '40vh', overflow: "auto"}}>
                 <Stack gap={1}>
                     {memo.map((item, index) => {
                         return (
@@ -48,6 +73,8 @@ function Memo() {
                                     memoId={item._id.$oid}
                                     content={item.content}
                                     token={token}
+                                    EditMemo={EditMemo}
+                                    DeleteMemo={DeleteMemo}
                                 />
                             </div>)
                     })}
