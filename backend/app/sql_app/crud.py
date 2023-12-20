@@ -17,8 +17,17 @@ def create_board(db: Session, board: schemas.Create_Board):
     db.refresh(board_db_create)
     return board_db_create
 
-def edit_board():
-    return
+def edit_board(db: Session, edit_board: schemas.Edit_Board, board_id: int):
+    origin_board = db.query(models.Board).filter(models.Board.id == board_id).first()
+    
+    origin_board.writer = edit_board.writer
+    origin_board.title = edit_board.title
+    origin_board.content = edit_board.content
+    origin_board.edited_datetime = edit_board.edited_datetime
+    
+    db.commit()
+    db.refresh(origin_board)
+    return origin_board
 
 def delete_board(db: Session, board_id: int):
     delete_db = db.query(models.Board).filter(models.Board.id == board_id).first()
@@ -36,8 +45,15 @@ def create_comment(db: Session, board_id: int, comment: schemas.Create_Comment):
     db.refresh(comment_db_create)
     return comment_db_create
 
-def edit_comment():
-    return
+def edit_comment(db: Session, comment_id: int, edit_comment: schemas.Edit_Comment):
+    origin_comment = db.query(models.Comment).filter(models.Comment.id == comment_id).first()
+    origin_comment.writer = edit_comment.writer
+    origin_comment.content = edit_comment.content
+    origin_comment.edited_datetime = edit_comment.edited_datetime
+    
+    db.commit()
+    db.refresh(origin_comment)
+    return origin_comment
 
 def delete_comment():
     return

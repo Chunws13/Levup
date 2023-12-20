@@ -40,8 +40,7 @@ def login(Users: Users):
     if find_id is None or find_id['password'] != hash_pw:
         raise HTTPException(status_code=404, detail="아이디 또는 비밀번호를 확인하세요")
     
-    payload = {"id" : id,
-               "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
+    payload = {"id" : id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
     
     token = jwt.encode(payload, "1234", algorithm="HS256")
     return {"success" : "로그인 성공", "token" : token}
