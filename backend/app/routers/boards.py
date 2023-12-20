@@ -14,10 +14,22 @@ def get_db():
     finally:
         db.close()
 
+@router.get("/")
+async def get_all_board(db: Session = Depends(get_db)):
+    return crud.get_all_board(db = db)
+
+@router.get("/{board_id}")
+async def get_board(board_id: int, db: Session = Depends(get_db)):
+    return crud.get_board(db = db, board_id = board_id)
+
 @router.post("/create")
-def create_board(board: schemas.Create_Board, db: Session = Depends(get_db)):
-    # try:
+async def create_board(board: schemas.Create_Board, db: Session = Depends(get_db)):
     return crud.create_board(db = db, board = board)
-    
-    # except:
-    #     return HTTPException(status_code=404, detail="오류")
+
+@router.delete("/{board_id}")
+async def delete_board(board_id: int, db: Session = Depends(get_db)):
+    return crud.delete_board(db = db, board_id = board_id)
+
+@router.post("/{board_id}/comment")
+async def create_comment(comment : schemas.Create_Comment, board_id: int, db: Session = Depends(get_db)):
+    return crud.create_comment(db = db, comment = comment, board_id = board_id)

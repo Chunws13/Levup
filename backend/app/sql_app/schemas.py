@@ -7,10 +7,9 @@ class Create_Board(BaseModel):
     title : str
     content : str
 
-# class Create_Board(Default_Boad):
-#     like : Union[int, None] = 0
-#     created_datetime : Union[str, None] = datetime.now() 
-#     edited_datetime : Union[str, None] = datetime.now()
-
 class Edit_Board(Create_Board):
     edited_datetime : Union[str, None] = datetime.now()
+
+class Create_Comment(BaseModel):
+    writer : str
+    content : str

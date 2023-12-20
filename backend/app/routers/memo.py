@@ -12,7 +12,6 @@ router = APIRouter(prefix = "/api/memo", tags = ["memo"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-
 ca = certifi.where()
 client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 db = client.chunws
