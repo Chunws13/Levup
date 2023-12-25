@@ -20,7 +20,7 @@ db = client.chunws
 def get_memo(Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
-    if result["status"] == "success":
+    if result["status"]:
         writer = result["data"]
         memo = list(db.memo.find({"writer" : writer}, {"_id" : True, "content" : True}))
         return {"data" :  json.loads(dumps(memo))}
@@ -34,7 +34,7 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
     checker = User_Auth(Authorization)
     result = checker.check_auth()
 
-    if result["status"] == "success":
+    if result["status"]:
         writer = result["data"]
         content = Memo.content
         
@@ -52,7 +52,7 @@ def edit_memo(memo_id: str, Memo: Memo, Authorization : Annotated[Union[str, Non
     checker = User_Auth(Authorization)
     result = checker.check_auth()
     
-    if result["status"] == "success":
+    if result["status"]:
         target_id = ObjectId(memo_id)
         if db.memo.find_one({"_id": target_id}) == None:
             raise HTTPException(status_code=404, detail="메모가 없습니다")
@@ -72,7 +72,7 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
     checker = User_Auth(Authorization)
     result = checker.check_auth()
     
-    if result["status"] == "success":
+    if result["status"]:
         target_id = ObjectId(memo_id)
         if db.memo.find_one({"_id": target_id}) == None:
             return {"status": "fail", "data" : "메모가 없습니다."}

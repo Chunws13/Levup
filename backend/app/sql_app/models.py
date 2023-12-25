@@ -14,8 +14,8 @@ class Board(Base):
     like = Column(Integer, default=0)
     created_datetime = Column(DateTime, default = func.now())
     edited_datetime = Column(DateTime, default = func.now())
-    comment = relationship("Comment", back_populates= "owner")
-    # related = relationship("Like_People", back_populates= "related")
+    comment = relationship("Comment", cascade="all, delete", back_populates= "owner")
+    like_people = relationship("Like_People", cascade="all, delete", back_populates= "owner")
     
 class Comment(Base):
     __tablename__ = "Comments"
@@ -34,5 +34,5 @@ class Like_People(Base):
     id = Column(Integer, primary_key = True, index = True)
     people = Column(String(255))
     board_id = Column(Integer, ForeignKey("Boards.id"))
-    # related = relationship("Board", back_populates= "related")
+    owner = relationship("Board", back_populates= "like_people")
     

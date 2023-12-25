@@ -20,16 +20,16 @@ class User_Auth:
                 payload = jwt.decode(self.token, "1234", algorithms="HS256")
                 user = db.users.find_one({"id" : payload["id"]}, {"_id" : False})
                 user_id = user["id"]
-                return {"status" : "success", "data" : user_id}
+                return {"status" : True, "data" : user_id}
 
             except jwt.ExpiredSignatureError:
                 message = "로그인 시간 만료"
-                return {"status" : "fail", "data" : message}
+                return {"status" : False, "data" : message}
             
             except jwt.InvalidTokenError:
                 message = "토큰 에러"
-                return {"status" : "fail", "data" : message}
+                return {"status" : False, "data" : message}
             
             except:
                 message = "예기치 못한 에러가 발생했습니다."
-                return {"status" : "fail", "data" : message}
+                return {"status" : False, "data" : message}
