@@ -4,8 +4,14 @@ from auth.login_auth import User_Auth
 from sqlalchemy.orm import Session
 from sql_app import crud, models, schemas
 from sql_app.database import SessionLocal, engine
+from auth.login_auth import User_Auth
+from dotenv import load_dotenv
+import os
 
 models.Base.metadata.create_all(bind=engine)
+router = APIRouter(prefix="/api/board", tags=["boards"])
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 router = APIRouter(prefix="/api/boards", tags=["boards"])
 
 def get_db():
@@ -62,6 +68,22 @@ async def delete_board(board_id: int, db: Session = Depends(get_db), Authorizati
     
     else:
         return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+
+@router.post("/{board_id}/like")
+async def like_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
+    checker = User_Auth(Authorization)
+    result = checker.check_auth()
+    if result["status"] == "success":
+        # try:
+            return crud.like_board(db = db, board_id = board_id, like_user = result["data"])
+        
+        # except:
+        #     raise HTTPException(status_code=404, detail="오류 발생")
+        
+    
+    else:
+        raise HTTPException(status_code=404, detail=result["data"])
+    
 
 @router.post("/{board_id}/comment")
 async def create_comment(comment : schemas.Create_Comment, board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
