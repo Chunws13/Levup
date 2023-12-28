@@ -22,12 +22,11 @@ def get_memo(Authorization : Annotated[Union[str, None], Header()] = None):
     result = checker.check_auth()
     if result["status"] == "success":
         writer = result["data"]
-        memo = list(db.memo.find({"writer" : writer}, {"_id" : True, "content" : True}))
+        memo = list(db.memo.find({"writer" : writer}))
         return {"data" :  json.loads(dumps(memo))}
     
     else:
-        message = result["data"]
-        return message
+        raise HTTPException(status_code=404, detail=result["data"])
 
 @router.post("/")
 def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()] = None):
@@ -38,14 +37,14 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
         writer = result["data"]
         content = Memo.content
         
-        memo_data = {"writer" : writer, "content": content}
-        db.memo.insert_one(memo_data)
-        test_memo = db.memo.find_one({"writer" :writer})
+        memo_data = {"writer" : writer, "content": content, "created_date": datetime.datetime.now(),
+                     "complete_status" : False, "complete_time": None, "admit_status": False}
         
+        db.memo.insert_one(memo_data)
         return {"status" : "success", "data" : "저장되었습니다."}
     
     else:
-        return result["data"]
+        raise HTTPException(status_code=404, detail=result["data"])
     
 @router.put("/{memo_id}")
 def edit_memo(memo_id: str, Memo: Memo, Authorization : Annotated[Union[str, None], Header()] = None):
@@ -65,7 +64,7 @@ def edit_memo(memo_id: str, Memo: Memo, Authorization : Annotated[Union[str, Non
             return {"status" : "fail", "data" : "수정 실패했습니다."}
     
     else:
-        return result["data"]
+        raise HTTPException(status_code=404, detail=result["data"])
 
 @router.delete("/{memo_id}")
 def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header()] = None):
@@ -75,14 +74,16 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
     if result["status"] == "success":
         target_id = ObjectId(memo_id)
         if db.memo.find_one({"_id": target_id}) == None:
-            return {"status": "fail", "data" : "메모가 없습니다."}
+            return HTTPException(status_code=404, detail="메모가 없습니다.")
         
         try:
-            db.memo.delete_one({"_id" : target_id})
+            db.memo.update_one({"_id" : target_id}, {"$set" : {"complete_status": True,
+                                                               "complete_date": datetime.datetime.now()}})
+            
             return {"status" : "success", "data" : "삭제되었습니다."}
         
         except:
             return {"status" : "fail", "data" : "삭제 실패했습니다."}
     
     else:
-        return result["data"]
+        raise HTTPException(status_code=404, detail=result["data"])

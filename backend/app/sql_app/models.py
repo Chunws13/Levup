@@ -15,7 +15,7 @@ class Board(Base):
     created_datetime = Column(DateTime, default = func.now())
     edited_datetime = Column(DateTime, default = func.now())
     comment = relationship("Comment", back_populates= "owner")
-    # related = relationship("Like_People", back_populates= "related")
+    related = relationship("Like_People", back_populates= "related")
     
 class Comment(Base):
     __tablename__ = "Comments"

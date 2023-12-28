@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.users import Users
+from models.users import User_Login, User_Create
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import certifi, hashlib, datetime, jwt, os
@@ -13,11 +13,10 @@ client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 db = client.chunws
 
 @router.post("/signup")
-def signup(Users: Users):
+def signup(Users: User_Create):
     id, email, password = Users.id, Users.email, Users.password
 
     check_duplication = db.users.find_one({"id" : id})
-    
     if check_duplication:
         return {"error" : "이미 존재하는 ID입니다."}
     
@@ -25,14 +24,15 @@ def signup(Users: Users):
     user_info = {
         "id" : id,
         "email" : email,
-        "password" : hash_pw
+        "password" : hash_pw,
+        "point" : 0
     }
     
     db.users.insert_one(user_info)
     return db.users
 
 @router.post("/login")
-def login(Users: Users):
+def login(Users: User_Login):
     id, password = Users.id, Users.password
     hash_pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
     
