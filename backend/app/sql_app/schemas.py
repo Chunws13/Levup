@@ -3,7 +3,6 @@ from typing import Union
 from datetime import datetime
 
 class Create_Board(BaseModel):
-    writer : str
     title : str
     content : str
 

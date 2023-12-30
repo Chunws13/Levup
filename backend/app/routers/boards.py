@@ -30,15 +30,15 @@ async def get_all_board(db: Session = Depends(get_db)):
 async def get_board(board_id: int, db: Session = Depends(get_db)):
     return crud.get_board(db = db, board_id = board_id)
 
-@router.post("/create")
+@router.post("/")
 async def create_board(board: schemas.Create_Board, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
     if login_check:
         try:
-            return crud.create_board(db = db, board = board)
+            return crud.create_board(db = db, board = board, writer = login_check["data"])
         
         except:
-            raise HTTPException(status_code=404, detail=login_check["data"])
+            raise HTTPException(status_code=404, detail="오류가 발생했습니다.")
     
     else:
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
@@ -48,7 +48,7 @@ async def edit_board(board_id: int, edit_board: schemas.Edit_Board, db: Session 
     login_check = User_Auth(Authorization).check_auth()
     if login_check:
         try:
-            return crud.edit_board(db = db, edit_board = edit_board, board_id = board_id, create_user = login_check["data"])
+            return crud.edit_board(db = db, edit_board = edit_board, board_id = board_id, writer = login_check["data"])
         
         except:
             raise HTTPException(status_code=404, detail=login_check["data"])
@@ -61,7 +61,7 @@ async def delete_board(board_id: int, db: Session = Depends(get_db), Authorizati
     login_check = User_Auth(Authorization).check_auth()
     if login_check:
         try:
-            return crud.delete_board(db = db, board_id = board_id, create_user = login_check["data"])
+            return crud.delete_board(db = db, board_id = board_id, writer = login_check["data"])
         
         except:
             return HTTPException(status_code=404, detail="오류 발생")
@@ -69,17 +69,16 @@ async def delete_board(board_id: int, db: Session = Depends(get_db), Authorizati
     else:
         return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
-@router.post("/{board_id}/like")
+@router.get("/{board_id}/like")
 async def like_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
-    if result["status"] == "success":
-        # try:
+    if result:
+        try:
             return crud.like_board(db = db, board_id = board_id, like_user = result["data"])
         
-        # except:
-        #     raise HTTPException(status_code=404, detail="오류 발생")
-        
+        except:
+            raise HTTPException(status_code=404, detail="오류 발생")
     
     else:
         raise HTTPException(status_code=404, detail=result["data"])

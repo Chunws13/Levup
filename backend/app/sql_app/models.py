@@ -1,7 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
 from .database import Base
 
 class Board(Base):
@@ -11,7 +10,8 @@ class Board(Base):
     writer = Column(String(255))
     title = Column(String(255))
     content = Column(String(255))
-    like = Column(Integer, default=0)
+    like = Column(Integer, default = 0)
+    admit = Column(Boolean, default = False)
     created_datetime = Column(DateTime, default = func.now())
     edited_datetime = Column(DateTime, default = func.now())
     comment = relationship("Comment", cascade="all, delete", back_populates= "owner")

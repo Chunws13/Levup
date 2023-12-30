@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, onChange } from 'react'
 import { Cookies } from "react-cookie";
 import { Form, Button, Container, Stack, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,30 +9,36 @@ function Memo() {
     const cookie = new Cookies();
     const token = cookie.get("token");
     const [memo, setMemo] = useState([]);
+    const [writeMemo, setWriteMemo] = useState("");
+    
+    const Writing = (event) => {
+        setWriteMemo(event.target.value);
+    }
 
     const SubmitMemo = async(event) => {
         event.preventDefault();
-        const content = event.target.memo.value;
         
         try { await axios.post("http://127.0.0.1:8000/api/memo", 
-            { content },
-            { headers : {
-                "Authorization" : token,
-                "Content-Type": "application/json"
-                }});
+                { content : writeMemo },
+                { headers : {
+                    "Authorization" : token,
+                    "Content-Type": "application/json"
+                    }});
+                setWriteMemo("");
+            } 
 
-            } catch {
+        catch {
             alert("에러 발생");
         }
     };
 
     const EditMemo = async(memoId, content, token) => {
         try { await axios.put(`http://127.0.0.1:8000/api/memo/${memoId}`,
-            { content },
-            { headers : {
-            "Authorization" : token,
-            "Content-Type": "application/json"
-            }});
+                { content },
+                { headers : {
+                "Authorization" : token,
+                "Content-Type": "application/json"
+                }});
 
         } catch {
             alert("에러가 발생했습니다");
@@ -59,7 +65,7 @@ function Memo() {
         
         get_memo();
 
-    }, [SubmitMemo, EditMemo, DeleteMemo]);
+    }, []);
 
     return (
         <Container className="border border-secondary border-2 rounded-3 p-5"
@@ -86,7 +92,7 @@ function Memo() {
                 <Form onSubmit={SubmitMemo}>
                     <Row>
                         <Col xs={8}>
-                            <Form.Control type="text" name="memo" placeholder=''/>
+                            <Form.Control onChange={Writing} value={writeMemo} type="text" name="memo" placeholder=''/>
                         </Col>
                         <Col>
                             <div className="d-grid gap-2">
