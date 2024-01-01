@@ -33,3 +33,6 @@ class User_Auth:
             except:
                 message = "예기치 못한 에러가 발생했습니다."
                 return {"status" : False, "data" : message}
+        
+        else:
+            return {"status": False, "data" : "로그인이 필요한 서비스입니다."}

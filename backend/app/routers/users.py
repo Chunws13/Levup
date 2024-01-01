@@ -29,7 +29,7 @@ def signup(Users: User_Create):
     }
     
     db.users.insert_one(user_info)
-    return db.users
+    return {"status": True, "data": "회원가입 성공"}
 
 @router.post("/login")
 def login(Users: User_Login):
@@ -43,4 +43,4 @@ def login(Users: User_Login):
     payload = {"id" : id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
     
     token = jwt.encode(payload, "1234", algorithm="HS256")
-    return {"success" : "로그인 성공", "token" : token}
+    return {"status" : True , "token" : token}

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect, onChange } from 'react'
 import { Cookies } from "react-cookie";
+import { useNavigate  } from 'react-router-dom';
 import { Form, Button, Container, Stack, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EachMemo from "./EachMemo"
@@ -10,7 +11,8 @@ function Memo() {
     const token = cookie.get("token");
     const [memo, setMemo] = useState([]);
     const [writeMemo, setWriteMemo] = useState("");
-    
+    const navigate = useNavigate();
+
     const Writing = (event) => {
         setWriteMemo(event.target.value);
     }
@@ -28,7 +30,8 @@ function Memo() {
             } 
 
         catch {
-            alert("에러 발생");
+
+            alert("")
         }
     };
 
@@ -56,11 +59,12 @@ function Memo() {
 
     useEffect(() => {
         const get_memo = async() => {
-            let response = await axios.get("http://127.0.0.1:8000/api/memo", { headers : {"Authorization" : token }})
             try {
+                let response = await axios.get("http://127.0.0.1:8000/api/memo", { headers : {"Authorization" : token }})
                 setMemo(response.data.data);
-            } catch{
-                alert("에러 발생");
+
+            } catch {
+                navigate("login");
             }}
         
         get_memo();

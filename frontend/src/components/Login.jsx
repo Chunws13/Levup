@@ -1,25 +1,32 @@
 import axios from "axios";
-import {Cookies} from "react-cookie";
+import { Cookies } from "react-cookie";
+import { useNavigate } from "react-router-dom"
 import { Form, Button, Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect, onClick } from "react";
 
 const Login = () => {
-  const SubmitFunc = async(event) => {
-    event.preventDefault();
-    const cookie = new Cookies();
-    const id = event.target.id.value;
-    const password = event.target.pw.value;
-    
-    const postData = {id, password, "email": "test@naver.com"};
-    
-    const login_request = await axios.post("http://127.0.0.1:8000/api/users/login", postData)
-    try {
-        cookie.set("token", login_request.data.token)
-        window.location.reload()
-    } catch {
-        alert("아이디 또는 비밀번호를 확인하세요")
+    useEffect (() => {
+    }, [])
+    const naviage = useNavigate();
+
+    const SubmitFunc = async(event) => {
+        event.preventDefault();
+        const cookie = new Cookies();
+        const id = event.target.id.value;
+        const password = event.target.pw.value;
+        
+        const postData = {id, password, "email": "test@naver.com"};
+        
+        try {
+            const login_request = await axios.post("http://127.0.0.1:8000/api/users/login", postData)
+            cookie.set("token", login_request.data.token);
+            naviage("/");
+
+        } catch {
+            alert("아이디 또는 비밀번호를 확인하세요")
+        }
     }
-  }
 
   return (
     <Container className="d-flex align-items-center justify-content-center" 
@@ -43,7 +50,7 @@ const Login = () => {
                         로그인
                     </Button>
 
-                    <Button variant="dark">
+                    <Button variant="dark" onClick={() => {naviage("/signup")}}>
                         회원가입
                     </Button>
                 </div>

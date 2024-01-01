@@ -51,7 +51,6 @@ def delete_board(db: Session, board_id: int, writer: str):
 
 def like_board(db: Session, board_id: int, like_user: str):
     board_db = db.query(models.Board).filter(models.Board.id == board_id).first()
-    # like_people = db.query(models.Like_People).filter(models.Like_People.board_id == board_id).filter(models.Like_People.people == like_user).first()
     like_people = db.query(models.Like_People).filter(models.Like_People.board_id == board_id, models.Like_People.people == like_user).first()
     
     if like_user != board_db.writer and board_db.like == 0:
