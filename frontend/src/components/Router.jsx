@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Login';
 import Memo from './Memo';
-import Signup from './Singup';
+import Signup from './Signup';
 
 const Router = () => (
     <BrowserRouter>

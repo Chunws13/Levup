@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect, onChange } from 'react'
+import { useState, useEffect } from 'react'
 import { Cookies } from "react-cookie";
 import { useNavigate  } from 'react-router-dom';
 import { Form, Button, Container, Stack, Row, Col } from 'react-bootstrap'
@@ -27,10 +27,10 @@ function Memo() {
                     "Content-Type": "application/json"
                     }});
                 setWriteMemo("");
+                get_memo();
             } 
 
         catch {
-
             alert("")
         }
     };
@@ -42,6 +42,7 @@ function Memo() {
                 "Authorization" : token,
                 "Content-Type": "application/json"
                 }});
+                get_memo();
 
         } catch {
             alert("에러가 발생했습니다");
@@ -53,22 +54,24 @@ function Memo() {
                 "Authorization" : token,
                 "Content-Type": "application/json"
                 }});
+                get_memo();
         } catch {
             alert("에러가 발생했습니다.");
         }}
 
-    useEffect(() => {
-        const get_memo = async() => {
-            try {
-                let response = await axios.get("http://127.0.0.1:8000/api/memo", { headers : {"Authorization" : token }})
-                setMemo(response.data.data);
-
-            } catch {
-                navigate("login");
-            }}
-        
+    
+    const get_memo = async() => {
+        try {   
+            let response = await axios.get("http://127.0.0.1:8000/api/memo", 
+                { headers : {"Authorization" : token }});
+            setMemo(response.data.data);
+        } catch {
+            
+            navigate("login");   
+        }
+    }
+    useEffect(() => {   
         get_memo();
-
     }, []);
 
     return (
@@ -85,6 +88,7 @@ function Memo() {
                                     token={token}
                                     EditMemo={EditMemo}
                                     DeleteMemo={DeleteMemo}
+                                    status={item.complete_status}
                                 />
                             </div>)
                     })}

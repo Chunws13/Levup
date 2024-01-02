@@ -20,7 +20,7 @@ const Signup = () => {
     }
 
     const ChangePassword2 = (event) => {
-        setPassword2(event.target.value);    
+        setPassword2(event.target.value);
     }
 
     const ChangeEmail = (event) => {
@@ -31,12 +31,11 @@ const Signup = () => {
         event.preventDefault();
         const postData = {id, password, email};
         try {
-            let response = await axios.post("http://127.0.0.1:8000/api/users/signup", postData);
-            alert(response.data.data);
+            await axios.post("http://127.0.0.1:8000/api/users/signup", postData);
             naviage("/login");
 
         } catch {
-            alert("아이디 또는 비밀번호를 확인하세요");
+            alert("이미 존재하는 ID 입니다.");
         }
     }
 
@@ -61,7 +60,9 @@ const Signup = () => {
                 <Form.Group className="mb-3">
                     <Form.Label> Password Check </Form.Label>
                     <Form.Control onChange={ChangePassword2} value={password2} type="password" name="pw2"/>
-                    <Form.Label> 에러 발생 메세지 </Form.Label>
+                    { password === password2 || password2.length === 0 ? '' : 
+                    <Form.Label style={{color : "red", fontSize : "12px"}}> 비밀번호가 일치하지 않습니다. </Form.Label>}
+                    
                 </Form.Group>
                 
                 <Form.Group className="mb-3">
@@ -70,7 +71,9 @@ const Signup = () => {
                 </Form.Group>
 
                 <div className="d-grid gap-2">
-                    <Button variant="dark" type="submit">
+                    <Button variant="dark" type="submit" disabled={
+                        password.length > 0 && password2.length > 0 && 
+                        password === password2 && id.length > 0 && email.length > 0 ? false : true}>
                         회원가입
                     </Button>
                 </div>

@@ -18,7 +18,7 @@ def signup(Users: User_Create):
 
     check_duplication = db.users.find_one({"id" : id})
     if check_duplication:
-        return {"error" : "이미 존재하는 ID입니다."}
+        raise HTTPException(status_code = 404, detail = "이미 존재하는 ID 입니다.")
     
     hash_pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
     user_info = {
