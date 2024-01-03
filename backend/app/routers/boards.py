@@ -33,7 +33,7 @@ async def get_board(board_id: int, db: Session = Depends(get_db)):
 @router.post("/")
 async def create_board(board: schemas.Create_Board, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
-    if login_check:
+    if login_check["status"]:
         try:
             return crud.create_board(db = db, board = board, writer = login_check["data"])
         
@@ -46,7 +46,7 @@ async def create_board(board: schemas.Create_Board, db: Session = Depends(get_db
 @router.put("/{board_id}")
 async def edit_board(board_id: int, edit_board: schemas.Edit_Board, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
-    if login_check:
+    if login_check["status"]:
         try:
             return crud.edit_board(db = db, edit_board = edit_board, board_id = board_id, writer = login_check["data"])
         
@@ -59,7 +59,7 @@ async def edit_board(board_id: int, edit_board: schemas.Edit_Board, db: Session 
 @router.delete("/{board_id}")
 async def delete_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
-    if login_check:
+    if login_check["status"]:
         try:
             return crud.delete_board(db = db, board_id = board_id, writer = login_check["data"])
         
@@ -73,7 +73,7 @@ async def delete_board(board_id: int, db: Session = Depends(get_db), Authorizati
 async def like_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
-    if result:
+    if result["status"]:
         try:
             return crud.like_board(db = db, board_id = board_id, like_user = result["data"])
         
@@ -87,7 +87,7 @@ async def like_board(board_id: int, db: Session = Depends(get_db), Authorization
 @router.post("/{board_id}/comment")
 async def create_comment(comment : schemas.Create_Comment, board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
-    if login_check:
+    if login_check["status"]:
         try:
            return crud.create_comment(db = db, comment = comment, board_id = board_id)
        
@@ -99,7 +99,7 @@ async def create_comment(comment : schemas.Create_Comment, board_id: int, db: Se
 @router.put("/comment/{comment_id}")
 async def edit_comment(edit_comment: schemas.Edit_Comment, comment_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
-    if login_check:
+    if login_check["status"]:
         try:
            return crud.edit_comment(db = db, edit_comment = edit_comment, comment_id = comment_id, create_user = login_check["data"])
        
@@ -112,7 +112,7 @@ async def edit_comment(edit_comment: schemas.Edit_Comment, comment_id: int, db: 
 @router.delete("/comment/{comment_id}")
 async def delete_comment(comment_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
-    if login_check:
+    if login_check["status"]:
         try:
            return crud.delete_comment(db = db, comment_id = comment_id, create_user = login_check["data"])
        

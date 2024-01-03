@@ -23,7 +23,6 @@ def create_board(db: Session, board: schemas.Create_Board, writer: str):
                                    content = board.content)
     db.add(board_db_create)
     db.commit()
-    print("here")
     db.refresh(board_db_create)
     return {"status": True, "data" : "인증글 생성 성공"}
 
