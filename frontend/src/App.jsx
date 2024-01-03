@@ -5,8 +5,9 @@ import Header from './components/Header'
 
 const App = () => (
   <div>
-    <Router />
+    <Header/>
+    <Router/>
   </div>
-)
+);
 
 export default App;

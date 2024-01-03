@@ -61,10 +61,12 @@ function Memo() {
 
     
     const get_memo = async() => {
-        try {   
-            let response = await axios.get("http://127.0.0.1:8000/api/memo", 
-                { headers : {"Authorization" : token }});
-            setMemo(response.data.data);
+        try {  
+            if (token !== null) {
+                let response = await axios.get("http://127.0.0.1:8000/api/memo", 
+                    { headers : {"Authorization" : token }});
+                setMemo(response.data.data);
+            };
         } catch {
             
             navigate("login");   
