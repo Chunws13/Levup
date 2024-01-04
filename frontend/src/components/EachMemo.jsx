@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status }) => {
+const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, navigate }) => {
         const [editable, setEditable] = useState(false);
         const [text, setText] = useState(content);
 
@@ -20,6 +20,10 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status }) => {
             DeleteMemo(memoId, token);
         }
         
+        const WriteBoard = (memoId) => {
+            navigate(`boards/create?id=${memoId}`)
+        }
+
         return (
             <Container fluid id={ memoId }>
                 { status ? 
@@ -29,7 +33,7 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status }) => {
                         </Col>
 
                         <Col>
-                            <Button variant="outline-danger" size="sm"> 인증하기 </Button>
+                            <Button  variant="outline-danger" size="sm"> 인증하기 </Button>
                         </Col>
                     </Row>
                     :

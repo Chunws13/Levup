@@ -78,8 +78,8 @@ function Memo() {
 
     return (
         <Container className="border border-secondary border-2 rounded-3 p-5"
-            style={{ width: "80%"}}>    
-            <Container style={{ minHeight: '40vh', overflow: "auto"}}>
+            style={{ width: "100%", height : "70vh"}}>    
+            <Container style={{overflow: "auto"}}>
                 <Stack gap={1}>
                     {memo.map((item, index) => {
                         return (
@@ -91,6 +91,7 @@ function Memo() {
                                     EditMemo={EditMemo}
                                     DeleteMemo={DeleteMemo}
                                     status={item.complete_status}
+                                    navigate = {navigate}
                                 />
                             </div>)
                     })}

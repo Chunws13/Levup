@@ -17,13 +17,21 @@ def get_all_board(db: Session):
 def get_board(db: Session, board_id: int): 
     return db.query(models.Board).options(joinedload(models.Board.comment)).filter(models.Board.id == board_id).first()
 
-def create_board(db: Session, board: schemas.Create_Board, writer: str):
+def create_board(db: Session, board: schemas.Create_Board, memo_id: str, writer: str):
+    memo_info = mongodb.memo.find_one({"_id" : memo_id})
+    if memo_info["auth"]:
+        raise
+
+    if memo_info["writer"] == writer:
+        raise
+    
     board_db_create = models.Board(writer = writer,
                                    title = board.title,
                                    content = board.content)
     db.add(board_db_create)
     db.commit()
     db.refresh(board_db_create)
+    mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"auth" : True}})
     return {"status": True, "data" : "인증글 생성 성공"}
 
 def edit_board(db: Session, edit_board: schemas.Edit_Board, board_id: int, writer: str):

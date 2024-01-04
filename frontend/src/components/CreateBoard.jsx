@@ -14,7 +14,7 @@ const CreateBaord = () => {
 
         let postData = {};
         try{
-            axios.post("http://127.0.0.1:8000/api/memo",
+            axios.post("http://127.0.0.1:8000/api/boards",
                 { content : postData },
                 { headers : {
                     "Authorization" : token,

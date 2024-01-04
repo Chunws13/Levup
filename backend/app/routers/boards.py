@@ -30,12 +30,12 @@ async def get_all_board(db: Session = Depends(get_db)):
 async def get_board(board_id: int, db: Session = Depends(get_db)):
     return crud.get_board(db = db, board_id = board_id)
 
-@router.post("/")
-async def create_board(board: schemas.Create_Board, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
+@router.post("/{memo_id}")
+async def create_board(board: schemas.Create_Board, memo_id: str, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
     if login_check["status"]:
         try:
-            return crud.create_board(db = db, board = board, writer = login_check["data"])
+            return crud.create_board(db = db, board = board, memo_id = memo_id, writer = login_check["data"])
         
         except:
             raise HTTPException(status_code=404, detail="오류가 발생했습니다.")
