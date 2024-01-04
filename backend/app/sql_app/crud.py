@@ -1,6 +1,8 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session, joinedload
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from bson.objectid import ObjectId
 import certifi, os
 from . import models, schemas
 
@@ -18,20 +20,22 @@ def get_board(db: Session, board_id: int):
     return db.query(models.Board).options(joinedload(models.Board.comment)).filter(models.Board.id == board_id).first()
 
 def create_board(db: Session, board: schemas.Create_Board, memo_id: str, writer: str):
+    memo_id = ObjectId(memo_id)
     memo_info = mongodb.memo.find_one({"_id" : memo_id})
-    if memo_info["auth"]:
-        raise
+    if memo_info["admit_status"]:
+        raise HTTPException(status_code=404, detail="메모가 없습니다")
 
-    if memo_info["writer"] == writer:
-        raise
+    if memo_info["writer"] != writer:
+        raise HTTPException(status_code=404, detail="권한이 없습니다")
     
     board_db_create = models.Board(writer = writer,
                                    title = board.title,
                                    content = board.content)
+    
     db.add(board_db_create)
     db.commit()
     db.refresh(board_db_create)
-    mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"auth" : True}})
+    mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"admit_status" : True}})
     return {"status": True, "data" : "인증글 생성 성공"}
 
 def edit_board(db: Session, edit_board: schemas.Edit_Board, board_id: int, writer: str):

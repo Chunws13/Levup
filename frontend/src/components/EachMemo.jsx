@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom';
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,10 +20,6 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, naviga
         const Delete = () => {
             DeleteMemo(memoId, token);
         }
-        
-        const WriteBoard = (memoId) => {
-            navigate(`boards/create?id=${memoId}`)
-        }
 
         return (
             <Container fluid id={ memoId }>
@@ -33,7 +30,9 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, naviga
                         </Col>
 
                         <Col>
-                            <Button  variant="outline-danger" size="sm"> 인증하기 </Button>
+                            <Link to={`boards/create?id=${memoId}`}>
+                                <Button variant="outline-danger" size="sm"> 인증하기 </Button>
+                            </Link>
                         </Col>
                     </Row>
                     :

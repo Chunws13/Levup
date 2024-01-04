@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 import os
 
 models.Base.metadata.create_all(bind=engine)
-router = APIRouter(prefix="/api/board", tags=["boards"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 router = APIRouter(prefix="/api/boards", tags=["boards"])
@@ -30,14 +29,16 @@ async def get_all_board(db: Session = Depends(get_db)):
 async def get_board(board_id: int, db: Session = Depends(get_db)):
     return crud.get_board(db = db, board_id = board_id)
 
-@router.post("/{memo_id}")
-async def create_board(board: schemas.Create_Board, memo_id: str, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
+@router.post("/auth/{memo_id}")
+def create_board(board: schemas.Create_Board, memo_id: str, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     login_check = User_Auth(Authorization).check_auth()
+    print(memo_id)
     if login_check["status"]:
         try:
             return crud.create_board(db = db, board = board, memo_id = memo_id, writer = login_check["data"])
         
         except:
+            print("오류 반환해야해")
             raise HTTPException(status_code=404, detail="오류가 발생했습니다.")
     
     else:
