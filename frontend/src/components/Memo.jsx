@@ -77,13 +77,13 @@ function Memo() {
     }, []);
 
     return (
-        <Container className="border border-secondary border-2 rounded-3 p-5"
-            style={{ width: "100%", height : "70vh"}}>    
-            <Container style={{overflow: "auto"}}>
+        <Container fluid > 
+            <Container fluid style={{height : "75vh"}}>
+
                 <Stack gap={1}>
                     {memo.map((item, index) => {
                         return (
-                            <div key={index} className='eachMemo'>
+                            <Container fluid key={index} className='eachMemo' >
                                 <EachMemo
                                     memoId={item._id.$oid}
                                     content={item.content}
@@ -91,15 +91,16 @@ function Memo() {
                                     EditMemo={EditMemo}
                                     DeleteMemo={DeleteMemo}
                                     status={item.complete_status}
-                                    navigate = {navigate}
+                                    admit_status = {item.admit_status}
                                 />
-                            </div>)
+                            </Container>
+                            )
                     })}
 
                 </Stack>
-                
             </Container>
-            <Container>
+            
+            <Container fluid style={{ justifyContent: 'center', Height: '10vh' }}>
                 <Form onSubmit={SubmitMemo}>
                     <Row>
                         <Col xs={8}>
