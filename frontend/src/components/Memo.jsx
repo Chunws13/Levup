@@ -78,7 +78,7 @@ function Memo() {
 
     return (
         <Container fluid > 
-            <Container fluid style={{height : "75vh"}}>
+            <Container fluid style={{height : "75vh", padding: "3vh"}}>
 
                 <Stack gap={1}>
                     {memo.map((item, index) => {

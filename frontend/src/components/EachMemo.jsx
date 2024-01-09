@@ -24,36 +24,37 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
         return (
             <Container fluid id={ memoId }>
                 { status ? // 완료되었는가?
-                    <Row >
-                        <Col>
-                            <label className='memo'> <del> { content } </del> </label>
+                    <Row>
+                        <Col xs={8}>
+                            <label className='memo' style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "scroll", fontSize:"3.5vw"}}> <del> { content } </del> </label>
                         </Col>
-                        { admit_status ? "" : // 인증글을 올렸는가?
-                        <Col >
+                        { admit_status ? 
+                        <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
+                            <Button variant="outline-danger" size="sm" style={{fontSize:"3vw"}}> 완료 </Button>
+                        </Col>
+                         : // 인증글을 올렸는가?
+                        <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
                              <Link to={`boards/create?id=${memoId}`}>
-                                 <Button variant="outline-danger" size="sm"> 인증하기 </Button>
+                                 <Button variant="outline-danger" size="sm" style={{fontSize:"3vw"}}> 인증 </Button>
                              </Link>
                          </Col>
                          }
                     </Row>
                     :  // 완료하지 않았는가?
-                    <Row>
-                        <Col xs={1}>
+                    <Row >
+                        <Col xs={1} style={{display :"flex", justifyContent: 'center'}}>
                             <input type='checkbox' onClick={Delete}/>
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={8} style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "auto", whiteSpace: "nowrap", fontSize:"3.5vw"}}>
                             { editable ? 
                                 <input className='memo' value={ text } onChange={ChangeText}/> : 
-                                <label className='memo'> { content } </label>}
+                                <label className='memo' style={{display:"block"}}> { content } </label>}
                         </Col>
-                        <Col xs={5}>
+                        <Col xs={3} style={{display :"flex", justifyContent: 'flex-end'}}>
                             { editable ? 
-                                <Button variant="outline-success" size="sm" onClick={Save}> 저장 </Button> : 
-                                <Button variant="outline-info" size="sm" onClick={ClickOption}> 수정 </Button>}
-                        </Col>
-                        {/* <Col xs={2}>
-                            <Button variant="outline-danger" size="sm" onClick={Delete}> 완료 </Button>
-                        </Col> */}
+                                <Button variant="outline-success" size="sm" onClick={Save} style={{fontSize:"3vw"}}> 저장 </Button> : 
+                                <Button variant="outline-info" size="sm" onClick={ClickOption} style={{fontSize:"3vw"}}> 수정 </Button>}
+                        </Col>                        
                     </Row>
                     }
             </Container>

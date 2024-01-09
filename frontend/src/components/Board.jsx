@@ -5,6 +5,7 @@ import ViewBoard from "./ViewBoard";
 
 const Board = () => {
     const [board, setBoard] = useState([]);
+    const now_date = new Date();
 
     const Getboard = async() => {
         try {
@@ -29,7 +30,8 @@ const Board = () => {
                             writer={item.writer}
                             title={item.title}
                             content={item.content}
-                            create_date={item.created_datetime}
+                            create_datetime={item.created_datetime}
+                            now_date = {now_date}
                         />
                     </Row>
                 )

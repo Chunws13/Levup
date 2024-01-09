@@ -53,23 +53,28 @@ const CreateBaord = () => {
     };
 
     return (
-        <Container>
+        <Container fluid style={{height : "75vh", padding: "3vh"}}>
             <Form onSubmit={PostBoard}>
                 <Form.Group className='mb-3'>
-                    <Form.Control onChange={ChangeTitle} value={title} type='text' placeholder='제목을 입력하세요.'/>
+                    <Form.Control onChange={ChangeTitle} value={title} type='text' style={{fontSize: "3vw"}} placeholder='제목을 입력하세요.'/>
                 </Form.Group>
-
-                <Form.Group className='mb-3'>
-                    <Form.Control onChange={ChangeContent} value={content} as='textarea' placeholder='내용을 입력하세요'/>
+                
+                <Form.Group className='mb-3' >
+                    <Form.Control onChange={ChangeContent} value={content} as='textarea' style={{fontSize: "3vw"}} placeholder='내용을 입력하세요' />
                 </Form.Group>
 
                 <Row className="justify-content-end">
-                    <Button onClick={Cancel}> 
+                    <Col style={{display: "flex", justifyContent :"flex-start"}}>
+                        <Button onClick={Cancel} style={{fontSize: "3vw"}}> 
                         취소
                     </Button>
-                    <Button type='submit'>
-                        글쓰기
-                    </Button>
+                    </Col>
+
+                    <Col style={{display: "flex", justifyContent :"flex-end"}}>
+                        <Button type='submit' style={{fontSize: "3vw"}}>
+                            글쓰기
+                        </Button>
+                    </Col>
                 </Row>
             </Form>
         </Container>

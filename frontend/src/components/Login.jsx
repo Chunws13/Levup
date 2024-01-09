@@ -41,11 +41,11 @@ const Login = () => {
             <p className="text-center"> Project. Levup </p>
             <Form onSubmit={SubmitFunc}>
 
-                <Form.Group className="mb-2" controlId="formbasicEmail" >
+                <Form.Group className="mb-2" controlId="formbasicEmail" style={{fontSize: "5vw"}}>
                     <Form.Label> ID </Form.Label>
                     <Form.Control onChange={ChangeId} value={id} type="text" name='id'/>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-3" style={{fontSize: "5vw"}}>
                     <Form.Label> Password </Form.Label>
                     <Form.Control onChange={ChangePassword} value={password} type="password" name="pw"/>
                     {loginFail ? <Form.Label style={{color : "red", fontSize : "12px"}}> 아이디 또는 비밀번호를 확인하세요 </Form.Label> : '' }
