@@ -41,9 +41,8 @@ const Signup = () => {
 
   return (
     <Container className="d-flex align-items-center justify-content-center" 
-        style={{ minHeight: '100vh'}}>
+        style={{ minHeight: '70vh'}}>
         <div className="border border-warning border-3 rounded-3 p-5">
-            <p className="text-center"> Project. Levup </p>
             <Form onSubmit={SubmitFunc}>
 
                 <Form.Group className="mb-2" controlId="formbasicEmail" >

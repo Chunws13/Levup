@@ -26,7 +26,7 @@ const Header = () => {
                     </Link> 
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/boards' style={{textDecoration : 'none'}}>
+                    <Link to ='/boards/' style={{textDecoration : 'none'}}>
                         <Image src={Ti} alt='인증 게시판' roundedCircle/>
                         <p> 인증 </p>
                     </Link>

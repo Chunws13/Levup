@@ -14,7 +14,7 @@ client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 mongodb = client.chunws
 
 def get_all_board(db: Session):
-    return db.query(models.Board).all()
+    return db.query(models.Board).options(joinedload(models.Board.comment)).all()
 
 def get_board(db: Session, board_id: int): 
     return db.query(models.Board).options(joinedload(models.Board.comment)).filter(models.Board.id == board_id).first()
@@ -70,7 +70,6 @@ def like_board(db: Session, board_id: int, like_user: str):
     
     # 인정 버튼을 누르지 않은 유저
     if like_people == None:
-        print("here3")
         like_user = models.Like_People(board_id = board_id, people = like_user)
         board_db.like += 1
         db.add(like_user)
@@ -85,8 +84,8 @@ def like_board(db: Session, board_id: int, like_user: str):
     db.commit()
     return {"status" : True, "message": message}
 
-def create_comment(db: Session, board_id: int, comment: schemas.Create_Comment):
-    comment_db_create = models.Comment(writer = comment.writer,
+def create_comment(db: Session, board_id: int, writer: str ,comment: schemas.Create_Comment):
+    comment_db_create = models.Comment(writer = writer,
                                        content = comment.content,
                                        board_id = board_id)
     

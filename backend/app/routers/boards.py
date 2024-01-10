@@ -38,7 +38,6 @@ def create_board(board: schemas.Create_Board, memo_id: str, db: Session = Depend
             return crud.create_board(db = db, board = board, memo_id = memo_id, writer = login_check["data"])
         
         except:
-            print("오류 반환해야해")
             raise HTTPException(status_code=404, detail="오류가 발생했습니다.")
     
     else:
@@ -90,7 +89,7 @@ async def create_comment(comment : schemas.Create_Comment, board_id: int, db: Se
     login_check = User_Auth(Authorization).check_auth()
     if login_check["status"]:
         try:
-           return crud.create_comment(db = db, comment = comment, board_id = board_id)
+           return crud.create_comment(db = db, writer = login_check["data"], comment = comment, board_id = board_id)
        
         except:
             raise HTTPException(status_code=404, detail=login_check["data"])

@@ -20,7 +20,7 @@ function Memo() {
     const SubmitMemo = async(event) => {
         event.preventDefault();
         
-        try { await axios.post("http://127.0.0.1:8000/api/memo", 
+        try { await axios.post("http://127.0.0.1:8000/api/memo/", 
                 { content : writeMemo },
                 { headers : {
                     "Authorization" : token,
@@ -63,7 +63,7 @@ function Memo() {
     const get_memo = async() => {
         try {  
             if (token !== null) {
-                let response = await axios.get("http://127.0.0.1:8000/api/memo", 
+                let response = await axios.get("http://127.0.0.1:8000/api/memo/", 
                     { headers : {"Authorization" : token }});
                 setMemo(response.data.data);
             };

@@ -10,7 +10,6 @@ class Edit_Board(Create_Board):
     edited_datetime : Union[str, None] = datetime.now()
 
 class Create_Comment(BaseModel):
-    writer : str
     content : str
 
 class Edit_Comment(Create_Comment):
