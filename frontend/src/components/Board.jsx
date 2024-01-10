@@ -12,7 +12,7 @@ const Board = () => {
     const token = cookie.get("token");
     const navigate = useNavigate();
 
-    const Getboard = async() => {
+    const GetBoard = async() => {
         try {
             const resopnse = await axios.get("http://127.0.0.1:8000/api/boards/");
             setBoard(resopnse.data);
@@ -30,27 +30,8 @@ const Board = () => {
                         "Authorization" : token,
                         "Content-Type": "application/json"
                         }});
-                return Getboard();
+                return GetBoard();
 
-            } else {
-                navigate("/login");
-            }
-
-        } catch (error) {
-            alert(error.detail);
-        }
-    }
-
-    const CreateComment = async({ token, board_id, content }) => {
-        try{
-            if (token !== undefined){
-                await axios.post(`http://127.0.0.1:8000/api/boards/${board_id}/comment`,
-                    { content },
-                    { headers : {
-                        "Authorization" : token,
-                        "Content-Type": "application/json"
-                        }});
-                        
             } else {
                 navigate("/login");
             }
@@ -61,7 +42,7 @@ const Board = () => {
     }
 
     useEffect(() => {
-        Getboard();
+        GetBoard();
     }, []);
 
     return (
@@ -80,7 +61,7 @@ const Board = () => {
                             now_date = {now_date}
                             token = {token}
                             PushLike = {PushLike}
-                            CreateComment = {CreateComment}
+                            GetBoard = {GetBoard}
                         />
                     </Row>
                 )

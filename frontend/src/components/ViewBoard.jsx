@@ -1,10 +1,14 @@
 import { Container, Form, Row, Col, Button } from "react-bootstrap"
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Comment from "./Comment";
 
 const ViewBoard = ({board_id, writer, title, content, like, reply, 
-    create_datetime, now_date, token, PushLike, CreateComment}) => {
+    create_datetime, now_date, token, PushLike, GetBoard}) => {
     const [commentState, setCommentState] = useState(false);
+    const [allReply, setAllReply] = useState(reply);
+    const navigate = useNavigate();
     
     const fulldatetime = new Date(create_datetime);
     const now_year = now_date.getFullYear();
@@ -16,23 +20,32 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
     let hour = fulldatetime.getHours();
     let minute = fulldatetime.getMinutes();
     
-    
     const [text, setText] = useState("");
 
     const ChangeText = (event) => {
         setText(event.target.value)
     }
     
-    const Comment = async({event, token, board_id, text}) => {
-        if (event){
+    const CreateComment = async(event) => {
+        event.preventDefault();
+        try{
+            if (token !== undefined){
+                await axios.post(`http://127.0.0.1:8000/api/boards/${board_id}/comment`,
+                    { content: text },
+                    { headers : {
+                        "Authorization" : token,
+                        "Content-Type": "application/json"
+                        }});
+                
+                setText("");
+                await GetBoard();
 
-            event.preventDefault();
-        }
-        try {
-            await CreateComment({token, board_id, content: text});
+            } else {
+                navigate("/login");
+            }
 
         } catch (error) {
-            alert(error)
+            alert(error.response.data.detail);
         }
     }
 
@@ -86,9 +99,9 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
                     </Button>
                 </Col>
                 { commentState ? 
-                        reply.map((item) => {
+                        allReply.map((item, index) => {
                             return (
-                                <Comment 
+                                <Comment key={index}
                                     writer = {item.writer}
                                     created_datetime = {item.created_datetime}
                                     content = {item.content}/>
@@ -97,7 +110,7 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
                     : ""
                 }
                 { commentState ? 
-                    <Form onSubmit={Comment}>
+                    <Form onSubmit={CreateComment}>
                         <Row>
                             <Col xs={9}>
                                 <Form.Control value={text} onChange={ChangeText} type="text" name="memo" placeholder=''/>

@@ -1,4 +1,4 @@
-import { Container, Form, Row, Col, Button } from "react-bootstrap"
+import { Container, Row, Col } from "react-bootstrap"
 const Comment = ({writer, created_datetime, content}) => {
 
     return (
@@ -12,8 +12,10 @@ const Comment = ({writer, created_datetime, content}) => {
                 </Col>
 
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
-                {content}
+            <Row style={{display:"flex", justifyContent:"flex-start", fontSize : "3vw"}}>
+                <Col xs={8} >
+                    {content}
+                </Col>
             </Row>        
         </Container>
     )
