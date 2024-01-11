@@ -5,11 +5,10 @@ import axios from "axios";
 import Comment from "./Comment";
 
 const ViewBoard = ({board_id, writer, title, content, like, reply, 
-    create_datetime, now_date, token, PushLike, GetBoard}) => {
+    create_datetime, now_date, token, PushLike}) => {
     const [commentState, setCommentState] = useState(false);
     const [allReply, setAllReply] = useState(reply);
     const navigate = useNavigate();
-    
     const fulldatetime = new Date(create_datetime);
     const now_year = now_date.getFullYear();
 
@@ -38,7 +37,14 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
                         }});
                 
                 setText("");
-                await GetBoard();
+
+                const response = await axios.get(`http://127.0.0.1:8000/api/boards/${board_id}/comment`,
+                    { headers : {
+                        "Authorization" : token,
+                        "Content-Type": "application/json"
+                        }});
+                
+                setAllReply(response.data);
 
             } else {
                 navigate("/login");

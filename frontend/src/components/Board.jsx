@@ -61,7 +61,6 @@ const Board = () => {
                             now_date = {now_date}
                             token = {token}
                             PushLike = {PushLike}
-                            GetBoard = {GetBoard}
                         />
                     </Row>
                 )

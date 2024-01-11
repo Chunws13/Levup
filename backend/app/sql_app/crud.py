@@ -84,6 +84,11 @@ def like_board(db: Session, board_id: int, like_user: str):
     db.commit()
     return {"status" : True, "message": message}
 
+def get_comment(board_id: int, db:Session):
+    comment_db = db.query(models.Comment).filter(models.Comment.board_id == board_id).all()
+    return comment_db
+
+
 def create_comment(db: Session, board_id: int, writer: str ,comment: schemas.Create_Comment):
     comment_db_create = models.Comment(writer = writer,
                                        content = comment.content,

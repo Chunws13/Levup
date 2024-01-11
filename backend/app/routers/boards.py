@@ -83,6 +83,14 @@ async def like_board(board_id: int, db: Session = Depends(get_db), Authorization
     else:
         raise HTTPException(status_code=404, detail=result["data"])
     
+@router.get("/{board_id}/comment")
+async def get_comment(board_id: int, db: Session = Depends(get_db)):
+    try:
+        return crud.get_comment(board_id = board_id, db = db)
+    
+    except:
+        raise HTTPException(status_code=404, detail="에러가 발생했습니다.")
+
 
 @router.post("/{board_id}/comment")
 async def create_comment(comment : schemas.Create_Comment, board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
