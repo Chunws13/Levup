@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Header, HTTPException
 from typing import Union, Annotated
-from models.memo import Memo
+from models.memo import Memo, Edit_Memo
 from auth.login_auth import User_Auth
 from pymongo import MongoClient
 from bson.json_util import dumps
@@ -16,15 +16,45 @@ ca = certifi.where()
 client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 db = client.chunws
 
-@router.get("/")
-def get_memo(Authorization : Annotated[Union[str, None], Header()] = None):
+@router.get("/calendar")
+def get_all_memo(year: int, month: int, Authorization : Annotated[Union[str, None], Header()] = None):
+    start_date = datetime.datetime(year, month, 1)
+    end_date = start_date + datetime.timedelta(days=31)
+    
     checker = User_Auth(Authorization)
     result = checker.check_auth()
+    
     if result["status"]:
         writer = result["data"]
-        memo = list(db.memo.find({"writer" : writer}))
+        
+        memo = list(db.memo.find({"writer" : writer,
+                                  "created_date" : {
+                                      "$gte": start_date,
+                                      "$lte": end_date }
+                                  }))
+        
         return {"data" :  json.loads(dumps(memo))}
+        
+    else:
+        raise HTTPException(status_code=404, detail=result["data"])
+
+@router.get("/")
+def get_memo(year: int, month: int, day: int,  Authorization : Annotated[Union[str, None], Header()] = None):
+    start_date = datetime.datetime(year, month, day)
+    end_date = datetime.datetime(year, month, day, 23, 59, 59)
     
+    checker = User_Auth(Authorization)
+    result = checker.check_auth()
+    
+    if result["status"]:
+        writer = result["data"]
+        memo = list(db.memo.find({"writer" : writer,
+                                  "created_date" : {
+                                      "$gte": start_date,
+                                      "$lte": end_date }
+                                  }))
+        return {"data" :  json.loads(dumps(memo))}
+        
     else:
         raise HTTPException(status_code=404, detail=result["data"])
 
@@ -37,7 +67,8 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
         writer = result["data"]
         content = Memo.content
         
-        memo_data = {"writer" : writer, "content": content, "created_date": datetime.datetime.now(),
+        memo_data = {"writer" : writer, "content": content, 
+                     "created_date": datetime.datetime(Memo.year, Memo.month, Memo.day),
                      "complete_status" : False, "complete_time": None, "admit_status": False}
         
         db.memo.insert_one(memo_data)
@@ -47,7 +78,7 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
         raise HTTPException(status_code=404, detail=result["data"])
     
 @router.put("/{memo_id}")
-def edit_memo(memo_id: str, Memo: Memo, Authorization : Annotated[Union[str, None], Header()] = None):
+def edit_memo(memo_id: str, Memo: Edit_Memo, Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
     

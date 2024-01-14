@@ -13,12 +13,12 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
         };
 
         const Save = () => {
-            EditMemo(memoId, text, token);
+            EditMemo({memoId, content: text, token});
             setEditable(!editable);
         }
 
         const Delete = () => {
-            DeleteMemo(memoId, token);
+            DeleteMemo({memoId, token});
         }
 
         return (
