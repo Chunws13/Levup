@@ -36,6 +36,10 @@ def create_board(db: Session, board: schemas.Create_Board, memo_id: str, writer:
     db.commit()
     db.refresh(board_db_create)
     mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"admit_status" : True}})
+
+    user = mongodb.users.find_one({"id": writer})
+    mongodb.users.update_one({"id": writer}, {"$set": {"board": user["board"] + 1}})
+
     return {"status": True, "data" : "인증글 생성 성공"}
 
 def edit_board(db: Session, edit_board: schemas.Edit_Board, board_id: int, writer: str):
@@ -73,12 +77,22 @@ def like_board(db: Session, board_id: int, like_user: str):
         like_user = models.Like_People(board_id = board_id, people = like_user)
         board_db.like += 1
         db.add(like_user)
+        
+        if like_user != board_db.writer:
+            user = mongodb.users.find_one({"id": board_db.writer})
+            mongodb.users.update_one({"id": board_db.writer}, {"$set": {"like": user["like"] + 1}})
+        
         message = "인정하셨습니다"
     
     # 인정 버튼을 누른 유저
     else:
         board_db.like -= 1
         db.delete(like_people)
+
+        if like_user != board_db.writer:
+            user = mongodb.users.find_one({"id": board_db.writer})
+            mongodb.users.update_one({"id": board_db.writer}, {"$set": {"like": user["like"] - 1}})
+
         message = "인정을 취소했습니다"    
     
     db.commit()

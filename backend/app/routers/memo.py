@@ -72,6 +72,12 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
                      "complete_status" : False, "complete_time": None, "admit_status": False}
         
         db.memo.insert_one(memo_data)
+
+        user = db.users.find_one({"id": writer})
+        db.users.update_one({"id": writer}, {"$set": {
+            "mission_start": user["mission_start"] + 1,
+            "exp": user["exp"] + 10}})
+
         return {"status" : "success", "data" : "저장되었습니다."}
     
     else:
@@ -111,6 +117,10 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
             db.memo.update_one({"_id" : target_id}, {"$set" : {"complete_status": True,
                                                                "complete_date": datetime.datetime.now()}})
             
+            user = db.users.find_one({"id": result["data"]})
+            db.users.update_one({"id": result["data"]}, {"$set": {"mission_complete": user["mission_complete"] + 1}})
+            db.users.update_one({"id": result["data"]}, {"$set": {"point": user["point"] + 100}})
+
             return {"status" : "success", "data" : "삭제되었습니다."}
         
         except:

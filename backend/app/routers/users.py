@@ -25,7 +25,13 @@ def signup(Users: User_Create):
         "id" : id,
         "email" : email,
         "password" : hash_pw,
-        "point" : 0
+        "level": 1,
+        "exp": 0,
+        "like": 0,
+        "board": 0,
+        "point" : 0,
+        "mission_start": 0,
+        "mission_complete": 0
     }
     
     db.users.insert_one(user_info)
