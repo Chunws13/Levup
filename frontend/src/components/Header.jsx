@@ -14,14 +14,16 @@ const Header = () => {
             </Row>
             <Row style={{textAlign : 'center', height : "10vh"}}>
                 <Col xs={3} style={{margin : "auto"}}>
-                    <div>
+                    <Link to = '/users/' style={{textDecoration : 'none'}}>
+                        <div>
                         <Image src={Ti} alt='내정보' roundedCircle/>
                         <p> 내정보 </p>
-                    </div> 
+                        </div> 
+                    </Link>
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
                     <Link to ='/' style={{textDecoration : 'none'}}>
-                        <Image src={Ti} alt='메모 게시판'roundedCircle />
+                        <Image src={Ti} alt='메모 게시판' roundedCircle />
                         <p> 메모 </p>
                     </Link> 
                 </Col>

@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
-import certifi, hashlib, datetime, jwt, json, os
+import certifi, datetime, json, os
 
 router = APIRouter(prefix = "/api/memo", tags = ["memo"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -118,8 +118,8 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
                                                                "complete_date": datetime.datetime.now()}})
             
             user = db.users.find_one({"id": result["data"]})
-            db.users.update_one({"id": result["data"]}, {"$set": {"mission_complete": user["mission_complete"] + 1}})
-            db.users.update_one({"id": result["data"]}, {"$set": {"point": user["point"] + 100}})
+            db.users.update_one({"id": result["data"]}, {"$set": {"mission_complete": user["mission_complete"] + 1,
+                                                                  "point": user["point"] + 100 }})
 
             return {"status" : "success", "data" : "삭제되었습니다."}
         

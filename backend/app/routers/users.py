@@ -1,8 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header
+from typing import Union, Annotated
 from models.users import User_Login, User_Create
 from pymongo import MongoClient
 from dotenv import load_dotenv
-import certifi, hashlib, datetime, jwt, os
+from bson.json_util import dumps
+from auth.login_auth import User_Auth
+import certifi, hashlib, datetime, jwt, os, json
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -50,3 +53,19 @@ def login(Users: User_Login):
     
     token = jwt.encode(payload, "1234", algorithm="HS256")
     return {"status" : True , "token" : token}
+
+@router.get("/")
+def get_user_info(Authorization : Annotated[Union[str, None], Header()] = None):
+    checker = User_Auth(Authorization)
+    result = checker.check_auth()
+    
+    if result["status"]:
+        try:
+            user_info = db.users.find_one({"id": result["data"]})
+            return {"data" : json.loads(dumps(user_info))}
+        
+        except:
+            HTTPException(status_code=404, detail="예기치 못한 오류가 발생했습니다.")
+        
+    else:
+        HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
