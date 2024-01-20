@@ -12,7 +12,12 @@ const CreateBaord = () => {
     const token = cookie.get("token");
 
     const [title, setTitle] = useState("");
+    const [file, setFile] = useState(null);
     const [content, setContent] = useState("");
+
+    const SelectFile = (event) => {
+        setFile(event.target.files[0]);
+    }
 
     const Cancel = () => {
         navigate('/');
@@ -31,17 +36,35 @@ const CreateBaord = () => {
         const query = new URLSearchParams(location.search);
         const memoId = query.get('id');
         
+        const formData = new FormData();
+        formData.append("file", file)
+        // for (let num = 0; num < file.length; num ++){
+        //     formData.append(`file[${num}]`, file[num]);
+        // }
+        
+        // formData.append("title", title); 
+        // formData.append("content", content);
+        
         if (memoId === null || memoId === undefined){
             return navigate("/");
+        }
 
+        for (let i of formData.entries()){
+            console.log(i[0], i[1]);
         }
         
         try{
-            await axios.post(`http://127.0.0.1:8000/api/boards/auth/${memoId}`,
-                { title, content },
+            // await axios.post(`http://127.0.0.1:8000/api/boards/auth/${memoId}`,
+            //     formData,
+            //     { headers : {
+            //         "Authorization" : token,
+            //         "Content-Type": "application/json"
+            //         }});
+
+            await axios.post(`http://127.0.0.1:8000/api/boards/test`,
+                formData,
                 { headers : {
-                    "Authorization" : token,
-                    "Content-Type": "application/json"
+                    "Authorization" : token
                     }});
             
             navigate('/boards');
@@ -58,7 +81,13 @@ const CreateBaord = () => {
                 <Form.Group className='mb-3'>
                     <Form.Control onChange={ChangeTitle} value={title} type='text' style={{fontSize: "3vw"}} placeholder='제목을 입력하세요.'/>
                 </Form.Group>
+
+                <Form.Group className='mb-3' style={{fontSize: "3vw"}}>
+                    <Form.Label> 인증 사진 첨부 </Form.Label>
+                    <Form.Control onChange={SelectFile} type="file" multiple style={{fontSize: "3vw"}} /> 
                 
+                </Form.Group>
+
                 <Form.Group className='mb-3' >
                     <Form.Control onChange={ChangeContent} value={content} as='textarea' style={{fontSize: "3vw"}} placeholder='내용을 입력하세요' />
                 </Form.Group>

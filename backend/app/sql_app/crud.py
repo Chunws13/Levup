@@ -1,4 +1,5 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
+from typing import List
 from sqlalchemy.orm import Session, joinedload
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -19,9 +20,12 @@ def get_all_board(db: Session):
 def get_board(db: Session, board_id: int): 
     return db.query(models.Board).options(joinedload(models.Board.comment)).filter(models.Board.id == board_id).first()
 
-def create_board(db: Session, board: schemas.Create_Board, memo_id: str, writer: str):
+async def create_board(db: Session, board: schemas.Create_Board, memo_id: str, writer: str):
+    
     memo_id = ObjectId(memo_id)
     memo_info = mongodb.memo.find_one({"_id" : memo_id})
+    # file_list = [na for name in board.file]
+    # print(type(board.file))
     if memo_info["admit_status"]:
         raise HTTPException(status_code=404, detail="메모가 없습니다")
 
