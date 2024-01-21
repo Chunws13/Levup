@@ -1,5 +1,4 @@
-from fastapi import HTTPException, UploadFile
-from typing import List
+from fastapi import HTTPException
 from sqlalchemy.orm import Session, joinedload
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -20,30 +19,31 @@ def get_all_board(db: Session):
 def get_board(db: Session, board_id: int): 
     return db.query(models.Board).options(joinedload(models.Board.comment)).filter(models.Board.id == board_id).first()
 
-async def create_board(db: Session, board: schemas.Create_Board, memo_id: str, writer: str):
+def create_board(db: Session, title: str, content: str, files: str, memo_id: str, writer: str):
     
     memo_id = ObjectId(memo_id)
     memo_info = mongodb.memo.find_one({"_id" : memo_id})
-    # file_list = [na for name in board.file]
-    # print(type(board.file))
+    
     if memo_info["admit_status"]:
         raise HTTPException(status_code=404, detail="메모가 없습니다")
 
     if memo_info["writer"] != writer:
         raise HTTPException(status_code=404, detail="권한이 없습니다")
     
-    board_db_create = models.Board(writer = writer,
-                                   title = board.title,
-                                   content = board.content)
+    board_db_create = models.Board(writer = writer, title = title, content = content)
     
-    db.add(board_db_create)
-    db.commit()
-    db.refresh(board_db_create)
+    file_data = [file for file in files]
+    
+    
     mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"admit_status" : True}})
 
     user = mongodb.users.find_one({"id": writer})
     mongodb.users.update_one({"id": writer}, {"$set": {"board": user["board"] + 1}})
 
+    db.add(board_db_create)
+    db.commit()
+    db.refresh(board_db_create)
+    
     return {"status": True, "data" : "인증글 생성 성공"}
 
 def edit_board(db: Session, edit_board: schemas.Edit_Board, board_id: int, writer: str):

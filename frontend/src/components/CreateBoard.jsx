@@ -16,7 +16,7 @@ const CreateBaord = () => {
     const [content, setContent] = useState("");
 
     const SelectFile = (event) => {
-        setFile(event.target.files[0]);
+        setFile(event.target.files);
     }
 
     const Cancel = () => {
@@ -37,13 +37,13 @@ const CreateBaord = () => {
         const memoId = query.get('id');
         
         const formData = new FormData();
-        formData.append("file", file)
-        // for (let num = 0; num < file.length; num ++){
-        //     formData.append(`file[${num}]`, file[num]);
-        // }
         
-        // formData.append("title", title); 
-        // formData.append("content", content);
+        for (let num = 0; num < file.length; num ++){
+            formData.append("files", file[num]);
+        }
+        
+        formData.append("title", title);
+        formData.append("content", content);
         
         if (memoId === null || memoId === undefined){
             return navigate("/");
@@ -54,18 +54,18 @@ const CreateBaord = () => {
         }
         
         try{
-            // await axios.post(`http://127.0.0.1:8000/api/boards/auth/${memoId}`,
-            //     formData,
-            //     { headers : {
-            //         "Authorization" : token,
-            //         "Content-Type": "application/json"
-            //         }});
-
-            await axios.post(`http://127.0.0.1:8000/api/boards/test`,
+            await axios.post(`http://127.0.0.1:8000/api/boards/auth/${memoId}`,
                 formData,
                 { headers : {
-                    "Authorization" : token
+                    "Authorization" : token,
+                    "Content-Type": "multipart/form-data"
                     }});
+
+            // await axios.post(`http://127.0.0.1:8000/api/boards/test`,
+            //     formData,
+            //     { headers : {
+            //         "Authorization" : token
+            //         }});
             
             navigate('/boards');
 

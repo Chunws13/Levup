@@ -14,8 +14,10 @@ class Board(Base):
     admit = Column(Boolean, default = False)
     created_datetime = Column(DateTime, default = func.now())
     edited_datetime = Column(DateTime, default = func.now())
+    
     comment = relationship("Comment", cascade="all, delete", back_populates= "owner")
     like_people = relationship("Like_People", cascade="all, delete", back_populates= "owner")
+    files = relationship("Files", cascade="all, delete", back_populates= "owner")
     
 class Comment(Base):
     __tablename__ = "Comments"
@@ -35,4 +37,11 @@ class Like_People(Base):
     people = Column(String(255))
     board_id = Column(Integer, ForeignKey("Boards.id"))
     owner = relationship("Board", back_populates= "like_people")
+
+class Files(Base):
+    __tablename__ = "Files"
     
+    id = Column(Integer, primary_key = True, index = True)
+    file_name = Column(String(255))
+    board_id = Column(Integer, ForeignKey("Boards.id"))
+    owner = relationship("Board", back_populates= "Files")

@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, APIRouter, Header, File, UploadFile
+from fastapi import Depends, HTTPException, APIRouter, Header, Form, File, UploadFile
 from typing import Union, Annotated, List
 from sqlalchemy.orm import Session
 from sql_app import crud, models, schemas
@@ -31,34 +31,16 @@ async def get_board(board_id: int, db: Session = Depends(get_db)):
     return crud.get_board(db = db, board_id = board_id)
 
 @router.post("/auth/{memo_id}")
-async def create_board(memo_id: str,
-                        upload_file : UploadFile,
+async def create_board( memo_id: str, title : str = Form(), content: str = Form(),
+                        files: List[UploadFile] = File(...),
                         db: Session = Depends(get_db),
                         Authorization : Annotated[Union[str, None], Header()] = None):
     
-    data = await upload_file.read()
-    return "good"
-    decoded_file_names = []
-    
-    try:
-        for file in board.file:
-            # 파일 이름을 그대로 사용하거나, 디코딩 에러가 발생하면 파일 이름을 그대로 사용
-            decoded_name = file.filename
-            try:
-                decoded_name = file.filename.decode('utf-8')
-            except UnicodeDecodeError:
-                pass
-            
-            decoded_file_names.append(decoded_name)
-    except:
-        pass
-    return
     login_check = User_Auth(Authorization).check_auth()
     if login_check["status"]:
         try:
-            return crud.create_board(db = db, board = board, 
-                                     memo_id = memo_id,
-                                     writer = login_check["data"])
+            return crud.create_board(db = db, memo_id = memo_id, title = title, content = content, 
+                                     files = files, writer = login_check["data"])
         
         except:
             raise HTTPException(status_code=404, detail="오류가 발생했습니다.")
@@ -67,7 +49,10 @@ async def create_board(memo_id: str,
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
 @router.put("/{board_id}")
-async def edit_board(board_id: int, edit_board: schemas.Edit_Board, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
+async def edit_board(board_id: int, edit_board: schemas.Edit_Board,
+                     db: Session = Depends(get_db), 
+                     Authorization : Annotated[Union[str, None], Header()] = None):
+    
     login_check = User_Auth(Authorization).check_auth()
     if login_check["status"]:
         try:
@@ -153,10 +138,16 @@ async def delete_comment(comment_id: int, db: Session = Depends(get_db), Authori
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
     
 @router.post("/test")
-async def test(file: UploadFile):
-    data = await file.read()
-    save_point = Boards_DIR + "/" + file.filename
-    with open(save_point, "wb") as f:
-        f.write(data)
+async def test(files: List[UploadFile]):
+    data = [file for file in files]
+    print(data)
+    for d in data:
+        print("this name is :", d.filename)
+        save_point = Boards_DIR + "/" + d.filename
+        save_data = await d.read()
+        with open(save_point, "wb") as f:
+            f.write(save_data)
     
-    return {"file_size": len(data)}
+    return
+    
+    # return {"file_size": len(data)}
