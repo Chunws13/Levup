@@ -1,24 +1,28 @@
-import { Container, Form, Row, Col, Button } from "react-bootstrap"
+import { Container, Form, Row, Col, Button, Image, Carousel } from "react-bootstrap"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Comment from "./Comment";
 
-const ViewBoard = ({board_id, writer, title, content, like, reply, 
+const ViewBoard = ({board_id, writer, title, content, files, like, reply, 
     create_datetime, now_date, token, PushLike}) => {
+    
     const [commentState, setCommentState] = useState(false);
     const [allReply, setAllReply] = useState(reply);
+
+    const [index, setIndex] = useState(0);
+
     const navigate = useNavigate();
     const fulldatetime = new Date(create_datetime);
     const now_year = now_date.getFullYear();
-
+    
     let year = fulldatetime.getFullYear();
     let month = fulldatetime.getMonth() + 1;
     let day = fulldatetime.getDate();
 
     let hour = fulldatetime.getHours();
     let minute = fulldatetime.getMinutes();
-    
+
     const [text, setText] = useState("");
 
     const ChangeText = (event) => {
@@ -75,6 +79,10 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
         setCommentState(!commentState);
     }
 
+    const SelectFile = (selectedIndex) => {
+        setIndex(selectedIndex);
+    }
+
     return (
         <Container style={{padding: "3vh"}}>
             <Row >
@@ -88,9 +96,25 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
             <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
                 {title}
             </Row>
+
+            <Row >
+                <Carousel activeIndex={index} onSelect={SelectFile} slide={false} fade >
+                    { files.length > 0 ? files.map((file, index) => {
+                        return ( 
+                            <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "35vh"}}>
+                                <Image thumbnail src = {`http://127.0.0.1:8000/${file.file_name}`} alt = ""/>
+                            </Carousel.Item>
+                            )
+                        }) : 
+                            ""
+                            }
+                </Carousel>
+            </Row>
+
             <Row  className="justify-content-center">
                 {content}
             </Row>
+
             <Row  className="justify-content-center">
                 <Col style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
                     <Button onClick={Like}>
@@ -110,7 +134,9 @@ const ViewBoard = ({board_id, writer, title, content, like, reply,
                                 <Comment key={index}
                                     writer = {item.writer}
                                     created_datetime = {item.created_datetime}
-                                    content = {item.content}/>
+                                    content = {item.content}
+                                    now_date = {now_date}
+                                    />
                             )
                         })
                     : ""

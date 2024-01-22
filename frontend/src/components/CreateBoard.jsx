@@ -40,19 +40,15 @@ const CreateBaord = () => {
         
         for (let num = 0; num < file.length; num ++){
             formData.append("files", file[num]);
-        }
+        };
         
         formData.append("title", title);
         formData.append("content", content);
         
         if (memoId === null || memoId === undefined){
             return navigate("/");
-        }
+        };
 
-        for (let i of formData.entries()){
-            console.log(i[0], i[1]);
-        }
-        
         try{
             await axios.post(`http://127.0.0.1:8000/api/boards/auth/${memoId}`,
                 formData,

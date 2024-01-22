@@ -1,7 +1,7 @@
-from typing import Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import jwt, hashlib, datetime, certifi
+from fastapi.staticfiles import StaticFiles
+import os
 
 from routers import memo, users, boards
 
@@ -14,6 +14,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+board_image_directory = os.path.join(os.getcwd(), "images/boards")
+profile_image_directory = os.path.join(os.getcwd(), "images/users")
+app.mount("/images/boards", StaticFiles(directory=board_image_directory), name="board photo file directory")
+app.mount("/images/users", StaticFiles(directory=profile_image_directory), name="user profile directory")
 
 app.include_router(memo.router)
 app.include_router(users.router)

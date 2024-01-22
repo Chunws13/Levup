@@ -209,7 +209,7 @@ function Memo() {
                 </Stack>
             </Container>
             : 
-            <Container fluid style={{height : "35vh", padding: "3vh", overflow: 'auto', margin: "auto"}}>
+            <Container fluid style={{height : "25vh", padding: "3vh", overflow: 'auto', margin: "auto"}}>
                 <Row>
                     <Col style={{display: "flex", justifyContent: "center"}}>
                         <del> 아무것도 안하기 </del> 

@@ -65,7 +65,7 @@ def get_user_info(Authorization : Annotated[Union[str, None], Header()] = None):
             return {"data" : json.loads(dumps(user_info))}
         
         except:
-            HTTPException(status_code=404, detail="예기치 못한 오류가 발생했습니다.")
+            return HTTPException(status_code=404, detail="예기치 못한 오류가 발생했습니다.")
         
     else:
-        HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")

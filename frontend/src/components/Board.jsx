@@ -14,8 +14,8 @@ const Board = () => {
 
     const GetBoard = async() => {
         try {
-            const resopnse = await axios.get("http://127.0.0.1:8000/api/boards/");
-            setBoard(resopnse.data);
+            const response = await axios.get("http://127.0.0.1:8000/api/boards/");
+            setBoard(response.data);
             
         } catch {
             alert("서버 에러");
@@ -55,6 +55,7 @@ const Board = () => {
                             writer={item.writer}
                             title={item.title}
                             content={item.content}
+                            files = {item.files}
                             like = {item.like}
                             reply = {item.comment}
                             create_datetime={item.created_datetime}

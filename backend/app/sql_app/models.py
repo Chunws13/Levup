@@ -15,7 +15,7 @@ class Board(Base):
     created_datetime = Column(DateTime, default = func.now())
     edited_datetime = Column(DateTime, default = func.now())
     
-    comment = relationship("Comment", cascade="all, delete", back_populates= "owner")
+    comment = relationship("Comment", cascade="all, delete", back_populates= "owner", order_by="desc(Comment.id)")
     like_people = relationship("Like_People", cascade="all, delete", back_populates= "owner")
     files = relationship("Files", cascade="all, delete", back_populates= "owner")
     
@@ -44,4 +44,4 @@ class Files(Base):
     id = Column(Integer, primary_key = True, index = True)
     file_name = Column(String(255))
     board_id = Column(Integer, ForeignKey("Boards.id"))
-    owner = relationship("Board", back_populates= "Files")
+    owner = relationship("Board", back_populates= "files")

@@ -1,12 +1,15 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import desc
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
-import certifi, os
+import certifi, os, uuid
 from . import models, schemas
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BOARDS_DIR = os.path.join(BASE_DIR, "images/boards")
+
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 ca = certifi.where()
@@ -14,13 +17,14 @@ client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 mongodb = client.chunws
 
 def get_all_board(db: Session):
-    return db.query(models.Board).options(joinedload(models.Board.comment)).all()
+    return db.query(models.Board).options(
+            joinedload(models.Board.comment)).options(joinedload(models.Board.files)).order_by(desc(models.Board.id)).all()
 
 def get_board(db: Session, board_id: int): 
-    return db.query(models.Board).options(joinedload(models.Board.comment)).filter(models.Board.id == board_id).first()
+    return db.query(models.Board).options(
+            joinedload(models.Board.comment)).options(joinedload(models.Board.files)).filter(models.Board.id == board_id).first()
 
-def create_board(db: Session, title: str, content: str, files: str, memo_id: str, writer: str):
-    
+async def create_board(db: Session, title: str, content: str, files: str, memo_id: str, writer: str):            
     memo_id = ObjectId(memo_id)
     memo_info = mongodb.memo.find_one({"_id" : memo_id})
     
@@ -32,15 +36,27 @@ def create_board(db: Session, title: str, content: str, files: str, memo_id: str
     
     board_db_create = models.Board(writer = writer, title = title, content = content)
     
-    file_data = [file for file in files]
-    
-    
     mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"admit_status" : True}})
 
     user = mongodb.users.find_one({"id": writer})
     mongodb.users.update_one({"id": writer}, {"$set": {"board": user["board"] + 1}})
 
     db.add(board_db_create)
+    db.flush()
+    
+    file_data = [file for file in files]
+    file_list = []
+    
+    for file in file_data:
+        save_file = await file.read()
+        file_name = "{}.jpg".format(str(uuid.uuid4()))
+        save_name = os.path.join(BOARDS_DIR, file_name)
+        file_list.append(models.Files(board_id = board_db_create.id, file_name = os.path.relpath(save_name, BASE_DIR)))
+        with open (save_name, "wb") as f:
+            f.write(save_file)
+        
+    db.bulk_save_objects(file_list)
+            
     db.commit()
     db.refresh(board_db_create)
     
@@ -103,7 +119,7 @@ def like_board(db: Session, board_id: int, like_user: str):
     return {"status" : True, "message": message}
 
 def get_comment(board_id: int, db:Session):
-    comment_db = db.query(models.Comment).filter(models.Comment.board_id == board_id).all()
+    comment_db = db.query(models.Comment).filter(models.Comment.board_id == board_id).order_by(desc(models.Comment.id)).all()
     return comment_db
 
 

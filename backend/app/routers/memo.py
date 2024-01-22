@@ -75,8 +75,8 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
 
         user = db.users.find_one({"id": writer})
         db.users.update_one({"id": writer}, {"$set": {
-            "mission_start": user["mission_start"] + 1,
-            "exp": user["exp"] + 10}})
+            "mission_start": user["mission_start"] + 1
+            }})
 
         return {"status" : "success", "data" : "저장되었습니다."}
     
@@ -119,7 +119,13 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
             
             user = db.users.find_one({"id": result["data"]})
             db.users.update_one({"id": result["data"]}, {"$set": {"mission_complete": user["mission_complete"] + 1,
+                                                                  "exp": user["exp"] + 10,
                                                                   "point": user["point"] + 100 }})
+            
+            while user["level"] * 20 + (user["level"] - 1) * 5 <= user["exp"]: # 유저 레벨 업 공식
+                user["level"] += 1
+            
+            db.users.update_one({"id": result["data"]}, {"$set": {"level": user["level"]}})
 
             return {"status" : "success", "data" : "삭제되었습니다."}
         

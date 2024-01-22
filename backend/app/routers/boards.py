@@ -10,7 +10,6 @@ import os
 models.Base.metadata.create_all(bind=engine)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
-Boards_DIR = os.path.join(BASE_DIR, "images/boards")
 
 router = APIRouter(prefix="/api/boards", tags=["boards"])
 
@@ -39,7 +38,7 @@ async def create_board( memo_id: str, title : str = Form(), content: str = Form(
     login_check = User_Auth(Authorization).check_auth()
     if login_check["status"]:
         try:
-            return crud.create_board(db = db, memo_id = memo_id, title = title, content = content, 
+            return await crud.create_board(db = db, memo_id = memo_id, title = title, content = content, 
                                      files = files, writer = login_check["data"])
         
         except:
@@ -136,18 +135,3 @@ async def delete_comment(comment_id: int, db: Session = Depends(get_db), Authori
             raise HTTPException(status_code=404, detail=login_check["data"])
     else:
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
-    
-@router.post("/test")
-async def test(files: List[UploadFile]):
-    data = [file for file in files]
-    print(data)
-    for d in data:
-        print("this name is :", d.filename)
-        save_point = Boards_DIR + "/" + d.filename
-        save_data = await d.read()
-        with open(save_point, "wb") as f:
-            f.write(save_data)
-    
-    return
-    
-    # return {"file_size": len(data)}
