@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Container, Row, Col, Image, ProgressBar } from "react-bootstrap";
+import { Container, Row, Col, Image, ProgressBar, Dropdown, Button, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
 import Profile from '../images/basicProfile.jpeg'
@@ -8,8 +8,37 @@ const User = () => {
     const cookie = new Cookies();
     const token = cookie.get("token");
     const [userInfo, setUserInfo] = useState({});
+    const [profile, setProfile] = useState(null);
 
     const expPercent = userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5)
+
+    const SelectProfile = async(event) => {
+        const userProfile = event.target.files[0]; 
+        setProfile(userProfile);
+        const formData = new FormData();
+        console.log(userProfile);
+        formData.append("profile", userProfile);
+
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/users/profile/",
+                formData,
+                { headers : {
+                    "Authorization" : token
+                 }});
+            
+            console.log(response);
+
+        } catch(error) {
+            console.log(error.response.data.detail);
+        }
+
+    };
+    const PostProfile = () => {
+        console.log(profile);
+    }
+    const DeleteProfile = () => {
+        console.log("delete button click")
+    }
 
     const GetUser = async() => {
         try{
@@ -30,6 +59,20 @@ const User = () => {
     
     return (
         <Container style={{height : "75vh", padding: "3vh"}}>
+            <Row>
+                <Dropdown style={{display: "flex", justifyContent: "flex-end"}}>
+                    <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                        편집
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item as="label" >
+                            <input type="file" onChange={SelectProfile} style={{display : "none"}}/> 
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={DeleteProfile}>프로필 삭제</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </Row>
             <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "40vh"}}>
                 {userInfo.profile ? 
                     "" 

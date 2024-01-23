@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException, Header, UploadFile, File
 from typing import Union, Annotated
 from models.users import User_Login, User_Create
 from pymongo import MongoClient
@@ -67,5 +67,31 @@ def get_user_info(Authorization : Annotated[Union[str, None], Header()] = None):
         except:
             return HTTPException(status_code=404, detail="예기치 못한 오류가 발생했습니다.")
         
+    else:
+        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+
+@router.post("/profile")
+async def change_profile(profile: UploadFile, Authorization : Annotated[Union[str, None], Header()] = None):
+    checker = User_Auth(Authorization)
+    result = checker.check_auth()
+    
+    if result["status"]:
+        # profile_image = await profile.read()
+        return {"filename": profile.filename}
+    
+    else:
+        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+
+@router.delete("/profile")
+def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None):
+    checker = User_Auth(Authorization)
+    result = checker.check_auth()
+    
+    if result["status"]:
+        try:
+            return 
+
+        except:
+            return HTTPException(status_code=404, detail="서버 에러.")
     else:
         return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")

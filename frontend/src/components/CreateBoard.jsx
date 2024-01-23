@@ -57,12 +57,6 @@ const CreateBaord = () => {
                     "Content-Type": "multipart/form-data"
                     }});
 
-            // await axios.post(`http://127.0.0.1:8000/api/boards/test`,
-            //     formData,
-            //     { headers : {
-            //         "Authorization" : token
-            //         }});
-            
             navigate('/boards');
 
         } catch(error){
