@@ -5,10 +5,12 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.json_util import dumps
 from auth.login_auth import User_Auth
-import certifi, hashlib, datetime, jwt, os, json
+import certifi, hashlib, datetime, jwt, os, json, uuid
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+USER_DIR = os.path.join(BASE_DIR, "images/users")
+
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 ca = certifi.where()
@@ -33,6 +35,7 @@ def signup(Users: User_Create):
         "like": 0,
         "board": 0,
         "point" : 0,
+        "profile": False,
         "mission_start": 0,
         "mission_complete": 0
     }
@@ -74,11 +77,29 @@ def get_user_info(Authorization : Annotated[Union[str, None], Header()] = None):
 async def change_profile(profile: UploadFile, Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
-    
+    extension = profile.filename.split(".")[-1]
+
     if result["status"]:
-        # profile_image = await profile.read()
-        return {"filename": profile.filename}
-    
+        try:
+            profile_image = await profile.read()
+            save_name = os.path.join(USER_DIR, 
+                                     "{filename}.{extension}".format(filename=result["data"], extension=extension))
+            
+            if os.path.isfile(save_name):
+                os.remove(save_name)
+
+            profile_info = os.path.relpath(save_name, BASE_DIR)
+
+            db.users.update_one({"id": result["data"]},
+                                {"$set": {"profile": profile_info}},
+                                upsert = True)
+            
+            with open (save_name, "wb") as f:
+                f.write(profile_image)
+            return {"filename": profile.filename}
+        
+        except:
+            return HTTPException(status_code=404, detail="예상하지 못한 오류가 발생했습니다.")
     else:
         return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
@@ -89,9 +110,13 @@ def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None)
     
     if result["status"]:
         try:
-            return 
+            db.users.update_one({"id": result["data"]},
+                                {"$set": {"profile": False}},
+                                upsert = True)
+            
+            return {"status": 200, "detail": "프로필 삭제 성공"}
 
         except:
-            return HTTPException(status_code=404, detail="서버 에러.")
+            return HTTPException(status_code=404, detail="서버 에러")
     else:
         return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")

@@ -16,29 +16,37 @@ const User = () => {
         const userProfile = event.target.files[0]; 
         setProfile(userProfile);
         const formData = new FormData();
-        console.log(userProfile);
         formData.append("profile", userProfile);
 
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/users/profile/",
+            const response = await axios.post("http://127.0.0.1:8000/api/users/profile",
                 formData,
                 { headers : {
                     "Authorization" : token
                  }});
             
-            console.log(response);
+            await GetUser();
 
         } catch(error) {
             console.log(error.response.data.detail);
         }
 
     };
-    const PostProfile = () => {
-        console.log(profile);
-    }
-    const DeleteProfile = () => {
+    
+    const DeleteProfile = async() => {
         console.log("delete button click")
-    }
+        try{
+            await axios.delete("http://127.0.0.1:8000/api/users/profile",
+                { headers : {
+                    "Authorization" : token
+                }});
+            
+            await GetUser();
+
+        } catch(error){
+            console(error.response.data.detail);
+        };
+    };
 
     const GetUser = async() => {
         try{
@@ -49,7 +57,9 @@ const User = () => {
                  }});
             
             setUserInfo(response.data.data);
+
         } catch (error) {
+            console.log(error.response.data.detail);
     }};
 
     useEffect( () => {
@@ -67,7 +77,7 @@ const User = () => {
 
                     <Dropdown.Menu>
                         <Dropdown.Item as="label" >
-                            <input type="file" onChange={SelectProfile} style={{display : "none"}}/> 
+                            <input type="file" onChange={SelectProfile} style={{display : "none"}}/> 프로필 선택
                         </Dropdown.Item>
                         <Dropdown.Item onClick={DeleteProfile}>프로필 삭제</Dropdown.Item>
                     </Dropdown.Menu>
@@ -75,20 +85,21 @@ const User = () => {
             </Row>
             <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "40vh"}}>
                 {userInfo.profile ? 
-                    "" 
+                    <Image roundedCircle src={`http://127.0.0.1:8000/${userInfo.profile}?timestamp=${Date.now()}`}/>
                     :
                     <Image roundedCircle src={Profile} style={{height: "100%"}}/>
                 }
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", alignItems: "center", fontSize : "5vw", height: "10vh"}}>
+            <Row style={{display:"flex", justifyContent:"center", alignItems: "center", fontSize : "5vw", height: "8vh"}}>
                 {userInfo.id} 
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "4vw", height: "5vh"}}>
-                {userInfo.email}
-            </Row>
-
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "4vw", height : "5vh"}}>
-                Level : {userInfo.level}
+            <Row >
+                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw", height: "5vh"}}>
+                    Level : {userInfo.level}
+                </Col>
+                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw", height: "5vh"}}>
+                    {userInfo.email}
+                </Col>
             </Row>
 
             <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw", height : "5vh"}}>
