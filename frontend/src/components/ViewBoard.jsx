@@ -127,29 +127,31 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
                     <Button onClick={CommentView} style={{fontSize : "3vw"}}>
                         댓글 {reply.length}
                     </Button>
-                </Col>
-                { commentState ? 
-                        allReply.map((item, index) => {
-                            return (
-                                <Comment key={index}
-                                    writer = {item.writer}
-                                    created_datetime = {item.created_datetime}
-                                    content = {item.content}
-                                    now_date = {now_date}
-                                    />
-                            )
-                        })
-                    : ""
-                }
+                    </Col>
+                    { commentState ? 
+                            allReply.map((item, index) => {
+                                return (
+                                    <Comment key={index}
+                                        writer = {item.writer}
+                                        created_datetime = {item.created_datetime}
+                                        content = {item.content}
+                                        now_date = {now_date}
+                                        />
+                                )
+                            })
+                        : ""
+                    }
                 { commentState ? 
                     <Form onSubmit={CreateComment}>
                         <Row>
-                            <Col xs={9}>
-                                <Form.Control value={text} onChange={ChangeText} type="text" name="memo" placeholder=''/>
+                            <Col xs={9} className="d-flex align-items-center">
+                                <Form.Control style={{height: "3.5vh"}} 
+                                    value={text} onChange={ChangeText}
+                                    type="text" name="memo" placeholder=''/>
                             </Col>
                             <Col xs={3}>
                                 <div className="d-grid gap-2">
-                                    <Button variant="success" type='submit' > 등록 </Button>
+                                    <Button variant="success" type='submit' size="sm" > 등록 </Button>
                                 </div>
                             </Col>
                         </Row>

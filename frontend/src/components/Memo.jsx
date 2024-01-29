@@ -65,7 +65,9 @@ function Memo() {
                     "Content-Type": "application/json"
                     }});
                 setWriteMemo("");
+
                 Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
+                GetMonthMemo({year: date.getFullYear(), month: date.getMonth()+ 1});
             } 
 
         catch {
@@ -95,6 +97,8 @@ function Memo() {
                 }});
 
                 Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
+                GetMonthMemo({year: date.getFullYear(), month: date.getMonth()+ 1});
+                
         } catch {
             alert("에러가 발생했습니다.");
         }}
