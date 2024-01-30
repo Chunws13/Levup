@@ -7,9 +7,8 @@ import Comment from "./Comment";
 const ViewBoard = ({board_id, writer, title, content, files, like, reply, 
     create_datetime, now_date, token, PushLike}) => {
     
-    const [commentState, setCommentState] = useState(false);
     const [allReply, setAllReply] = useState(reply);
-
+    const [commentState, setCommentState] = useState(false);
     const [index, setIndex] = useState(0);
 
     const navigate = useNavigate();
@@ -74,26 +73,31 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
     const Like = () => {
         PushLike({token, board_id});
     }
-    
-    const CommentView = () => {
-        setCommentState(!commentState);
-    }
+     
+    const CommentControl = (event) => {
+        if (event.target.id === "reply"){
+            setCommentState(!commentState);
 
+        } else {
+            setCommentState(false);
+        }
+    }
+    
     const SelectFile = (selectedIndex) => {
         setIndex(selectedIndex);
     }
 
     return (
-        <Container style={{padding: "3vh"}}>
-            <Row >
-                <Col style={{display:"flex", justifyContent:"flex-start", fontSize : "3vw"}} >
-                    {writer}
+        <Container onClick={CommentControl} style={{padding: "3vh"}}>
+            <Row>
+                <Col className="justify-content-start" style={{padding: "3vw"}} >
+                    <Image src=""/>    {writer}
                 </Col>
-                <Col style={{display:"flex", justifyContent:"flex-end", fontSize : "3vw"}}>
+                <Col style={{marginLeft: "auto", padding: "3vw", fontSize: "3vw"}}>
                     {GetDate()}
                 </Col>
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
+            <Row className="justify-content-start" style={{padding: "3vw", fontSize: "1.5vh"}}>
                 {title}
             </Row>
 
@@ -111,53 +115,55 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
                 </Carousel>
             </Row>
 
-            <Row  className="justify-content-center">
+            <Row className="justify-content-start" style={{padding: "3vw", fontSize: "1.5vh"}}>
                 {content}
             </Row>
 
             <Row  className="justify-content-center">
                 <Col style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
-                    <Button onClick={Like}>
+                    <Button onClick={Like} size="sm">
                         좋아요 {like}
                     </Button>
                 </Col>
                 <Col style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
                 </Col>
                 <Col style={{display:"flex", justifyContent:"center"}}>
-                    <Button onClick={CommentView} style={{fontSize : "3vw"}}>
+                    <Button id="reply" size="sm" style={{fontSize : "3vw"}}>
                         댓글 {reply.length}
                     </Button>
-                    </Col>
-                    { commentState ? 
-                            allReply.map((item, index) => {
-                                return (
-                                    <Comment key={index}
-                                        writer = {item.writer}
-                                        created_datetime = {item.created_datetime}
-                                        content = {item.content}
-                                        now_date = {now_date}
-                                        />
-                                )
-                            })
-                        : ""
-                    }
-                { commentState ? 
-                    <Form onSubmit={CreateComment}>
-                        <Row>
-                            <Col xs={9} className="d-flex align-items-center">
-                                <Form.Control style={{height: "3.5vh"}} 
-                                    value={text} onChange={ChangeText}
-                                    type="text" name="memo" placeholder=''/>
-                            </Col>
-                            <Col xs={3}>
-                                <div className="d-grid gap-2">
-                                    <Button variant="success" type='submit' size="sm" > 등록 </Button>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Form>
-                    : ""
-                }       
+                </Col>
+                    { commentState &&(
+                        <Container style={{ position:"fixed", borderTopLeftRadius: "10px", borderTopRightRadius: "10px",
+                            bottom: 0, left: 0, width: "100vw", height: "50vh",
+                            zIndex: 1000, backgroundColor: "black"}}>
+                            <Container style={{height: "43vh", overflow: "auto"}}>
+                                    { allReply.map((item, index) => {
+                                        return (
+                                            <Comment key={index}
+                                            writer = {item.writer}
+                                            created_datetime = {item.created_datetime}
+                                            content = {item.content}
+                                            now_date = {now_date}
+                                            />
+                                            )
+                                        })}
+                            </Container>
+                            <Form onSubmit={CreateComment}>
+                                <Row>
+                                    <Col xs={9} className="d-flex align-items-center">
+                                        <Form.Control style={{height: "3vh"}} 
+                                            value={text} onChange={ChangeText}
+                                            type="text" name="memo" placeholder=''/>
+                                    </Col>
+                                    <Col xs={3}>
+                                        <div className="d-grid gap-2">
+                                            <Button variant="success" type='submit' size="sm"> 등록 </Button>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Container>
+                    )}
             </Row>
         </Container>
     )

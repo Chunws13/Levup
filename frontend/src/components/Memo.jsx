@@ -8,6 +8,7 @@ import EachMemo from "./EachMemo"
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css'; // css import
+import { findAllInRenderedTree } from 'react-dom/test-utils';
 
 function Memo() {
     const cookie = new Cookies();

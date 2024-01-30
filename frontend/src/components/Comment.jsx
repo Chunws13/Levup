@@ -24,7 +24,7 @@ const Comment = ({writer, created_datetime, content, now_date}) => {
     }
 
     return (
-        <Container style={{height: "20vh", padding: "3vw"}}>
+        <Container style={{padding: "1.5vw", color: "wheat"}}>
             <Row>
                 <Col style={{display:"flex", justifyContent:"flex-start", fontSize : "3vw"}}>
                     {writer}

@@ -40,7 +40,7 @@ const Board = () => {
             alert(error.detail);
         }
     }
-
+   
     useEffect(() => {
         GetBoard();
     }, []);
