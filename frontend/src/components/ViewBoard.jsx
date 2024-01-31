@@ -133,35 +133,42 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
                     </Button>
                 </Col>
                     { commentState &&(
-                        <Container style={{ position:"fixed", borderTopLeftRadius: "10px", borderTopRightRadius: "10px",
-                            bottom: 0, left: 0, width: "100vw", height: "50vh",
-                            zIndex: 1000, backgroundColor: "black"}}>
-                            <Container style={{height: "43vh", overflow: "auto"}}>
-                                    { allReply.map((item, index) => {
-                                        return (
-                                            <Comment key={index}
-                                            writer = {item.writer}
-                                            created_datetime = {item.created_datetime}
-                                            content = {item.content}
-                                            now_date = {now_date}
-                                            />
-                                            )
-                                        })}
+                        <Container style={{ position:"fixed",
+                            bottom: 0, left: 0, width: "100vw", height: "100vh", padding: 0,
+                            zIndex: 1000}}>
+                            <Container style={{height: "50%"}}>
                             </Container>
-                            <Form onSubmit={CreateComment}>
-                                <Row>
-                                    <Col xs={9} className="d-flex align-items-center">
-                                        <Form.Control style={{height: "3vh"}} 
-                                            value={text} onChange={ChangeText}
-                                            type="text" name="memo" placeholder=''/>
-                                    </Col>
-                                    <Col xs={3}>
-                                        <div className="d-grid gap-2">
-                                            <Button variant="success" type='submit' size="sm"> 등록 </Button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Form>
+
+                            <Container style={{height: "50%", backgroundColor: "black", 
+                                            borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}>
+
+                                <Container style ={{height: "85%", overflow: "auto" }}>
+                                        { allReply.map((item, index) => {
+                                            return (
+                                                <Comment key={index}
+                                                writer = {item.writer}
+                                                created_datetime = {item.created_datetime}
+                                                content = {item.content}
+                                                now_date = {now_date}
+                                                />
+                                                )
+                                            })}
+                                </Container>
+                                <Form onSubmit={CreateComment}>
+                                    <Row>
+                                        <Col xs={9} className="d-flex align-items-center">
+                                            <Form.Control style={{height: "3vh"}} 
+                                                value={text} onChange={ChangeText}
+                                                type="text" name="memo" placeholder=''/>
+                                        </Col>
+                                        <Col xs={3}>
+                                            <div className="d-grid gap-2">
+                                                <Button variant="success" type='submit' size="sm"> 등록 </Button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </Container>
                         </Container>
                     )}
             </Row>
