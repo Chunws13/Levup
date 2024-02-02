@@ -142,8 +142,8 @@ function Memo() {
 
     return (
         <Container fluid > 
-            <Container fluid style={{ padding: "3vh"}}>
-                    <Calendar onChange={SelectDate} value={date} 
+            <Container fluid style={{ padding: "3vh", fontSize: "4.5vw"}}>
+                    <Calendar onChange={SelectDate} value={date}
                         formatDay={(locale, date) => moment(date).format("DD")}
                         tileContent = { ( { date, view } ) => {
                             if (view = "month "){
@@ -187,13 +187,12 @@ function Memo() {
                         />
             </Container>
             <Row >
-                <Col style={{display: "flex", justifyContent: "center", fontSize: "4vw" }}>
+                <Col style={{display: "flex", justifyContent: "center", fontSize: "5vw" }}>
                     { `${moment(date).format("YY년 MM월 DD일")} - 할일`  }
                 </Col>
             </Row>
+            <Container fluid style={{height : "23vh", padding: "3vh", overflow: 'auto'}}>
             { memo.length > 0 ? 
-              
-            <Container fluid style={{height : "25vh", padding: "3vh", overflow: 'auto'}}>
                 <Stack gap={1}>
                     {memo.map((item, index) => {    
                         return (
@@ -212,16 +211,14 @@ function Memo() {
                     })}
 
                 </Stack>
-            </Container>
-            : 
-            <Container fluid style={{height : "25vh", padding: "3vh", overflow: 'auto', margin: "auto"}}>
+                : 
                 <Row>
                     <Col style={{display: "flex", justifyContent: "center"}}>
                         <del> 아무것도 안하기 </del> 
                     </Col>
                 </Row>
-            </Container>
-        }
+                }
+        </Container>
             <Container fluid style={{ justifyContent: 'center', Height: '10vh' }}>
                 <Form onSubmit={SubmitMemo}>
                     <Row>

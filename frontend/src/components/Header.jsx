@@ -9,35 +9,50 @@ const Header = () => {
         <Container>
             <Row style={{height : "7vh"}}>
                 <Col style={{margin : "auto"}}>
-                    <Image src={Pl} style={{ width : '40%'}} alt='로고'/>
+                    <Image src={Pl} style={{ width: '40%', height: "auto"}} alt='로고'/>
                 </Col>
             </Row>
-            <Row style={{textAlign : 'center', height : "10vh"}}>
+            <Row style={{textAlign : 'center'}}>
                 <Col xs={3} style={{margin : "auto"}}>
-                    <Link to = '/users/' style={{textDecoration : 'none'}}>
-                        <div>
-                        <Image src={Ti} alt='내정보' roundedCircle/>
-                        <p> 내정보 </p>
-                        </div> 
+                    <Link to = '/users/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                        <Row className='justify-content-center'>
+                            <Image src={Ti} alt='내정보' roundedCircle style={{width: "80%", height: "auto"}}/>
+                        </Row>
+                        <Row className='justify-content-center'>
+                            내정보
+                        </Row>
+                         
                     </Link>
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/' style={{textDecoration : 'none'}}>
-                        <Image src={Ti} alt='메모 게시판' roundedCircle />
-                        <p> 메모 </p>
+                    <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                        <Row className='justify-content-center'>
+                            <Image src={Ti} alt='메모 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                        </Row>
+                        <Row className='justify-content-center'>
+                            메모
+                        </Row>
                     </Link> 
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/boards/' style={{textDecoration : 'none'}}>
-                        <Image src={Ti} alt='인증 게시판' roundedCircle/>
-                        <p> 인증 </p>
+                    <Link to ='/boards/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                        <Row className='justify-content-center'>
+                            <Image src={Ti} alt='인증 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                        </Row>
+                        <Row className='justify-content-center'>
+                            인증 
+                        </Row>
                     </Link>
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <div>
-                        <Image src={Ti} alt='포인트샵' roundedCircle/>
-                        <p> 샵 </p>
-                    </div>
+                    <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                        <Row className='justify-content-center'>
+                            <Image src={Ti} alt='포인트샵' roundedCircle style={{width: "80%", height: "auto"}}/>
+                        </Row>
+                        <Row className='justify-content-center'>
+                            샵
+                        </Row>
+                    </Link>
                 </Col>
             </Row>
         </Container>

@@ -10,8 +10,8 @@ const User = () => {
     const [userInfo, setUserInfo] = useState({});
     const [profile, setProfile] = useState(null);
 
-    const expPercent = userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5)
-
+    const expPercent = userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5) * 100
+    
     const SelectProfile = async(event) => {
         const userProfile = event.target.files[0]; 
         setProfile(userProfile);
@@ -19,7 +19,7 @@ const User = () => {
         formData.append("profile", userProfile);
 
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/users/profile",
+            await axios.post("http://127.0.0.1:8000/api/users/profile",
                 formData,
                 { headers : {
                     "Authorization" : token
@@ -83,7 +83,7 @@ const User = () => {
                     </Dropdown.Menu>
                 </Dropdown>
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "40vh"}}>
+            <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height: "40vh"}}>
                 {userInfo.profile ? 
                     <Image roundedCircle src={`http://127.0.0.1:8000/${userInfo.profile}?timestamp=${Date.now()}`}/>
                     :
@@ -93,31 +93,31 @@ const User = () => {
             <Row style={{display:"flex", justifyContent:"center", alignItems: "center", fontSize : "5vw", height: "8vh"}}>
                 {userInfo.id} 
             </Row>
-            <Row >
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw", height: "5vh"}}>
+            <Row style={{fontSize : "5vw", height: "5vh"}}>
+                <Col style={{display:"flex", justifyContent:"center"}}>
                     Level : {userInfo.level}
                 </Col>
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw", height: "5vh"}}>
+                <Col style={{display:"flex", justifyContent:"center"}}>
                     {userInfo.email}
                 </Col>
             </Row>
 
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "3vw", height : "5vh"}}>
-                <ProgressBar  now ={expPercent} label={`Exp : ${userInfo.exp} ( ${expPercent}% )`}/>
+            <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height : "5vh"}}>
+                <ProgressBar now ={expPercent} label={`Exp : ${userInfo.exp} ( ${expPercent}% )`}/>
             </Row>
-            <Row style={{height : "5vh"}}>
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw"}}>
+            <Row style={{height : "5vh", fontSize : "5vw"}}>
+                <Col style={{display:"flex", justifyContent:"center"}}>
                     시작한 작업 : {userInfo.mission_start}
                 </Col>
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw"}}>
+                <Col style={{display:"flex", justifyContent:"center"}}>
                     완료한 작업 : {userInfo.mission_complete}
                 </Col>
             </Row>
-            <Row style={{height : "5vh"}}>
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw"}}>
+            <Row style={{height : "5vh", fontSize : "5vw"}}>
+                <Col style={{display:"flex", justifyContent:"center"}}>
                     인증 글 수 : {userInfo.board}
                 </Col>
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "4vw"}}>
+                <Col style={{display:"flex", justifyContent:"center"}}>
                     인정 받은 횟수 : {userInfo.like}
                 </Col>
             </Row>

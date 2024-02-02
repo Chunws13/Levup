@@ -26,7 +26,7 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
                 { status ? // 완료되었는가?
                     <Row>
                         <Col xs={8}>
-                            <label className='memo' style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "scroll", fontSize:"3.5vw"}}> <del> { content } </del> </label>
+                            <label className='memo' style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "scroll", fontSize:"5vw"}}> <del> { content } </del> </label>
                         </Col>
                         { admit_status ? 
                         <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
@@ -45,9 +45,9 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
                         <Col xs={1} style={{display :"flex", justifyContent: 'center'}}>
                             <input type='checkbox' onClick={Delete}/>
                         </Col>
-                        <Col xs={8} style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "auto", whiteSpace: "nowrap", fontSize:"3.5vw"}}>
+                        <Col xs={8} style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "auto", whiteSpace: "nowrap", fontSize:"5vw"}}>
                             { editable ? 
-                                <input className='memo' value={ text } onChange={ChangeText}/> : 
+                                <input className='memo' value={ text } onChange={ChangeText} style={{border: "none", outline: "none", overflow: "auto"}}/> : 
                                 <label className='memo' style={{display:"block"}}> { content } </label>}
                         </Col>
                         <Col xs={3} style={{display :"flex", justifyContent: 'flex-end'}}>

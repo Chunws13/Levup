@@ -1,4 +1,6 @@
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Image } from "react-bootstrap"
+import Profile from '../images/basicProfile.jpeg'
+
 const Comment = ({writer, created_datetime, content, now_date}) => {
 
     const fulldatetime = new Date(created_datetime);
@@ -25,20 +27,23 @@ const Comment = ({writer, created_datetime, content, now_date}) => {
 
     return (
         <Container style={{padding: "1.5vw", color: "wheat"}}>
-            <Row>
-                <Col style={{display:"flex", justifyContent:"flex-start", fontSize : "3vw"}}>
-                    {writer}
+            <Row style={{fontSize : "4vw"}}>
+                <Col xs={2} style={{display: "flex", alignItems: "center", justifyContent: "left"}}>
+                    <Image roundedCircle src={Profile} style={{width: "80%", height: "auto"}}/>
                 </Col>
-                <Col style={{display:"flex", justifyContent:"flex-end", fontSize : "3vw"}}>
+                <Col >
+                    <Row style={{display:"flex", justifyContent:"left"}}>
+                        {writer}
+                    </Row>
+                    <Row>
+                        {content}
+
+                    </Row>
+                </Col>
+                <Col style={{display:"flex", justifyContent:"flex-end"}}>
                     {GetDate()}
                 </Col>
-
-            </Row>
-            <Row style={{display:"flex", justifyContent:"flex-start", fontSize : "3vw"}}>
-                <Col xs={8} >
-                    {content}
-                </Col>
-            </Row>        
+            </Row>  
         </Container>
     )
 }

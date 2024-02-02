@@ -3,11 +3,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Comment from "./Comment";
+import LikeImage from '../images/likeIcon.png'
+import CommentImage from '../images/commentIcon.png'
+import Profile from '../images/basicProfile.jpeg'
 
 const ViewBoard = ({board_id, writer, title, content, files, like, reply, 
     create_datetime, now_date, token, PushLike}) => {
     
     const [allReply, setAllReply] = useState(reply);
+    const [contentState, setContentState] = useState(false);
     const [commentState, setCommentState] = useState(false);
     const [index, setIndex] = useState(0);
 
@@ -87,26 +91,33 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
         setIndex(selectedIndex);
     }
 
+    const ContentView = () => {
+        setContentState(!contentState);
+    }
+
     return (
         <Container onClick={CommentControl} style={{padding: "3vh"}}>
-            <Row>
-                <Col className="justify-content-start" style={{padding: "3vw"}} >
-                    <Image src=""/>    {writer}
+            <Row >
+                <Col xs={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}} >
+                    <Image src={Profile} rounded style={{width: "100%", height: "auto"}} /> 
                 </Col>
-                <Col style={{marginLeft: "auto", padding: "3vw", fontSize: "3vw"}}>
-                    {GetDate()}
+                <Col style={{fontSize: "5vw"}}>
+                    <Row>
+                        {writer}
+                    </Row>
+                    <Row>
+                        {GetDate()}
+                    </Row>
                 </Col>
             </Row>
-            <Row className="justify-content-start" style={{padding: "3vw", fontSize: "1.5vh"}}>
-                {title}
-            </Row>
+            
 
             <Row >
                 <Carousel activeIndex={index} onSelect={SelectFile} slide={false} fade >
                     { files.length > 0 ? files.map((file, index) => {
                         return ( 
                             <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "35vh"}}>
-                                <Image thumbnail src = {`http://127.0.0.1:8000/${file.file_name}`} alt = ""/>
+                                <Image thumbnail src = {`http://127.0.0.1:8000/${file.file_name}`} alt = "" style={{width: "100%", height: "auto"}}/>
                             </Carousel.Item>
                             )
                         }) : 
@@ -114,23 +125,30 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
                             }
                 </Carousel>
             </Row>
-
-            <Row className="justify-content-start" style={{padding: "3vw", fontSize: "1.5vh"}}>
-                {content}
+            <Row className="justify-content-start" style={{padding: "3vw", fontSize: "5vw"}}>
+                {title}
+                { contentState ? 
+                    <Row className="justify-content-start" onClick={ContentView} style={{paddingLeft: "vw", fontSize: "5vw"}}>
+                        {content}
+                    </Row>
+                    :    
+                    <Row className="justify-content-start" onClick={ContentView} style={{paddingLeft: "3vw", fontSize: "5vw"}}>
+                        더보기
+                    </Row>
+                }
             </Row>
+            
+        
+            <Row className="justify-content-center">
+                <Col xs={8}>
 
-            <Row  className="justify-content-center">
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
-                    <Button onClick={Like} size="sm">
-                        좋아요 {like}
-                    </Button>
                 </Col>
-                <Col style={{display:"flex", justifyContent:"center", fontSize : "3vw"}}>
+                <Col xs={2} onClick={Like} style={{display:"flex", justifyContent:"center"}}>
+                    <Image src={LikeImage}  style={{width: "70%", height: "100%"}}/>
                 </Col>
-                <Col style={{display:"flex", justifyContent:"center"}}>
-                    <Button id="reply" size="sm" style={{fontSize : "3vw"}}>
-                        댓글 {reply.length}
-                    </Button>
+                
+                <Col xs={2} style={{display:"flex", justifyContent:"center"}}>
+                    <Image src={CommentImage} id="reply"  size="sm" style={{width: "70%", height: "100%"}}/>
                 </Col>
                     { commentState &&(
                         <Container style={{ position:"fixed",
@@ -139,7 +157,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
                             <Container style={{height: "50%"}}>
                             </Container>
 
-                            <Container style={{height: "50%", backgroundColor: "black", 
+                            <Container style={{height: "50%", backgroundColor: "black",
                                             borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}>
 
                                 <Container style ={{height: "85%", overflow: "auto" }}>
