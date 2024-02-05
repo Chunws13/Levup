@@ -1,6 +1,10 @@
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import Pl from '../images/PL.png'
+import Myi from '../images/myInfoIcon.png'
 import Ti from '../images/tmp_img.ico'
+import Ai from '../images/authIcon.png'
+import Mi from '../images/memoIcon.png'
+import Ni from '../images/noticeIcon.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +20,7 @@ const Header = () => {
                 <Col xs={3} style={{margin : "auto"}}>
                     <Link to = '/users/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ti} alt='내정보' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Myi} alt='내정보' roundedCircle style={{width: "80%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             내정보
@@ -27,7 +31,7 @@ const Header = () => {
                 <Col xs={3} style={{margin : "auto"}}> 
                     <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ti} alt='메모 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Mi} alt='메모 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             메모
@@ -37,7 +41,7 @@ const Header = () => {
                 <Col xs={3} style={{margin : "auto"}}> 
                     <Link to ='/boards/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ti} alt='인증 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Ai} alt='인증 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             인증 
@@ -47,10 +51,10 @@ const Header = () => {
                 <Col xs={3} style={{margin : "auto"}}> 
                     <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ti} alt='포인트샵' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Ni} alt='포인트샵' roundedCircle style={{width: "80%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
-                            샵
+                            공지
                         </Row>
                     </Link>
                 </Col>

@@ -190,7 +190,7 @@ function Memo() {
                     { `${moment(date).format("YY년 MM월 DD일")} - 할일`  }
                 </Col>
             </Row>
-            <Container fluid style={{height : "23vh", padding: "3vh", overflow: 'auto'}}>
+            <Container fluid style={{height : "20vh", padding: "3vh", overflow: 'auto'}}>
             { memo.length > 0 ? 
                 <Stack gap={1}>
                     {memo.map((item, index) => {    
