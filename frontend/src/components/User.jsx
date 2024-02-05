@@ -1,17 +1,35 @@
 import axios from "axios";
-import { Container, Row, Col, Image, ProgressBar, Dropdown, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Image, ProgressBar, Dropdown, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
+import { useNavigate  } from 'react-router-dom';
 import Profile from '../images/basicProfile.jpeg'
 
 const User = () => {
     const cookie = new Cookies();
     const token = cookie.get("token");
-    const [userInfo, setUserInfo] = useState({});
-    const [profile, setProfile] = useState(null);
+    const navigate = useNavigate();
 
-    const expPercent = userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5) * 100
+    const [userInfo, setUserInfo] = useState({});
+    const [expPercent, setExpPercent ] = useState(0);
+    const [profile, setProfile] = useState(null);
     
+    const GetUser = async() => {
+        try{
+            const response = await axios.get("http://127.0.0.1:8000/api/users/",
+                { headers : {
+                    "Authorization" : token,
+                    "Content-Type": "application/json"
+                 }});
+
+            setExpPercent(userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5) * 100);
+            setUserInfo(response.data.data);
+
+        } catch (error) {
+            alert(error.response.data.detail);
+            navigate("/login")
+    }};
+
     const SelectProfile = async(event) => {
         const userProfile = event.target.files[0]; 
         setProfile(userProfile);
@@ -48,25 +66,16 @@ const User = () => {
         };
     };
 
-    const GetUser = async() => {
-        try{
-            const response = await axios.get("http://127.0.0.1:8000/api/users/",
-                { headers : {
-                    "Authorization" : token,
-                    "Content-Type": "application/json"
-                 }});
-            
-            setUserInfo(response.data.data);
-
-        } catch (error) {
-            console.log(error.response.data.detail);
-    }};
+    const LogOut = () => {
+        cookie.remove("token", {path: "/"});
+        navigate("/login")
+    }
 
     useEffect( () => {
         GetUser();
-        return 
+        
     }, [])
-    
+
     return (
         <Container style={{height : "75vh", padding: "3vh"}}>
             <Row>
@@ -84,7 +93,7 @@ const User = () => {
                 </Dropdown>
             </Row>
             <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height: "40vh"}}>
-                {userInfo.profile ? 
+                { userInfo.profile ? 
                     <Image roundedCircle src={`http://127.0.0.1:8000/${userInfo.profile}?timestamp=${Date.now()}`}/>
                     :
                     <Image roundedCircle src={Profile} style={{height: "100%"}}/>
@@ -120,6 +129,9 @@ const User = () => {
                 <Col style={{display:"flex", justifyContent:"center"}}>
                     인정 받은 횟수 : {userInfo.like}
                 </Col>
+            </Row>
+            <Row>
+                <Button onClick={LogOut} variant="danger" style={{fontSize: "5vw"}}> 로그아웃 </Button>
             </Row>
         </Container>
     )

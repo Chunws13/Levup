@@ -17,8 +17,11 @@ client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
 mongodb = client.chunws
 
 def get_all_board(db: Session):
+    return db.query(models.Board).count()
+
+def get_part_board(db: Session, skip:int, limit: int):
     return db.query(models.Board).options(
-            joinedload(models.Board.comment)).options(joinedload(models.Board.files)).order_by(desc(models.Board.id)).all()
+            joinedload(models.Board.comment)).options(joinedload(models.Board.files)).order_by(desc(models.Board.id)).offset(skip).limit(limit).all()
 
 def get_board(db: Session, board_id: int): 
     return db.query(models.Board).options(

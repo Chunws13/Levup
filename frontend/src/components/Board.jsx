@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Pagination } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,11 +10,40 @@ const Board = () => {
     const now_date = new Date();
     const cookie = new Cookies();
     const token = cookie.get("token");
+
+    const [selectPage, setSelectPage] = useState(1);
+    const [allPages, setAllpages] = useState(0);
     const navigate = useNavigate();
+
+    let pageList = [];
+
+    const PageChange = (page) => {
+        setSelectPage(page);
+        
+    };
+
+    for (let number = Math.max(1, selectPage - 2); number <= Math.min(allPages, selectPage + 2); number ++){
+        pageList.push(
+            <Pagination.Item key = {number} active= {number === selectPage} onClick={() => PageChange(number)}>
+                {number}
+            </Pagination.Item>
+        )
+    };
+
+
+    const GetBoardCount = async() => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/boards/`);
+            setAllpages(Math.ceil(response.data / 10));
+            
+        } catch {
+            alert("서버 에러");
+        }
+    }
 
     const GetBoard = async() => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/boards/");
+            const response = await axios.get(`http://127.0.0.1:8000/api/boards/page?skip=${(selectPage - 1)*10}&limit=10`);
             setBoard(response.data);
             
         } catch {
@@ -42,8 +71,10 @@ const Board = () => {
     }
    
     useEffect(() => {
+        GetBoardCount();
         GetBoard();
-    }, []);
+
+    }, [selectPage]);
 
     return (
         <Container>
@@ -66,6 +97,13 @@ const Board = () => {
                     </Row>
                 )
             })}
+            <Pagination style={{display: "flex", justifyContent: "center"}}>
+                <Pagination.First onClick={() => PageChange(1)}/>
+                <Pagination.Prev onClick={() => {PageChange(Math.max(1, selectPage - 1))}}/>
+                    {pageList}
+                <Pagination.Next onClick={() => {PageChange(Math.max(allPages, selectPage - 1))}}/>
+                <Pagination.Last onClick={() => PageChange(allPages)}/> 
+            </Pagination>
         </Container>
     )
 }

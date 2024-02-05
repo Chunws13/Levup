@@ -22,9 +22,13 @@ def get_db():
         db.close()
 
 @router.get("/")
-async def get_all_board(db: Session = Depends(get_db)):
+async def get_all_board_count(db: Session = Depends(get_db)):
     return crud.get_all_board(db = db)
-    
+
+@router.get("/page")
+def get_part_barod(skip:int, limit: int, db: Session = Depends(get_db)):
+    return crud.get_part_board(db = db, skip = skip, limit = limit)
+
 @router.get("/{board_id}")
 async def get_board(board_id: int, db: Session = Depends(get_db)):
     return crud.get_board(db = db, board_id = board_id)
@@ -71,10 +75,10 @@ async def delete_board(board_id: int, db: Session = Depends(get_db), Authorizati
             return crud.delete_board(db = db, board_id = board_id, writer = login_check["data"])
         
         except:
-            return HTTPException(status_code=404, detail="오류 발생")
+            raise HTTPException(status_code=404, detail="오류 발생")
     
     else:
-        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+        raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
 @router.get("/{board_id}/like")
 async def like_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):

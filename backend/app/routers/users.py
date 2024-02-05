@@ -65,13 +65,14 @@ def get_user_info(Authorization : Annotated[Union[str, None], Header()] = None):
     if result["status"]:
         try:
             user_info = db.users.find_one({"id": result["data"]})
+            
             return {"data" : json.loads(dumps(user_info))}
         
         except:
-            return HTTPException(status_code=404, detail="예기치 못한 오류가 발생했습니다.")
+            raise HTTPException(status_code=404, detail="예기치 못한 오류가 발생했습니다.")
         
     else:
-        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+        raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
 @router.post("/profile")
 async def change_profile(profile: UploadFile, Authorization : Annotated[Union[str, None], Header()] = None):
@@ -99,9 +100,9 @@ async def change_profile(profile: UploadFile, Authorization : Annotated[Union[st
             return {"filename": profile.filename}
         
         except:
-            return HTTPException(status_code=404, detail="예상하지 못한 오류가 발생했습니다.")
+            raise HTTPException(status_code=404, detail="예상하지 못한 오류가 발생했습니다.")
     else:
-        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+        raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
 @router.delete("/profile")
 def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None):
@@ -117,6 +118,6 @@ def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None)
             return {"status": 200, "detail": "프로필 삭제 성공"}
 
         except:
-            return HTTPException(status_code=404, detail="서버 에러")
+            raise HTTPException(status_code=404, detail="서버 에러")
     else:
-        return HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+        raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")

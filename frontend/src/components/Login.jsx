@@ -26,7 +26,7 @@ const Login = () => {
         
         try {
             const login_request = await axios.post("http://127.0.0.1:8000/api/users/login", postData)
-            cookie.set("token", login_request.data.token);
+            cookie.set("token", login_request.data.token, {path: "/"});
             naviage("/");
 
         } catch {

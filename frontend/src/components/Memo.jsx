@@ -8,7 +8,6 @@ import EachMemo from "./EachMemo"
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css'; // css import
-import { findAllInRenderedTree } from 'react-dom/test-utils';
 
 function Memo() {
     const cookie = new Cookies();
@@ -48,7 +47,6 @@ function Memo() {
     const SelectDate = (event) => {
         setDate(event);
         Get_memo({year : event.getFullYear(), month: event.getMonth()+ 1, day: event.getDate()});
-        
     }
 
     const SubmitMemo = async(event) => {
@@ -117,40 +115,40 @@ function Memo() {
             navigate("login");   
         }
     }
-
+    const Test = (event) => {
+        console.log(event.target);
+    }
     const GetMonthMemo = async({year, month}) => {
         try {  
-            if (token !== null) {
-                const response = await axios.get(`http://127.0.0.1:8000/api/memo/calendar?year=${year}&month=${month}`, 
-                    { headers : {"Authorization" : token }});
-                setMonthMemo(response.data.data);
-            };
-        } catch {
+            const response = await axios.get(`http://127.0.0.1:8000/api/memo/calendar?year=${year}&month=${month}`, 
+                { headers : {"Authorization" : token }});
+
+            setMonthMemo(response.data.data);
             
+        } catch {
             navigate("login");   
         }
     }
 
-    useEffect(() => { 
+    useEffect(() => {
         const init_year = date.getFullYear();
         const init_month = date.getMonth() + 1;
         const init_day = date.getDate();
         
         Get_memo({ year: init_year, month: init_month, day: init_day});
         GetMonthMemo({year: init_year, month: init_month});
-    }, []);
+    }, [date]);
 
     return (
         <Container fluid > 
             <Container fluid style={{ padding: "3vh", fontSize: "4.5vw"}}>
-                    <Calendar onChange={SelectDate} value={date}
+                    <Calendar onChange={SelectDate} onViewChange={Test} value={date}
                         formatDay={(locale, date) => moment(date).format("DD")}
                         tileContent = { ( { date, view } ) => {
-                            if (view = "month "){
+                            if (view === "month"){
                                 const day = date.getDate();
-
                                 const check = monthMemo.filter((item) => {
-                                    const item_day = new Date(item.created_date.$date)
+                                    const item_day = new Date(item.created_date.$date);
                                     return item_day.getDate() === day
                                 });
 
