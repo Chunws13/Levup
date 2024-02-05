@@ -115,8 +115,9 @@ function Memo() {
             navigate("login");   
         }
     }
-    const Test = (event) => {
-        console.log(event.target);
+    const ChangeMonth = (newActiveStartDate) => {
+        const previewDate = newActiveStartDate.activeStartDate;
+        GetMonthMemo({year: previewDate.getFullYear(), month: previewDate.getMonth() + 1});
     }
     const GetMonthMemo = async({year, month}) => {
         try {  
@@ -142,7 +143,7 @@ function Memo() {
     return (
         <Container fluid > 
             <Container fluid style={{ padding: "3vh", fontSize: "4.5vw"}}>
-                    <Calendar onChange={SelectDate} onViewChange={Test} value={date}
+                    <Calendar onChange={SelectDate} onActiveStartDateChange={ChangeMonth} value={date}
                         formatDay={(locale, date) => moment(date).format("DD")}
                         tileContent = { ( { date, view } ) => {
                             if (view === "month"){
