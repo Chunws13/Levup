@@ -34,8 +34,8 @@ const Signup = () => {
             await axios.post("http://127.0.0.1:8000/api/users/signup", postData);
             naviage("/login");
 
-        } catch {
-            alert("이미 존재하는 ID 입니다.");
+        } catch(error) {
+            alert(error.response.data.detail);
         }
     }
 

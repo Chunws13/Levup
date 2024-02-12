@@ -4,11 +4,13 @@ from sqlalchemy import desc
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
-import certifi, os, uuid
+from connections.aws_s3 import aws_s3_connection
+import certifi, os, uuid, io
 from . import models, schemas
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOARDS_DIR = os.path.join(BASE_DIR, "images/boards")
+S3 = aws_s3_connection()
 
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -21,7 +23,7 @@ def get_all_board(db: Session):
 
 def get_part_board(db: Session, skip:int, limit: int):
     return db.query(models.Board).options(
-            joinedload(models.Board.comment)).options(joinedload(models.Board.files)).order_by(desc(models.Board.id)).offset(skip).limit(limit).all()
+            joinedload(models.Board.comment)).options(joinedload(models.Board.files)).options(joinedload(models.Board.like_people)).order_by(desc(models.Board.id)).offset(skip).limit(limit).all()
 
 def get_board(db: Session, board_id: int): 
     return db.query(models.Board).options(
@@ -51,12 +53,15 @@ async def create_board(db: Session, title: str, content: str, files: str, memo_i
     file_list = []
     
     for file in file_data:
+        extension = file.filename.split(".")[-1]
+        
         save_file = await file.read()
-        file_name = "{}.jpg".format(str(uuid.uuid4()))
-        save_name = os.path.join(BOARDS_DIR, file_name)
-        file_list.append(models.Files(board_id = board_db_create.id, file_name = os.path.relpath(save_name, BASE_DIR)))
-        with open (save_name, "wb") as f:
-            f.write(save_file)
+        convert_image = io.BytesIO(save_file)
+        file_name = "{name}.{extension}".format(name = str(uuid.uuid4()), extension = extension)
+
+        file_list.append(models.Files(board_id = board_db_create.id, file_name = file_name))
+        S3.upload_fileobj(convert_image, "levupbucket", 
+                          "boards/{file_name}".format(file_name = file_name))
         
     db.bulk_save_objects(file_list)
             

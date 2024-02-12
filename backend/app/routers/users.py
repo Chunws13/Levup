@@ -5,11 +5,13 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.json_util import dumps
 from auth.login_auth import User_Auth
-import certifi, hashlib, datetime, jwt, os, json, uuid
+from connections.aws_s3 import aws_s3_connection
+import certifi, hashlib, datetime, jwt, os, json, io
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USER_DIR = os.path.join(BASE_DIR, "images/users")
+S3 = aws_s3_connection()
 
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -74,30 +76,43 @@ def get_user_info(Authorization : Annotated[Union[str, None], Header()] = None):
     else:
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
+@router.get('/profile')
+def get_user_profile(user_name: str):
+    try:
+        user = db.users.find_one({"id": user_name})
+        
+        return {"data": user["profile"] }
+    
+    except:
+        return {"data": False}
+        
+
 @router.post("/profile")
 async def change_profile(profile: UploadFile, Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
     extension = profile.filename.split(".")[-1]
-
+    
+    if extension.lower() not in ["jpeg", " jpg", "png"]:
+        raise HTTPException(status_code=422, detail= "지원하지 않는 이미지 형식입니다.")
+        
     if result["status"]:
         try:
             profile_image = await profile.read()
-            save_name = os.path.join(USER_DIR, 
-                                     "{filename}.{extension}".format(filename=result["data"], extension=extension))
+            convert_image = io.BytesIO(profile_image)
+            save_name = "{filename}.{extension}".format(filename=result["data"], extension=extension)
             
-            if os.path.isfile(save_name):
-                os.remove(save_name)
-
-            profile_info = os.path.relpath(save_name, BASE_DIR)
-
+            # 기존에 등록된 이미지 삭제
+            user_profile = db.users.find_one({"id" : result["data"]})["profile"]            
+            S3.delete_object(Bucket="levupbucket", Key = "users/{}".format(user_profile))
+            
             db.users.update_one({"id": result["data"]},
-                                {"$set": {"profile": profile_info}},
+                                {"$set": {"profile": save_name}},
                                 upsert = True)
-            
-            with open (save_name, "wb") as f:
-                f.write(profile_image)
-            return {"filename": profile.filename}
+
+            # 신규 이미지 등록
+            S3.upload_fileobj(convert_image, "levupbucket", "users/" + save_name)
+            return {"filename": save_name}
         
         except:
             raise HTTPException(status_code=404, detail="예상하지 못한 오류가 발생했습니다.")
@@ -111,9 +126,13 @@ def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None)
     
     if result["status"]:
         try:
+            user_profile = db.users.find_one({"id" : result["daviewerta"]})["profile"]
+            
             db.users.update_one({"id": result["data"]},
                                 {"$set": {"profile": False}},
                                 upsert = True)
+            
+            S3.delete_object(Bucket="levupbucket", Key = "users/" + user_profile)
             
             return {"status": 200, "detail": "프로필 삭제 성공"}
 

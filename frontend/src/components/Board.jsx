@@ -13,6 +13,7 @@ const Board = () => {
 
     const [selectPage, setSelectPage] = useState(1);
     const [allPages, setAllpages] = useState(0);
+    const [viewer, setViewer] = useState(null);
     const navigate = useNavigate();
 
     let pageList = [];
@@ -53,26 +54,40 @@ const Board = () => {
     
     const PushLike = async({ token, board_id }) => {
         try{
-            if (token !== undefined){
-                await axios.get(`http://127.0.0.1:8000/api/boards/${board_id}/like`,
-                    {headers : {
-                        "Authorization" : token,
-                        "Content-Type": "application/json"
-                        }});
-                return GetBoard();
-
-            } else {
-                navigate("/login");
-            }
+            await axios.get(`http://127.0.0.1:8000/api/boards/${board_id}/like`,
+                {headers : {
+                    "Authorization" : token,
+                    "Content-Type": "application/json"
+                    }});
+            GetBoard();
 
         } catch (error) {
-            alert(error.detail);
-        }
-    }
+            alert(error.response.data.detail);
+            navigate("/login");
+        };
+    };
+
+    const GetViewer = async() => {
+        try{
+            const response = await axios.get(`http://127.0.0.1:8000/api/users/`,
+                                    {headers : {
+                                        "Authorization" : token,
+                                        "Content-Type": "application/json"
+                                        }});
+            
+            setViewer(response.data.data.id);
+
+            } catch(error) {
+                alert(error.response.data.detail);
+            }
+    };
    
     useEffect(() => {
         GetBoardCount();
         GetBoard();
+        if (token !== undefined){
+            GetViewer();
+        }
 
     }, [selectPage]);
 
@@ -88,10 +103,12 @@ const Board = () => {
                             content={item.content}
                             files = {item.files}
                             like = {item.like}
+                            likeList = {item.like_people}
                             reply = {item.comment}
                             create_datetime={item.created_datetime}
                             now_date = {now_date}
                             token = {token}
+                            viewer = {viewer}
                             PushLike = {PushLike}
                         />
                     </Row>

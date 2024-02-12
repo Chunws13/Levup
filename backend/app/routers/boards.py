@@ -81,7 +81,7 @@ async def delete_board(board_id: int, db: Session = Depends(get_db), Authorizati
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
 
 @router.get("/{board_id}/like")
-async def like_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
+def like_board(board_id: int, db: Session = Depends(get_db), Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
     if result["status"]:

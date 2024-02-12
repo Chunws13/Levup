@@ -46,13 +46,12 @@ const User = () => {
             await GetUser();
 
         } catch(error) {
-            console.log(error.response.data.detail);
+            alert(error.response.data.detail);
         }
 
     };
     
     const DeleteProfile = async() => {
-        console.log("delete button click")
         try{
             await axios.delete("http://127.0.0.1:8000/api/users/profile",
                 { headers : {
@@ -62,7 +61,7 @@ const User = () => {
             await GetUser();
 
         } catch(error){
-            console(error.response.data.detail);
+            alert(error.response.data.detail);
         };
     };
 
@@ -73,7 +72,7 @@ const User = () => {
 
     useEffect( () => {
         GetUser();
-        
+
     }, [])
 
     return (
@@ -94,7 +93,7 @@ const User = () => {
             </Row>
             <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height: "40vh"}}>
                 { userInfo.profile ? 
-                    <Image roundedCircle src={`http://127.0.0.1:8000/${userInfo.profile}?timestamp=${Date.now()}`}/>
+                    <Image roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${userInfo.profile}?timestamp=${Date.now()}`}/>
                     :
                     <Image roundedCircle src={Profile} style={{height: "100%"}}/>
                 }

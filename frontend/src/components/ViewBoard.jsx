@@ -1,5 +1,5 @@
 import { Container, Form, Row, Col, Button, Image, Carousel } from "react-bootstrap"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Comment from "./Comment";
@@ -7,12 +7,15 @@ import LikeImage from '../images/likeIcon.png'
 import CommentImage from '../images/commentIcon.png'
 import Profile from '../images/basicProfile.jpeg'
 
-const ViewBoard = ({board_id, writer, title, content, files, like, reply, 
-    create_datetime, now_date, token, PushLike}) => {
+const ViewBoard = ({board_id, writer, title, content, files, like, likeList, reply, 
+    create_datetime, now_date, token, viewer, PushLike}) => {
     
     const [allReply, setAllReply] = useState(reply);
+    const [likeState, setLikeState] = useState(false);
     const [contentState, setContentState] = useState(false);
     const [commentState, setCommentState] = useState(false);
+    const [writerProfile, setWriterProfile] = useState(false);
+
     const [index, setIndex] = useState(0);
 
     const navigate = useNavigate();
@@ -75,16 +78,12 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
     }
 
     const Like = () => {
+        setLikeState(!likeState);
         PushLike({token, board_id});
     }
      
     const CommentControl = (event) => {
-        if (event.target.id === "reply"){
-            setCommentState(!commentState);
-
-        } else {
-            setCommentState(false);
-        }
+        setCommentState(!commentState);
     }
     
     const SelectFile = (selectedIndex) => {
@@ -95,11 +94,41 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
         setContentState(!contentState);
     }
 
+    const GetUserProfile = async() => {
+        try{
+            const response = await axios.get(`http://127.0.0.1:8000/api/users/profile?user_name=${writer}`,
+                                    {
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        }
+                                    });
+
+            setWriterProfile(response.data.data);
+
+        } catch(error) {
+            alert(error.response.data.detail);
+        }
+    }
+
+    useEffect(() => {
+        GetUserProfile();
+
+        for (let i = 0; i < likeList.length; i ++){
+            if (likeList[i]["people"] === viewer) {
+                setLikeState(true);
+            }
+        };
+        
+    }, [])
+
     return (
-        <Container onClick={CommentControl} style={{padding: "3vh"}}>
+        <Container style={{padding: "3vh"}}>
             <Row >
                 <Col xs={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}} >
-                    <Image src={Profile} rounded style={{width: "100%", height: "auto"}} /> 
+                    { writerProfile ?
+                        <Image src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${writerProfile}`} rounded style={{width: "100%", height: "auto"}} /> 
+                        : <Image src={Profile} rounded style={{width: "100%", height: "auto"}} /> 
+                    }
                 </Col>
                 <Col style={{fontSize: "5vw"}}>
                     <Row>
@@ -117,18 +146,20 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
                     { files.length > 0 ? files.map((file, index) => {
                         return ( 
                             <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "35vh"}}>
-                                <Image thumbnail src = {`http://127.0.0.1:8000/${file.file_name}`} alt = "" style={{width: "100%", height: "auto"}}/>
+                                <Image thumbnail src = {`https://levupbucket.s3.ap-northeast-2.amazonaws.com/boards/${file.file_name}`} alt = "" style={{width: "100%", height: "auto"}}/>
                             </Carousel.Item>
                             )
                         }) : 
                             ""
-                            }
+                    }
                 </Carousel>
             </Row>
             <Row className="justify-content-start" style={{padding: "3vw", fontSize: "5vw"}}>
-                {title}
+                <Row>
+                    {title}
+                </Row>
                 { contentState ? 
-                    <Row className="justify-content-start" onClick={ContentView} style={{paddingLeft: "vw", fontSize: "5vw"}}>
+                    <Row className="justify-content-start" onClick={ContentView} style={{paddingLeft: "3vw", fontSize: "5vw"}}>
                         {content}
                     </Row>
                     :    
@@ -144,14 +175,24 @@ const ViewBoard = ({board_id, writer, title, content, files, like, reply,
 
                 </Col>
                 <Col xs={2} onClick={Like} style={{display:"flex", justifyContent:"center"}}>
-                    <Image src={LikeImage}  style={{width: "70%", height: "100%"}}/>
+                    <Col>
+                    { likeState ? 
+                        <Image src={LikeImage}  style={{width: "80%", height: "100%", backgroundColor: "red"}}/>
+                        
+                        : <Image src={LikeImage}  style={{width: "80%", height: "100%"}}/>
+                    }
+                    </Col>
+                        {like}
                 </Col>
                 
-                <Col xs={2} style={{display:"flex", justifyContent:"center"}}>
-                    <Image src={CommentImage} id="reply"  size="sm" style={{width: "70%", height: "100%"}}/>
+                <Col xs={2} onClick={CommentControl} style={{display:"flex", justifyContent:"center"}}>
+                    <Col>
+                        <Image src={CommentImage} id="reply" size="sm" style={{width: "70%", height: "100%"}}/>
+                    </Col>
+                        {allReply.length}
                 </Col>
                     { commentState &&(
-                        <Container style={{ position:"fixed",
+                        <Container onClick={CommentControl} style={{ position:"fixed",
                             bottom: 0, left: 0, width: "100vw", height: "100vh", padding: 0,
                             zIndex: 1000}}>
                             <Container style={{height: "50%"}}>

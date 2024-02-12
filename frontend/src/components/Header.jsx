@@ -54,7 +54,7 @@ const Header = () => {
                             <Image src={Ni} alt='포인트샵' roundedCircle style={{width: "80%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
-                            공지
+                            공지 / 제보
                         </Row>
                     </Link>
                 </Col>
