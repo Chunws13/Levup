@@ -60,8 +60,7 @@ const CreateBaord = () => {
             navigate('/boards');
 
         } catch(error){
-            alert(error)
-            navigate('/');
+            alert(error.response.data.detail);
         };
     };
 

@@ -120,7 +120,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
         };
         
     }, [])
-
+    
     return (
         <Container style={{padding: "3vh"}}>
             <Row >
@@ -135,7 +135,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                         {writer}
                     </Row>
                     <Row>
-                        {GetDate()}
+                        { GetDate() }
                     </Row>
                 </Col>
             </Row>

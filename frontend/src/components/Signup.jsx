@@ -12,21 +12,6 @@ const Signup = () => {
     const [password2, setPassword2] = useState("");
     const [email, setEmail] = useState("");
 
-    const ChangeId = (event) => {
-        setId(event.target.value);    
-    }
-    const ChangePassword = (event) => {
-        setPassword(event.target.value);    
-    }
-
-    const ChangePassword2 = (event) => {
-        setPassword2(event.target.value);
-    }
-
-    const ChangeEmail = (event) => {
-        setEmail(event.target.value);    
-    }
-
     const SubmitFunc = async(event) => {
         event.preventDefault();
         const postData = {id, password, email};
@@ -36,8 +21,8 @@ const Signup = () => {
 
         } catch(error) {
             alert(error.response.data.detail);
-        }
-    }
+        };
+    };
 
   return (
     <Container className="d-flex align-items-center justify-content-center" 
@@ -47,26 +32,31 @@ const Signup = () => {
 
                 <Form.Group className="mb-2" controlId="formbasicEmail" >
                     <Form.Label> ID </Form.Label>
-                    <Form.Control onChange={ChangeId} value={id} type="text" name='id'/>
+                    <Form.Control onChange={(event) => setId(event.target.value)} 
+                            value={id} type="text" name='id'/>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                     <Form.Label> Password </Form.Label>
-                    <Form.Control onChange={ChangePassword} value={password} type="password" name="pw"/>
+                    <Form.Control onChange={(event) => setPassword(event.target.value)} 
+                            value={password} type="password" name="pw"/>
 
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                     <Form.Label> Password Check </Form.Label>
-                    <Form.Control onChange={ChangePassword2} value={password2} type="password" name="pw2"/>
-                    { password === password2 || password2.length === 0 ? '' : 
+                    <Form.Control onChange={(event) => setPassword2(event.target.value)} 
+                            value={password2} type="password" name="pw2"/>
+                        
+                            { password === password2 || password2.length === 0 ? '' : 
                     <Form.Label style={{color : "red", fontSize : "12px"}}> 비밀번호가 일치하지 않습니다. </Form.Label>}
                     
                 </Form.Group>
                 
                 <Form.Group className="mb-3">
                     <Form.Label> Email </Form.Label>
-                    <Form.Control onChange={ChangeEmail} value={email} type="text" name="email"/>
+                    <Form.Control onChange={(event) => setEmail(event.target.value)} 
+                            value={email} type="text" name="email"/>
                 </Form.Group>
 
                 <div className="d-grid gap-2">

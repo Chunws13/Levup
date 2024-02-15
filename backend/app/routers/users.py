@@ -91,16 +91,16 @@ def get_user_profile(user_name: str):
 async def change_profile(profile: UploadFile, Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
-    extension = profile.filename.split(".")[-1]
+    filename, extension = os.path.splitext(profile.filename)
     
-    if extension.lower() not in ["jpeg", " jpg", "png"]:
-        raise HTTPException(status_code=422, detail= "지원하지 않는 이미지 형식입니다.")
+    if extension.lower() not in [".jpeg", ".jpg", ".png"]:
+        raise HTTPException(status_code = 422, detail= "지원하지 않는 이미지 형식입니다.")
         
     if result["status"]:
         try:
             profile_image = await profile.read()
             convert_image = io.BytesIO(profile_image)
-            save_name = "{filename}.{extension}".format(filename=result["data"], extension=extension)
+            save_name = "{filename}{extension}".format(filename=result["data"], extension=extension)
             
             # 기존에 등록된 이미지 삭제
             user_profile = db.users.find_one({"id" : result["data"]})["profile"]            
@@ -111,7 +111,7 @@ async def change_profile(profile: UploadFile, Authorization : Annotated[Union[st
                                 upsert = True)
 
             # 신규 이미지 등록
-            S3.upload_fileobj(convert_image, "levupbucket", "users/" + save_name)
+            S3.upload_fileobj(convert_image, "levupbucket", "users/" + save_name, ExtraArgs={"ContentType": profile.content_type})
             return {"filename": save_name}
         
         except:

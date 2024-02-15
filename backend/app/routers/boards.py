@@ -41,12 +41,10 @@ async def create_board( memo_id: str, title : str = Form(), content: str = Form(
     
     login_check = User_Auth(Authorization).check_auth()
     if login_check["status"]:
-        try:
-            return await crud.create_board(db = db, memo_id = memo_id, title = title, content = content, 
-                                     files = files, writer = login_check["data"])
         
-        except:
-            raise HTTPException(status_code=404, detail="오류가 발생했습니다.")
+        return await crud.create_board(db = db, memo_id = memo_id, title = title, content = content, 
+                                        files = files, writer = login_check["data"])
+        
     
     else:
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")

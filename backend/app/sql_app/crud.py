@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
 from connections.aws_s3 import aws_s3_connection
-import certifi, os, uuid, io
+import certifi, os, uuid, io, json
 from . import models, schemas
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,18 +34,13 @@ async def create_board(db: Session, title: str, content: str, files: str, memo_i
     memo_info = mongodb.memo.find_one({"_id" : memo_id})
     
     if memo_info["admit_status"]:
-        raise HTTPException(status_code=404, detail="메모가 없습니다")
+        raise HTTPException(status_code=404, detail="인증을 완료한 메모입니다")
 
     if memo_info["writer"] != writer:
         raise HTTPException(status_code=404, detail="권한이 없습니다")
     
     board_db_create = models.Board(writer = writer, title = title, content = content)
     
-    mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"admit_status" : True}})
-
-    user = mongodb.users.find_one({"id": writer})
-    mongodb.users.update_one({"id": writer}, {"$set": {"board": user["board"] + 1}})
-
     db.add(board_db_create)
     db.flush()
     
@@ -53,7 +48,11 @@ async def create_board(db: Session, title: str, content: str, files: str, memo_i
     file_list = []
     
     for file in file_data:
-        extension = file.filename.split(".")[-1]
+        filename, extension = os.path.splitext(file.filename)
+        
+        if extension.lower() not in [".jpg", ".jpeg", ".png"]:
+            message = "지원하지 않는 확장자 {}".format(file.filename)
+            raise HTTPException(status_code=422, detail= message)
         
         save_file = await file.read()
         convert_image = io.BytesIO(save_file)
@@ -61,13 +60,16 @@ async def create_board(db: Session, title: str, content: str, files: str, memo_i
 
         file_list.append(models.Files(board_id = board_db_create.id, file_name = file_name))
         S3.upload_fileobj(convert_image, "levupbucket", 
-                          "boards/{file_name}".format(file_name = file_name))
-        
-    db.bulk_save_objects(file_list)
-            
-    db.commit()
-    db.refresh(board_db_create)
+                        "boards/{file_name}".format(file_name = file_name), ExtraArgs ={"ContentType": file.content_type})
+
+    mongodb.memo.update_one({"_id": memo_id}, {"$set" : {"admit_status" : True}})
     
+    user = mongodb.users.find_one({"id": writer})
+    mongodb.users.update_one({"id": writer}, {"$set": {"board": user["board"] + 1}})
+    
+    db.bulk_save_objects(file_list)
+    db.commit()
+
     return {"status": True, "data" : "인증글 생성 성공"}
 
 def edit_board(db: Session, edit_board: schemas.Edit_Board, board_id: int, writer: str):
