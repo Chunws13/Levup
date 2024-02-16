@@ -6,6 +6,7 @@ import Board from './Board';
 import Header from './Header'
 import CreateBaord from './CreateBoard';
 import User from './User';
+import Report from './Report';
 
 const Router = () => (
     
@@ -18,6 +19,7 @@ const Router = () => (
             <Route path = "/signup" element={<Signup/>} />
             <Route path = "/boards" element={<Board/>} />
             <Route path = "/boards/create" element={<CreateBaord/>} />
+            <Route path = "/reports" element={<Report/>} />
         </Routes>
     </BrowserRouter>
     

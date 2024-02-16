@@ -143,14 +143,17 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
 
             <Row >
                 <Carousel activeIndex={index} onSelect={SelectFile} slide={false} fade >
-                    { files.length > 0 ? files.map((file, index) => {
-                        return ( 
-                            <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "35vh"}}>
-                                <Image thumbnail src = {`https://levupbucket.s3.ap-northeast-2.amazonaws.com/boards/${file.file_name}`} alt = "" style={{width: "100%", height: "auto"}}/>
-                            </Carousel.Item>
-                            )
-                        }) : 
-                            ""
+                    { files.length > 0 ? 
+                        files.map((file, index) => {
+                            return ( 
+                                    <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "35vh"}}>
+
+                                        <Image thumbnail src = {`https://levupbucket.s3.ap-northeast-2.amazonaws.com/boards/${file.file_name}`} 
+                                            alt={`slide ${index}`} style={{width: "100%", height: "auto"}}/>
+
+                                    </Carousel.Item>
+                                )
+                            }) : ""
                     }
                 </Carousel>
             </Row>

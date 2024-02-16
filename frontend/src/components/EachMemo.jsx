@@ -26,13 +26,13 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
                 { status ? // 완료되었는가?
                     <Row>
                         <Col xs={8}>
-                            <label className='memo' style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "scroll", fontSize:"5vw"}}> <del> { content } </del> </label>
+                            <label className='memo' style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "auto", whiteSpace: "nowrap",fontSize:"5vw"}}> <del> { content } </del> </label>
                         </Col>
-                        { admit_status ? 
+                        { admit_status ? // 인증글을 올렸는가?
                         <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
                             <Button variant="outline-danger" size="sm" style={{fontSize:"3vw"}}> 완료 </Button>
                         </Col>
-                         : // 인증글을 올렸는가?
+                         : 
                         <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
                              <Link to={`boards/create?id=${memoId}`}>
                                  <Button variant="outline-danger" size="sm" style={{fontSize:"3vw"}}> 인증 </Button>

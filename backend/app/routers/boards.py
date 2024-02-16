@@ -8,9 +8,6 @@ from dotenv import load_dotenv
 import os
 
 models.Base.metadata.create_all(bind=engine)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv(os.path.join(BASE_DIR, ".env"))
-
 router = APIRouter(prefix="/api/boards", tags=["boards"])
 
 def get_db():

@@ -1,23 +1,15 @@
-from fastapi import APIRouter, HTTPException, Header, UploadFile, File
+from fastapi import APIRouter, HTTPException, Header, UploadFile
 from typing import Union, Annotated
 from models.users import User_Login, User_Create
-from pymongo import MongoClient
-from dotenv import load_dotenv
 from bson.json_util import dumps
 from auth.login_auth import User_Auth
+from connections.mongodb import MongodbConntect
 from connections.aws_s3 import aws_s3_connection
-import certifi, hashlib, datetime, jwt, os, json, io
+import hashlib, datetime, jwt, os, json, io
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-USER_DIR = os.path.join(BASE_DIR, "images/users")
 S3 = aws_s3_connection()
-
-load_dotenv(os.path.join(BASE_DIR, ".env"))
-
-ca = certifi.where()
-client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
-db = client.chunws
+db = MongodbConntect("chunws")
 
 @router.post("/signup")
 def signup(Users: User_Create):

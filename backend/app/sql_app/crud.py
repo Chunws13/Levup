@@ -5,18 +5,12 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
 from connections.aws_s3 import aws_s3_connection
+from connections.mongodb import MongodbConntect
 import certifi, os, uuid, io, json
 from . import models, schemas
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BOARDS_DIR = os.path.join(BASE_DIR, "images/boards")
 S3 = aws_s3_connection()
-
-load_dotenv(os.path.join(BASE_DIR, ".env"))
-
-ca = certifi.where()
-client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
-mongodb = client.chunws
+mongodb = MongodbConntect("chunws")
 
 def get_all_board(db: Session):
     return db.query(models.Board).count()

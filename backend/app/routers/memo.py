@@ -2,19 +2,13 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import Union, Annotated
 from models.memo import Memo, Edit_Memo
 from auth.login_auth import User_Auth
-from pymongo import MongoClient
+from connections.mongodb import MongodbConntect
 from bson.json_util import dumps
 from bson.objectid import ObjectId
-from dotenv import load_dotenv
-import certifi, datetime, json, os
+import datetime, json
 
 router = APIRouter(prefix = "/api/memo", tags = ["memo"])
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv(os.path.join(BASE_DIR, ".env"))
-
-ca = certifi.where()
-client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
-db = client.chunws
+db = MongodbConntect("chunws")
 
 @router.get("/calendar")
 def get_all_memo(year: int, month: int, Authorization : Annotated[Union[str, None], Header()] = None):

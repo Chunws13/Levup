@@ -1,7 +1,6 @@
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import Pl from '../images/PL.png'
 import Myi from '../images/myInfoIcon.png'
-import Ti from '../images/tmp_img.ico'
 import Ai from '../images/authIcon.png'
 import Mi from '../images/memoIcon.png'
 import Ni from '../images/noticeIcon.png'
@@ -49,9 +48,9 @@ const Header = () => {
                     </Link>
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                    <Link to ='/reports/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ni} alt='포인트샵' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Ni} alt='제보 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             공지 / 제보

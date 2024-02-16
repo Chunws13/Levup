@@ -15,20 +15,8 @@ const CreateBaord = () => {
     const [file, setFile] = useState(null);
     const [content, setContent] = useState("");
 
-    const SelectFile = (event) => {
-        setFile(event.target.files);
-    }
-
     const Cancel = () => {
         navigate('/');
-    }
-
-    const ChangeTitle = (event) => {
-        setTitle(event.target.value);
-    }
-
-    const ChangeContent = (event) => {
-        setContent(event.target.value);
     }
 
     const PostBoard = async(event) => {
@@ -68,22 +56,24 @@ const CreateBaord = () => {
         <Container fluid style={{height : "75vh", padding: "3vh"}}>
             <Form onSubmit={PostBoard}>
                 <Form.Group className='mb-3'>
-                    <Form.Control onChange={ChangeTitle} value={title} type='text' style={{fontSize: "3vw"}} placeholder='제목을 입력하세요.'/>
+                    <Form.Control onChange={(event) => setTitle(event.target.value)} 
+                            value={title} type='text' style={{fontSize: "3vw"}} placeholder='제목을 입력하세요.'/>
                 </Form.Group>
 
                 <Form.Group className='mb-3' style={{fontSize: "3vw"}}>
                     <Form.Label> 인증 사진 첨부 </Form.Label>
-                    <Form.Control onChange={SelectFile} type="file" multiple style={{fontSize: "3vw"}} /> 
+                    <Form.Control onChange={(event) => setFile(event.target.files)} type="file" multiple style={{fontSize: "3vw"}} /> 
                 
                 </Form.Group>
 
                 <Form.Group className='mb-3' >
-                    <Form.Control onChange={ChangeContent} value={content} as='textarea' style={{fontSize: "3vw"}} placeholder='내용을 입력하세요' />
+                    <Form.Control onChange={(event) => setContent(event.target.value)} 
+                            value={content} as='textarea' style={{fontSize: "3vw"}} placeholder='내용을 입력하세요' />
                 </Form.Group>
 
                 <Row className="justify-content-end">
                     <Col style={{display: "flex", justifyContent :"flex-start"}}>
-                        <Button onClick={Cancel} style={{fontSize: "3vw"}}> 
+                        <Button onClick={() => {navigate('/')}} style={{fontSize: "3vw"}}> 
                         취소
                     </Button>
                     </Col>
