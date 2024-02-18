@@ -4,8 +4,6 @@ from sqlalchemy.orm import Session
 from sql_app import crud, models, schemas
 from sql_app.database import SessionLocal, engine
 from auth.login_auth import User_Auth
-from dotenv import load_dotenv
-import os
 
 models.Base.metadata.create_all(bind=engine)
 router = APIRouter(prefix="/api/boards", tags=["boards"])
