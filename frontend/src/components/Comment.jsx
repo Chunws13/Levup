@@ -1,33 +1,19 @@
-import axios from "axios";
 import { Container, Row, Col, Image } from "react-bootstrap"
-import Profile from '../images/basicProfile.jpeg'
 import { useEffect, useState } from "react";
+import { API } from "../API";
+import { ConvertDate } from "./utils/ConvertDate";
+import Profile from '../images/basicProfile.jpeg'
 
-const Comment = ({writer, created_datetime, content, now_date}) => {
+const Comment = ({writer, created_datetime, content}) => {
 
-    const fulldatetime = new Date(created_datetime);
-    const now_year = now_date.getFullYear();
     const [commenter, setCommenter] = useState(false);
     
-    let year = fulldatetime.getFullYear();
-    let month = fulldatetime.getMonth() + 1;
-    let day = fulldatetime.getDate();
-
-    let hour = fulldatetime.getHours();
-    let minute = fulldatetime.getMinutes();
-
     useEffect( () => {
         const GetCommenter = async() => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/users/profile?user_name=${writer}`,
-                                                {
-                                                    headers: {
-                                                        "Content-Type": "application/json"
-                                                    }
-                                                });
+                const response = await API.getCommenter(writer);
                 setCommenter(response.data.data);
-    
-    
+
             } catch (error) {
                 alert(error.response.data.detail);
             };
@@ -36,18 +22,6 @@ const Comment = ({writer, created_datetime, content, now_date}) => {
         GetCommenter();
 
     }, []);
-
-    const GetDate = () =>{
-        month = month < 10 ? `0${month}` : month
-        day = day < 10 ? `0${day}` : day
-        hour = hour < 10 ? `0${hour}` : hour
-        minute = minute < 10 ? `0${minute}` : minute
-
-        if (now_year === year){
-            return `${month}-${day} ${hour}:${minute}`
-        }
-        return `${year}-${month}-${day} ${hour}:${minute}`
-    }
 
     return (
         <Container style={{padding: "1.5vw", color: "wheat"}}>
@@ -68,7 +42,7 @@ const Comment = ({writer, created_datetime, content, now_date}) => {
                     </Row>
                 </Col>
                 <Col style={{display:"flex", justifyContent:"flex-end"}}>
-                    {GetDate()}
+                    {ConvertDate(created_datetime)}
                 </Col>
             </Row>  
         </Container>

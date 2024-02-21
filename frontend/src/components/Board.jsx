@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { Container, Row, Pagination } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { API } from "../API";
 import ViewBoard from "./ViewBoard";
 
 const Board = () => {
     const [board, setBoard] = useState([]);
-    const now_date = new Date();
     const cookie = new Cookies();
     const token = cookie.get("token");
 
@@ -18,23 +17,17 @@ const Board = () => {
 
     let pageList = [];
 
-    const PageChange = (page) => {
-        setSelectPage(page);
-        
-    };
-
     for (let number = Math.max(1, selectPage - 2); number <= Math.min(allPages, selectPage + 2); number ++){
         pageList.push(
-            <Pagination.Item key = {number} active= {number === selectPage} onClick={() => PageChange(number)}>
+            <Pagination.Item key = {number} active= {number === selectPage} onClick={() => setSelectPage(number)}>
                 {number}
             </Pagination.Item>
         )
     };
 
-
     const GetBoardCount = async() => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/boards/`);
+            const response = await API.getBoardCount();
             setAllpages(Math.ceil(response.data / 10));
             
         } catch {
@@ -44,7 +37,7 @@ const Board = () => {
 
     const GetBoard = async() => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/boards/page?skip=${(selectPage - 1)*10}&limit=10`);
+            const response = await API.getBoard(selectPage);
             setBoard(response.data);
             
         } catch {
@@ -54,11 +47,12 @@ const Board = () => {
     
     const PushLike = async({ token, board_id }) => {
         try{
-            await axios.get(`http://127.0.0.1:8000/api/boards/${board_id}/like`,
-                {headers : {
-                    "Authorization" : token,
-                    "Content-Type": "application/json"
-                    }});
+            const headers = {
+                "Authorization" : token,
+                "Content-Type": "application/json"
+            };
+
+            await API.pushLike(board_id, headers);
             GetBoard();
 
         } catch (error) {
@@ -69,12 +63,12 @@ const Board = () => {
 
     const GetViewer = async() => {
         try{
-            const response = await axios.get(`http://127.0.0.1:8000/api/users/`,
-                                    {headers : {
-                                        "Authorization" : token,
-                                        "Content-Type": "application/json"
-                                        }});
+            const headers = {
+                "Authorization" : token,
+                "Content-Type": "application/json"
+                }
             
+            const response = await API.getViewer(headers);
             setViewer(response.data.data.id);
 
             } catch(error) {
@@ -106,7 +100,6 @@ const Board = () => {
                             likeList = {item.like_people}
                             reply = {item.comment}
                             create_datetime={item.created_datetime}
-                            now_date = {now_date}
                             token = {token}
                             viewer = {viewer}
                             PushLike = {PushLike}
@@ -115,11 +108,11 @@ const Board = () => {
                 )
             })}
             <Pagination style={{display: "flex", justifyContent: "center"}}>
-                <Pagination.First onClick={() => PageChange(1)}/>
-                <Pagination.Prev onClick={() => {PageChange(Math.max(1, selectPage - 1))}}/>
+                <Pagination.First onClick={() => setSelectPage(1)}/>
+                <Pagination.Prev onClick={() => {setSelectPage(Math.max(1, selectPage - 1))}}/>
                     {pageList}
-                <Pagination.Next onClick={() => {PageChange(Math.max(allPages, selectPage - 1))}}/>
-                <Pagination.Last onClick={() => PageChange(allPages)}/> 
+                <Pagination.Next onClick={() => {setSelectPage(Math.max(allPages, selectPage - 1))}}/>
+                <Pagination.Last onClick={() => setSelectPage(allPages)}/> 
             </Pagination>
         </Container>
     )

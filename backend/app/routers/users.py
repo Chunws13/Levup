@@ -10,6 +10,7 @@ import hashlib, datetime, jwt, os, json, io
 router = APIRouter(prefix = "/api/users", tags=["users"])
 S3 = aws_s3_connection()
 db = MongodbConntect("chunws")
+jwt_token_key = os.environ["jwt_token_key"]
 
 @router.post("/signup")
 def signup(Users: User_Create):
@@ -48,7 +49,7 @@ def login(Users: User_Login):
     
     payload = {"id" : id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
     
-    token = jwt.encode(payload, "1234", algorithm="HS256")
+    token = jwt.encode(payload, jwt_token_key, algorithm="HS256")
     return {"status" : True , "token" : token}
 
 @router.get("/")
@@ -115,17 +116,15 @@ async def change_profile(profile: UploadFile, Authorization : Annotated[Union[st
 def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None):
     checker = User_Auth(Authorization)
     result = checker.check_auth()
-    
     if result["status"]:
         try:
-            user_profile = db.users.find_one({"id" : result["daviewerta"]})["profile"]
+            user_profile = db.users.find_one({"id" : result["data"]})["profile"]
             
             db.users.update_one({"id": result["data"]},
                                 {"$set": {"profile": False}},
                                 upsert = True)
             
             S3.delete_object(Bucket="levupbucket", Key = "users/" + user_profile)
-            
             return {"status": 200, "detail": "프로필 삭제 성공"}
 
         except:

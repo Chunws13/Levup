@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react'
 import { Cookies } from "react-cookie";
 import { useNavigate  } from 'react-router-dom';
 import { Form, Button, Container, Stack, Row, Col, Badge } from 'react-bootstrap'
+import { API } from '../API';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EachMemo from "./EachMemo"
 import Calendar from 'react-calendar';
@@ -40,10 +40,6 @@ function Memo() {
             </div>)
         }
 
-    const Writing = (event) => {
-        setWriteMemo(event.target.value);
-    }
-
     const SelectDate = (event) => {
         setDate(event);
         Get_memo({year : event.getFullYear(), month: event.getMonth()+ 1, day: event.getDate()});
@@ -52,17 +48,20 @@ function Memo() {
     const SubmitMemo = async(event) => {
         event.preventDefault();
         
-        try { await axios.post("http://127.0.0.1:8000/api/memo/", 
-                {   
-                    year: date.getFullYear(),
-                    month: date.getMonth()+ 1,
-                    day: date.getDate(),
-                    content : writeMemo 
-                },
-                { headers : {
-                    "Authorization" : token,
-                    "Content-Type": "application/json"
-                    }});
+        const body = {   
+            year: date.getFullYear(),
+            month: date.getMonth()+ 1,
+            day: date.getDate(),
+            content : writeMemo 
+        };
+
+        const headers =  {
+            "Authorization" : token,
+            "Content-Type": "application/json" 
+        };
+
+        try { 
+                await API.submitMomo(body, headers);
                 setWriteMemo("");
 
                 Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
@@ -75,13 +74,14 @@ function Memo() {
     };
 
     const EditMemo = async({memoId, content, token}) => {
-        try { await axios.put(`http://127.0.0.1:8000/api/memo/${memoId}`,
-                { content },
-                { headers : {
-                "Authorization" : token,
-                "Content-Type": "application/json"
-                }});
-                
+        try { 
+                const body = { content: content};
+                const headers = {
+                    "Authorization" : token,
+                    "Content-Type": "application/json"
+                    };
+
+                await API.editMemo(memoId, body, headers);
                 Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
 
         } catch {
@@ -89,12 +89,13 @@ function Memo() {
         }}
     
     const DeleteMemo = async({memoId, token}) =>{
-        try { await axios.delete(`http://127.0.0.1:8000/api/memo/${memoId}`,
-                { headers : {
-                "Authorization" : token,
-                "Content-Type": "application/json"
-                }});
+        try { 
+                const headers = {
+                    "Authorization" : token,
+                    "Content-Type": "application/json"
+                    };
 
+                await API.deleteMemo(memoId, headers);
                 Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
                 GetMonthMemo({year: date.getFullYear(), month: date.getMonth()+ 1});
                 
@@ -104,12 +105,11 @@ function Memo() {
 
     
     const Get_memo = async({year, month, day}) => {
-        try {  
-            if (token !== null) {
-                const response = await axios.get(`http://127.0.0.1:8000/api/memo/?year=${year}&month=${month}&day=${day}`, 
-                    { headers : {"Authorization" : token }});
-                setMemo(response.data.data);
-            };
+        try{
+            const headers = {"Authorization" : token };
+            const response = await API.getMemo(year, month, day, headers);
+            setMemo(response.data.data);
+
         } catch {
             
             navigate("login");   
@@ -119,11 +119,11 @@ function Memo() {
         const previewDate = newActiveStartDate.activeStartDate;
         GetMonthMemo({year: previewDate.getFullYear(), month: previewDate.getMonth() + 1});
     }
+
     const GetMonthMemo = async({year, month}) => {
         try {  
-            const response = await axios.get(`http://127.0.0.1:8000/api/memo/calendar?year=${year}&month=${month}`, 
-                { headers : {"Authorization" : token }});
-
+            const headers = {"Authorization" : token };
+            const response = await API.getMonthMemo(year, month, headers);
             setMonthMemo(response.data.data);
             
         } catch {
@@ -222,7 +222,8 @@ function Memo() {
                 <Form onSubmit={SubmitMemo}>
                     <Row>
                         <Col xs={8}>
-                            <Form.Control onChange={Writing} value={writeMemo} type="text" name="memo" placeholder=''/>
+                            <Form.Control onChange={(event) => setWriteMemo(event.target.value)} 
+                                value={writeMemo} type="text" name="memo" placeholder=''/>
                         </Col>
                         <Col>
                             <div className="d-grid gap-2">

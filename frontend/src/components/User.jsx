@@ -1,8 +1,8 @@
-import axios from "axios";
 import { Container, Row, Col, Image, ProgressBar, Dropdown, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
 import { useNavigate  } from 'react-router-dom';
+import { API } from "../API";
 import Profile from '../images/basicProfile.jpeg'
 
 const User = () => {
@@ -16,14 +16,16 @@ const User = () => {
     
     const GetUser = async() => {
         try{
-            const response = await axios.get("http://127.0.0.1:8000/api/users/",
-                { headers : {
-                    "Authorization" : token,
-                    "Content-Type": "application/json"
-                 }});
+            const headers = {
+                "Authorization" : token,
+                "Content-Type": "application/json"
+            };
 
-            setExpPercent(userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5) * 100);
+            const response = await API.getUser(headers);
+
             setUserInfo(response.data.data);
+            setExpPercent(Math.round(
+                userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5) * 100, 1));
 
         } catch (error) {
             alert(error.response.data.detail);
@@ -36,28 +38,24 @@ const User = () => {
         const formData = new FormData();
         formData.append("profile", userProfile);
 
+        const headers = {
+            "Authorization" : token
+        }
         try {
-            await axios.post("http://127.0.0.1:8000/api/users/profile",
-                formData,
-                { headers : {
-                    "Authorization" : token
-                 }});
-            
+            await API.selectProfile(formData, headers);
             await GetUser();
 
         } catch(error) {
             alert(error.response.data.detail);
         }
-
     };
     
     const DeleteProfile = async() => {
         try{
-            await axios.delete("http://127.0.0.1:8000/api/users/profile",
-                { headers : {
-                    "Authorization" : token
-                }});
-            
+            const headers = {
+                "Authorization" : token
+            }
+            await API.deleteProfile(headers);
             await GetUser();
 
         } catch(error){
@@ -72,8 +70,8 @@ const User = () => {
 
     useEffect( () => {
         GetUser();
-
-    }, [])
+        
+    }, [expPercent])
 
     return (
         <Container style={{height : "75vh", padding: "3vh"}}>
@@ -93,7 +91,7 @@ const User = () => {
             </Row>
             <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height: "40vh"}}>
                 { userInfo.profile ? 
-                    <Image roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${userInfo.profile}?timestamp=${Date.now()}`}/>
+                    <Image roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${userInfo.profile}?timestamp=${Date.now()}`} style={{width: "auto", height: "100%"}}/>
                     :
                     <Image roundedCircle src={Profile} style={{height: "100%"}}/>
                 }
@@ -110,8 +108,9 @@ const User = () => {
                 </Col>
             </Row>
 
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height : "5vh"}}>
-                <ProgressBar now ={expPercent} label={`Exp : ${userInfo.exp} ( ${expPercent}% )`}/>
+            <Row style={{display:"flex", justifyContent:"flex-start", fontSize : "5vw", height : "5vh"}}>
+                <ProgressBar style={{height: "50%"}}
+                    now ={expPercent} label={`Exp : ${userInfo.exp} ( ${expPercent}% )`}/>
             </Row>
             <Row style={{height : "5vh", fontSize : "5vw"}}>
                 <Col style={{display:"flex", justifyContent:"center"}}>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Container, Row, Col, Form } from 'react-bootstrap'
-import axios from 'axios'
 import { Cookies } from "react-cookie";
+import { API } from '../API';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const CreateBaord = () => {
@@ -14,10 +14,6 @@ const CreateBaord = () => {
     const [title, setTitle] = useState("");
     const [file, setFile] = useState(null);
     const [content, setContent] = useState("");
-
-    const Cancel = () => {
-        navigate('/');
-    }
 
     const PostBoard = async(event) => {
         event.preventDefault();
@@ -38,13 +34,12 @@ const CreateBaord = () => {
         };
 
         try{
-            await axios.post(`http://127.0.0.1:8000/api/boards/auth/${memoId}`,
-                formData,
-                { headers : {
-                    "Authorization" : token,
-                    "Content-Type": "multipart/form-data"
-                    }});
+            const headers = {
+                "Authorization" : token,
+                "Content-Type": "multipart/form-data"
+            };
 
+            await API.createBoard(memoId, formData, headers)
             navigate('/boards');
 
         } catch(error){

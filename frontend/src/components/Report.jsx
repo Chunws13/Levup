@@ -2,8 +2,8 @@ import { Form, Button, Container, Stack } from 'react-bootstrap'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
+import { API } from '../API';
 import EachReport from './EachReport';
-import axios from 'axios';
 
 const Report = () => {
     const cookie = new Cookies();
@@ -16,22 +16,21 @@ const Report = () => {
 
     const SubmitReport = async(event) => {
         event.preventDefault();
-        const postData = { 
+        const body = { 
             title : reportTitle,
             content: reportContent 
         };
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/reports/', 
-                { ...postData },
-                {    
-                    headers : {
-                        Authorization : token,
-                        "Content-Type": "application/json"
-                    }
-                });
+            const headers = {
+                Authorization : token,
+                "Content-Type": "application/json"
+            };
 
+            const response = await API.postReport(body, headers);
             setReportData([response.data.data, ...reportData]);
+            setReportTitle("");
+            setReportContent("");
             
         } catch (error){
             alert(error.response.data.detail);
@@ -40,13 +39,12 @@ const Report = () => {
 
     const GetReports = async() => {
         try{
-            const response = await axios.get('http://127.0.0.1:8000/api/reports/', {
-                headers : {
-                    Authorization : token,
-                    "Content-Type": "application/json"
-                }
-            });
+            const headers = {
+                Authorization : token,
+                "Content-Type": "application/json"
+            };
 
+            const response = await API.getReport(headers);
             setReportData(response.data.data);
     
         } catch(error){

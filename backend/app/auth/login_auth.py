@@ -1,14 +1,12 @@
-from pymongo import MongoClient
-import certifi, hashlib, datetime, jwt
 from dotenv import load_dotenv
-import os
+from connections.mongodb import MongodbConntect
+import os, jwt
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-ca = certifi.where()
-client = MongoClient(os.environ["db_address"], tlsCAFile=ca)
-db = client.chunws
+db = MongodbConntect("chunws")
+jwt_token_key = os.environ["jwt_token_key"]
 
 class User_Auth:
     def __init__(self, token):
@@ -17,7 +15,7 @@ class User_Auth:
     def check_auth(self):
         if self.token is not None:
             try:
-                payload = jwt.decode(self.token, "1234", algorithms="HS256")
+                payload = jwt.decode(self.token, jwt_token_key, algorithms="HS256")
                 user = db.users.find_one({"id" : payload["id"]}, {"_id" : False})
                 user_id = user["id"]
                 return {"status" : True, "data" : user_id}

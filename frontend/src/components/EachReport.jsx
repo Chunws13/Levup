@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useState } from "react";
+import { ConvertDate } from "./utils/ConvertDate";
 
 const EachReport = ({writer, title, content, reported_date}) => {
     const [contentCheck, setContentCheck] = useState(false);
@@ -11,7 +12,7 @@ const EachReport = ({writer, title, content, reported_date}) => {
                     {writer}
                 </Col>
                 <Col>
-                    {reported_date}
+                    {ConvertDate(reported_date)}
                 </Col>
             </Row>
             <Row>

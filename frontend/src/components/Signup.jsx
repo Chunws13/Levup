@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import { Form, Button, Container } from 'react-bootstrap'
 import { useState } from "react";
+import { API } from "../API";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Signup = () => {
@@ -14,9 +14,9 @@ const Signup = () => {
 
     const SubmitFunc = async(event) => {
         event.preventDefault();
-        const postData = {id, password, email};
+        const body = {id, password, email};
         try {
-            await axios.post("http://127.0.0.1:8000/api/users/signup", postData);
+            await API.userSignUp(body)
             naviage("/login");
 
         } catch(error) {
