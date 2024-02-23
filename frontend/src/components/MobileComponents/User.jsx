@@ -12,7 +12,6 @@ const User = () => {
 
     const [userInfo, setUserInfo] = useState({});
     const [expPercent, setExpPercent ] = useState(0);
-    const [profile, setProfile] = useState(null);
     
     const GetUser = async() => {
         try{
@@ -34,7 +33,6 @@ const User = () => {
 
     const SelectProfile = async(event) => {
         const userProfile = event.target.files[0]; 
-        setProfile(userProfile);
         const formData = new FormData();
         formData.append("profile", userProfile);
 

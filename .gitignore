@@ -1,3 +1,5 @@
 backend/.venv/
 backend/app/.env
 backend/app/.elasticbeanstalk
+
+docker-compose.yml
