@@ -1,12 +1,12 @@
 import { Container, Form, Row, Col, Button, Image, Carousel } from "react-bootstrap"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ConvertDate } from "./utils/ConvertDate";
-import { API } from "../API";
+import { ConvertDate } from "../utils/ConvertDate";
+import { API } from "../../API";
 import Comment from "./Comment";
-import LikeImage from '../images/likeIcon.png'
-import CommentImage from '../images/commentIcon.png'
-import Profile from '../images/basicProfile.jpeg'
+import LikeImage from '../../images/likeIcon.png'
+import CommentImage from '../../images/commentIcon.png'
+import Profile from '../../images/basicProfile.jpeg'
 
 const ViewBoard = ({board_id, writer, title, content, files, like, likeList, reply, 
     create_datetime, token, viewer, PushLike}) => {
@@ -16,11 +16,23 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
     const [contentState, setContentState] = useState(false);
     const [commentState, setCommentState] = useState(false);
     const [writerProfile, setWriterProfile] = useState(false);
+    const [submitState, setSubmitState] = useState(true);
 
     const [index, setIndex] = useState(0);
 
     const navigate = useNavigate();
     const [text, setText] = useState("");
+
+    const ChangeText = (event) => {
+        setText(event.target.value);
+        
+        if(event.target.value){
+            setSubmitState(false);
+
+        } else {
+            setSubmitState(true);
+        }
+    };
     
     const CreateComment = async(event) => {
         event.preventDefault();
@@ -60,7 +72,6 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
 
     useEffect(() => {
         GetUserProfile();
-
         for (let i = 0; i < likeList.length; i ++){
             if (likeList[i]["people"] === viewer) {
                 setLikeState(true);
@@ -115,7 +126,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                         {content}
                     </Row>
                     :    
-                    <Row className="justify-content-start" onClick={setContentState(!contentState)} 
+                    <Row className="justify-content-start" onClick={()=>setContentState(!contentState)} 
                         style={{paddingLeft: "3vw", fontSize: "5vw"}}>
                         더보기
                     </Row>
@@ -169,12 +180,12 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                                     <Row>
                                         <Col xs={9} className="d-flex align-items-center">
                                             <Form.Control style={{height: "3vh"}} 
-                                                value={text} onChange={(event) => setText(event.target.value)}
+                                                value={text} onChange={ChangeText}
                                                 type="text" name="memo" placeholder=''/>
                                         </Col>
                                         <Col xs={3}>
                                             <div className="d-grid gap-2">
-                                                <Button variant="success" type='submit' size="sm"> 등록 </Button>
+                                                <Button variant="success" type='submit' size="sm" disabled={submitState}> 등록 </Button>
                                             </div>
                                         </Col>
                                     </Row>

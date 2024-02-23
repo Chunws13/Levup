@@ -1,9 +1,9 @@
 import { Container, Row, Col, Image } from 'react-bootstrap'
-import Pl from '../images/PL.png'
-import Myi from '../images/myInfoIcon.png'
-import Ai from '../images/authIcon.png'
-import Mi from '../images/memoIcon.png'
-import Ni from '../images/noticeIcon.png'
+import Pl from '../../images/PL.png'
+import Myi from '../../images/myInfoIcon.png'
+import Ai from '../../images/authIcon.png'
+import Mi from '../../images/memoIcon.png'
+import Ni from '../../images/noticeIcon.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 

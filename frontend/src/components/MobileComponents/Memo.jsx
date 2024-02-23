@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Cookies } from "react-cookie";
 import { useNavigate  } from 'react-router-dom';
 import { Form, Button, Container, Stack, Row, Col, Badge } from 'react-bootstrap'
-import { API } from '../API';
+import { API } from '../../API';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EachMemo from "./EachMemo"
 import Calendar from 'react-calendar';
@@ -142,7 +142,7 @@ function Memo() {
 
     return (
         <Container fluid > 
-            <Container fluid style={{ padding: "3vh", fontSize: "4.5vw"}}>
+            <Container fluid style={{display:"flex", justifyContent:"center", padding: "3vh", fontSize: "4.5vw"}}>
                     <Calendar onChange={SelectDate} onActiveStartDateChange={ChangeMonth} value={date}
                         formatDay={(locale, date) => moment(date).format("DD")}
                         tileContent = { ( { date, view } ) => {

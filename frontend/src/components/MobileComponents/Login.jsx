@@ -2,7 +2,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
 import { Form, Button, Container } from 'react-bootstrap'
 import { useState } from "react";
-import { API } from "../API";
+import { API } from "../../API";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {

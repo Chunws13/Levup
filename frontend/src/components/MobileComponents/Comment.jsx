@@ -1,8 +1,8 @@
 import { Container, Row, Col, Image } from "react-bootstrap"
 import { useEffect, useState } from "react";
-import { API } from "../API";
-import { ConvertDate } from "./utils/ConvertDate";
-import Profile from '../images/basicProfile.jpeg'
+import { API } from "../../API";
+import { ConvertDate } from "../utils/ConvertDate";
+import Profile from '../../images/basicProfile.jpeg'
 
 const Comment = ({writer, created_datetime, content}) => {
 

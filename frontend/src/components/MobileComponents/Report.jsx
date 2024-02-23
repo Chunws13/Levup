@@ -2,7 +2,7 @@ import { Form, Button, Container, Stack } from 'react-bootstrap'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
-import { API } from '../API';
+import { API } from '../../API';
 import EachReport from './EachReport';
 
 const Report = () => {

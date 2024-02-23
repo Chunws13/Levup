@@ -2,8 +2,8 @@ import { Container, Row, Col, Image, ProgressBar, Dropdown, Button } from "react
 import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
 import { useNavigate  } from 'react-router-dom';
-import { API } from "../API";
-import Profile from '../images/basicProfile.jpeg'
+import { API } from "../../API";
+import Profile from '../../images/basicProfile.jpeg'
 
 const User = () => {
     const cookie = new Cookies();

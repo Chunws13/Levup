@@ -8,7 +8,7 @@ import CreateBaord from './CreateBoard';
 import User from './User';
 import Report from './Report';
 
-const Router = () => (
+const MobileRouter = () => (
     
     <BrowserRouter>
         <Header/>
@@ -25,4 +25,4 @@ const Router = () => (
     
 )
 
-export default Router;
+export default MobileRouter;

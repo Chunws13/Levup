@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Row, Pagination } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { API } from "../API";
+import { API } from "../../API";
 import ViewBoard from "./ViewBoard";
 
 const Board = () => {
@@ -63,16 +63,19 @@ const Board = () => {
 
     const GetViewer = async() => {
         try{
-            const headers = {
-                "Authorization" : token,
-                "Content-Type": "application/json"
-                }
-            
-            const response = await API.getViewer(headers);
-            setViewer(response.data.data.id);
+            if (token !== undefined){
+                const headers = {
+                    "Authorization" : token,
+                    "Content-Type": "application/json"
+                    }
+                
+                const response = await API.getViewer(headers);
+                setViewer(response.data.data.id);
+            };
 
             } catch(error) {
                 alert(error.response.data.detail);
+                
             }
     };
    
