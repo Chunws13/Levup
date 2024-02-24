@@ -11,7 +11,9 @@ WORKDIR /app
 COPY requirement.txt /app
 COPY ./app /app
 
+EXPOSE 80
+
 # 패키지 설치
 RUN pip install -r requirement.txt
 
-CMD ["uvicorn", "main:app", "--reload"]
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
