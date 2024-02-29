@@ -67,12 +67,11 @@
 2. 인증글 작성 - 상단 "메모" 메뉴
 
     <br>
+    <p align="center">
+    <img src="readme_source/Memo_complete.png" width="40%"/>
+    <img src="readme_source/Board_create.png" width="40%"/>
+    </p>
 
-    <img src="readme_source/Memo_complete.png" width="50%" align="left"/>
-    
-
-    <img src="readme_source/Board_create.png" width="50%" />
-    
     * 작성 방법
         * 좌측 이미지
 
@@ -95,8 +94,8 @@
     <br>
 
     <p align="center">
-    <img src="readme_source/Board_view.png" width="50%" align="left" />
-    <img src="readme_source/Board_comment.png" width="50%" align="right" />
+    <img src="readme_source/Board_view.png" width="40%"/>
+    <img src="readme_source/Board_comment.png" width="40%" />
     </p>
     
     * 좋아요 기능 소개 - 좌측 이미지
