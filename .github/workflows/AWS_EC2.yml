@@ -1,4 +1,4 @@
-name: Deploy Backend to EC2 - test
+name: Deploy Backend to EC2
 
 on:
   push:
