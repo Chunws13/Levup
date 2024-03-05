@@ -25,7 +25,7 @@ def home():
 
 @app.get("/check")
 def healthcehck():
-    return {"success": "연결 중"}
+    return {"success": "OK"}
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8000, reload=True)
