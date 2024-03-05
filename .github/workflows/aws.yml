@@ -23,7 +23,7 @@ jobs:
         script: |
           scp -r ${{secrets.LOCAL_PATH}} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST }}:/home/${{secrets.SSH_USER_NAME}}/ec2/backend
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST_NAME }} << 'ENDSSH'
-            cd /home/${{secrets.SSH_USER_NAME}}/ec2/backend
+            cd /home/${{ secrets.SSH_USER_NAME }}/ec2/backend
             # Run any necessary build or deployment steps here
           ENDSSH
 
@@ -36,6 +36,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST_NAME }} << 'ENDSSH'
-            cd /home/${{SSH_USER_NAME}}/ec2/backend
+            cd /home/${{ secrets.SSH_USER_NAME }}/ec2/backend
             docker-compose -f docker-compose.yml up -d
           ENDSSH
