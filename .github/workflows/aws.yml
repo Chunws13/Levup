@@ -14,41 +14,17 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Deploy Backend Code
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.SSH_HOST_NAME }}
         username: ${{ secrets.SSH_USER_NAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          scp -r ${{secrets.LOCAL_PATH}} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST_NAME }}:/home/${{secrets.SSH_USER_NAME}}/ec2/backend
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST_NAME }} << 'ENDSSH'
-            cd /home/${{ secrets.SSH_USER_NAME }}/ec2/backend
-            # Run any necessary build or deployment steps here
-          ENDSSH
-
-    - name: Stop Docker Compose on EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST_NAME }}
-        username: ${{ secrets.SSH_USER_NAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST_NAME }} << 'ENDSSH'
-            cd /home/${{ secrets.SSH_USER_NAME }}/ec2/backend
-            docker-compose down
-          ENDSSH
-
-    - name: Start Docker Compose on EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST_NAME }}
-        username: ${{ secrets.SSH_USER_NAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST_NAME }} << 'ENDSSH'
-            cd /home/${{ secrets.SSH_USER_NAME }}/ec2/backend
-            docker-compose -f docker-compose.yml up -d
-          ENDSSH
+          cd Levup
+          git pull
+          cd backend
+          docker-compose down
+          docker-compose up -d
+          
+          
