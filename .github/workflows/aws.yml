@@ -21,7 +21,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          scp -r /path/to/backend ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST }}:/home/{{SSH_USER_NAME}}/ec2/backend
+          scp -r ${{LOCAL_PATH}} ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_HOST }}:/home/${{SSH_USER_NAME}}/ec2/backend
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.EC2_SSH_PORT }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
             cd /path/to/ec2/backend
             # Run any necessary build or deployment steps here
@@ -30,12 +30,12 @@ jobs:
     - name: Run Docker Compose on EC2
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
-        port: ${{ secrets.EC2_SSH_PORT }}
+        host: ${{ secrets.SSH_HOST_NAME }}
+        username: ${{ secrets.SSH_USER_NAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
         script: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.EC2_SSH_PORT }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
-            cd /path/to/ec2
+            cd /home/${{SSH_USER_NAME}}/ec2/backend
             docker-compose -f docker-compose.yml up -d
           ENDSSH
