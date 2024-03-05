@@ -23,5 +23,9 @@ app.include_router(reports.router)
 def home():
     return {"Hello" : "World"}
 
+@app.get("/check")
+def healthcehck():
+    return {"success": "연결 중"}
+
 if __name__ == "__main__":
     uvicorn.run(app, port=8000, reload=True)
