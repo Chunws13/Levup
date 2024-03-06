@@ -28,7 +28,7 @@ const Login = () => {
 
   return (
     <Container className="d-flex align-items-center justify-content-center" 
-        style={{ minHeight: '70vh'}}>
+        style={{ height: '70vh', width: '90vw'}}>
         <div className="border border-warning border-3 rounded-3 p-5">
             <Form onSubmit={SubmitFunc}>
 

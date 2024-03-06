@@ -1,5 +1,5 @@
 import { Form, Button, Container, Stack } from 'react-bootstrap'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import { API } from '../../API';
@@ -48,17 +48,15 @@ const Report = () => {
             setReportData(response.data.data);
     
         } catch(error){
-            alert(error);
             navigate("/login")
         }
     }
-    useEffect(() => {
-        GetReports();
-    },[])
+    
+    GetReports();
 
     return (
         <Container fluid style={{padding: "3vw", height: "75vh"}}>
-            <Container style={{height: "60%", overflow:"auto"}}>
+            <Container style={{height: "55%", overflow:"auto"}}>
             
                 <Stack gap={3}>
                     {reportData.map((item, index) => {
@@ -74,8 +72,8 @@ const Report = () => {
                 </Stack>
             </Container>
 
-            <Container style={{height: "30%"}}>
-                <Form onSubmit={SubmitReport}>
+            <Container style={{height: "25%"}}>
+                <Form onSubmit={SubmitReport} style={{padding: '2vh'}}>
                     <Form.Group>
                             <Form.Label> 버그 / 오류 제보 </Form.Label>
                             <Form.Control type="text"

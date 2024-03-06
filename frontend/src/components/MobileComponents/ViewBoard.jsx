@@ -82,7 +82,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
     
     return (
         <Container style={{padding: "3vh"}}>
-            <Row >
+            <Row>
                 <Col xs={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}} >
                     { writerProfile ?
                         <Image src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${writerProfile}`} rounded style={{width: "100%", height: "auto"}} /> 
@@ -98,14 +98,13 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                     </Row>
                 </Col>
             </Row>
-            
 
-            <Row >
-                <Carousel activeIndex={index} onSelect={(selectedIndex) => setIndex(selectedIndex)} slide={false} fade >
+            <Row>
+                <Carousel activeIndex={index} onSelect={(selectedIndex) => setIndex(selectedIndex)} slide={false} fade>
                     { files.length > 0 ? 
                         files.map((file, index) => {
                             return ( 
-                                    <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: "35vh"}}>
+                                    <Carousel.Item data-bs-theme="dark" key={index} style={{display:"flex", justifyContent:"center", fontSize : "3vw", height: '60vh'}}>
 
                                         <Image thumbnail src = {`https://levupbucket.s3.ap-northeast-2.amazonaws.com/boards/${file.file_name}`} 
                                             alt={`slide ${index}`} style={{width: "100%", height: "auto"}}/>
@@ -176,16 +175,16 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                                                 )
                                             })}
                                 </Container>
-                                <Form onSubmit={CreateComment}>
+                                <Form onSubmit={CreateComment} style={{padding: '1vh'}}>
                                     <Row>
                                         <Col xs={9} className="d-flex align-items-center">
-                                            <Form.Control style={{height: "3vh"}} 
+                                            <Form.Control style={{height: "4.5vh"}} 
                                                 value={text} onChange={ChangeText}
                                                 type="text" name="memo" placeholder=''/>
                                         </Col>
                                         <Col xs={3}>
                                             <div className="d-grid gap-2">
-                                                <Button variant="success" type='submit' size="sm" disabled={submitState}> 등록 </Button>
+                                                <Button variant="success" type='submit' disabled={submitState}> 등록 </Button>
                                             </div>
                                         </Col>
                                     </Row>

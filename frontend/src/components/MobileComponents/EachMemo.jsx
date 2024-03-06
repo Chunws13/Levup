@@ -25,15 +25,16 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
             <Container fluid id={ memoId }>
                 { status ? // 완료되었는가?
                     <Row>
+                        <Col xs={1}></Col>
                         <Col xs={8}>
                             <label className='memo' style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "auto", whiteSpace: "nowrap",fontSize:"5vw"}}> <del> { content } </del> </label>
                         </Col>
                         { admit_status ? // 인증글을 올렸는가?
-                        <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
+                        <Col xs={3} style={{display :"flex", justifyContent: 'flex-end'}}>
                             <Button variant="outline-danger" size="sm" style={{fontSize:"3vw"}}> 완료 </Button>
                         </Col>
                          : 
-                        <Col xs={4} style={{display :"flex", justifyContent: 'flex-end'}}>
+                        <Col xs={3} style={{display :"flex", justifyContent: 'flex-end'}}>
                              <Link to={`boards/create?id=${memoId}`}>
                                  <Button variant="outline-danger" size="sm" style={{fontSize:"3vw"}}> 인증 </Button>
                              </Link>
@@ -42,7 +43,7 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
                     </Row>
                     :  // 완료하지 않았는가?
                     <Row >
-                        <Col xs={1} style={{display :"flex", justifyContent: 'center'}}>
+                        <Col xs={1} style={{display :"flex", justifyContent: 'center', alignItems: 'center'}}>
                             <input type='checkbox' onClick={Delete}/>
                         </Col>
                         <Col xs={8} style={{display :"flex", justifyContent: 'flex-start', alignItems: "center", overflowX: "auto", whiteSpace: "nowrap", fontSize:"5vw"}}>
