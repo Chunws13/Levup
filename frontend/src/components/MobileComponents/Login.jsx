@@ -2,6 +2,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
 import { Form, Button, Container } from 'react-bootstrap'
 import { useState } from "react";
+import KakaoLogin from "react-kakao-login";
 import { API } from "../../API";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -10,6 +11,18 @@ const Login = () => {
     const [loginFail, setLoginFail] = useState(false);
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    
+    // const redirectUri = process.env.REACT_APP_KAKAO_URI;
+    // const kakaoRestApiKey = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    // const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${redirectUri}&response_type=code`
+    const key = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY
+    
+    const KakaoLoginSuccess = async(data) => {
+        const access_token = data.response.access_token;
+        const body = {access_token: access_token};
+        
+        const response = await API.kakoLoginRequset(body);
+    };
 
     const SubmitFunc = async(event) => {
         event.preventDefault();
@@ -54,6 +67,9 @@ const Login = () => {
                     <Button variant="dark" onClick={() => {naviage("/signup")}}>
                         회원가입
                     </Button>
+                    
+                    <KakaoLogin token={key} onSuccess={KakaoLoginSuccess} />
+                    
                 </div>
                 
             </Form>

@@ -1,12 +1,10 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import desc
-from pymongo import MongoClient
-from dotenv import load_dotenv
 from bson.objectid import ObjectId
 from connections.aws_s3 import aws_s3_connection
 from connections.mongodb import MongodbConntect
-import certifi, os, uuid, io, json
+import os, uuid, io
 from . import models, schemas
 
 S3 = aws_s3_connection()

@@ -38,6 +38,9 @@ export const API = {
     userLogin: (body) => api.post(`users/login`, body),
     userSignUp: (body) => api.post(`/users/signup`, body),
 
+    // Users - Social Login
+    kakoLoginRequset: (body)=> api.post(`users/kakao/login`, body),
+
     // Report
     getReport: (headers) => api.get(`/reports/`, { headers }),
     postReport: (body, headers) => api.post(`/reports/`, body, { headers })

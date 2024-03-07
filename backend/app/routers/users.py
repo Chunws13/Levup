@@ -1,11 +1,13 @@
 from fastapi import APIRouter, HTTPException, Header, UploadFile
 from typing import Union, Annotated
-from models.users import User_Login, User_Create
+from models.users import User_Login, User_Create, Kakao_Login
 from bson.json_util import dumps
 from auth.login_auth import User_Auth
 from connections.mongodb import MongodbConntect
 from connections.aws_s3 import aws_s3_connection
-import hashlib, datetime, jwt, os, json, io
+from urllib import request
+from PIL import Image
+import hashlib, datetime, jwt, os, json, io, requests
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
 S3 = aws_s3_connection()
@@ -131,3 +133,26 @@ def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None)
             raise HTTPException(status_code=404, detail="서버 에러")
     else:
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+    
+@router.post("/kakao/login")
+async def kakao_login(kakao_token: Kakao_Login):
+    requset_url = "https://kapi.kakao.com/v2/user/me"
+    headers = { "Authorization": f"Bearer {kakao_token.access_token}" }
+    
+    response = requests.get(requset_url, headers=headers)
+    profile = response.json()
+    
+    # 일반 로그인과 중복 검사를 할 것인가
+    # 프로필 이미지 저장이 되려나..
+    image_content = False
+    image_url = profile["properties"]["profile_image"]
+    
+    image_content = request.urlopen(image_url).read()
+    convert_image = io.BytesIO(image_content)
+    img = Image.open(convert_image)
+    return
+    extension = image_url.split(".")[-1]
+    
+    S3.upload_fileobj(convert_image, "levupbucket", "users/" + "test_data.jpg", ExtraArgs={"ContentType": extension})
+
+    return
