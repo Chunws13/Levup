@@ -87,17 +87,17 @@ const User = () => {
                     </Dropdown.Menu>
                 </Dropdown>
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height: "40vh"}}>
+            <Row style={{display:"flex", justifyContent:"center", fontSize : "5vw", height: "40%"}}>
                 { userInfo.profile ? 
                     <Image roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${userInfo.profile}?timestamp=${Date.now()}`} style={{width: "auto", height: "100%"}}/>
                     :
                     <Image roundedCircle src={Profile} style={{height: "100%"}}/>
                 }
             </Row>
-            <Row style={{display:"flex", justifyContent:"center", alignItems: "center", fontSize : "5vw", height: "8vh"}}>
+            <Row style={{display:"flex", justifyContent:"center", alignItems: "center", fontSize : "5vw", height: "10%"}}>
                 {userInfo.id} 
             </Row>
-            <Row style={{fontSize : "5vw", height: "5vh"}}>
+            <Row style={{fontSize : "5vw", height: "10%"}}>
                 <Col style={{display:"flex", justifyContent:"center"}}>
                     Level : {userInfo.level}
                 </Col>
@@ -107,10 +107,10 @@ const User = () => {
             </Row>
 
             <Row style={{display:"flex", justifyContent:"flex-start", fontSize : "5vw", height : "5vh"}}>
-                <ProgressBar style={{height: "50%"}}
+                <ProgressBar style={{height: "60%"}}
                     now ={expPercent} label={`Exp : ${userInfo.exp} ( ${expPercent}% )`}/>
             </Row>
-            <Row style={{height : "5vh", fontSize : "5vw"}}>
+            <Row style={{height : "10%", fontSize : "5vw"}}>
                 <Col style={{display:"flex", justifyContent:"center"}}>
                     시작한 작업 : {userInfo.mission_start}
                 </Col>
@@ -118,7 +118,7 @@ const User = () => {
                     완료한 작업 : {userInfo.mission_complete}
                 </Col>
             </Row>
-            <Row style={{height : "5vh", fontSize : "5vw"}}>
+            <Row style={{height : "10%", fontSize : "5vw"}}>
                 <Col style={{display:"flex", justifyContent:"center"}}>
                     인증 글 수 : {userInfo.board}
                 </Col>

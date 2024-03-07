@@ -17,9 +17,9 @@ const Header = () => {
             </Row>
             <Row style={{textAlign : 'center'}}>
                 <Col xs={3} style={{margin : "auto"}}>
-                    <Link to = '/users/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                    <Link to = '/users/' style={{textDecoration : 'none', color: "inherit", fontSize: "3vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Myi} alt='내정보' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Myi} alt='내정보' roundedCircle style={{width: "70%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             내정보
@@ -28,9 +28,9 @@ const Header = () => {
                     </Link>
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                    <Link to ='/' style={{textDecoration : 'none', color: "inherit", fontSize: "3vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Mi} alt='메모 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Mi} alt='메모 게시판' roundedCircle style={{width: "70%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             메모
@@ -38,9 +38,9 @@ const Header = () => {
                     </Link> 
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/boards/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                    <Link to ='/boards/' style={{textDecoration : 'none', color: "inherit", fontSize: "3vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ai} alt='인증 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Ai} alt='인증 게시판' roundedCircle style={{width: "70%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             인증 
@@ -48,9 +48,9 @@ const Header = () => {
                     </Link>
                 </Col>
                 <Col xs={3} style={{margin : "auto"}}> 
-                    <Link to ='/reports/' style={{textDecoration : 'none', color: "inherit", fontSize: "5vw"}}>
+                    <Link to ='/reports/' style={{textDecoration : 'none', color: "inherit", fontSize: "3vw"}}>
                         <Row className='justify-content-center'>
-                            <Image src={Ni} alt='제보 게시판' roundedCircle style={{width: "80%", height: "auto"}}/>
+                            <Image src={Ni} alt='제보 게시판' roundedCircle style={{width: "70%", height: "auto"}}/>
                         </Row>
                         <Row className='justify-content-center'>
                             공지 / 제보

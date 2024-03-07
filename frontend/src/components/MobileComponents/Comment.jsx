@@ -21,7 +21,7 @@ const Comment = ({writer, created_datetime, content}) => {
 
         GetCommenter();
 
-    }, []);
+    });
 
     return (
         <Container style={{padding: "1.5vw", color: "wheat"}}>
@@ -33,16 +33,19 @@ const Comment = ({writer, created_datetime, content}) => {
                     }    
                 </Col>
                 <Col>
-                    <Row style={{display:"flex", justifyContent:"left"}}>
-                        {writer}
+                    <Row>
+                        <Col style={{display: 'flex', justifyContent: 'left'}}>
+                            {writer}
+                        </Col>
+                        <Col style={{display: 'flex', justifyContent: 'flex-end'}}>
+                            {ConvertDate(created_datetime)}
+                        </Col>
                     </Row>
                     <Row>
-                        {content}
-
+                        <Col xs={9}>
+                            {content}
+                        </Col>
                     </Row>
-                </Col>
-                <Col style={{display:"flex", justifyContent:"flex-end"}}>
-                    {ConvertDate(created_datetime)}
                 </Col>
             </Row>  
         </Container>
