@@ -6,11 +6,12 @@ from auth.login_auth import User_Auth
 from connections.mongodb import MongodbConntect
 from connections.aws_s3 import aws_s3_connection
 from urllib import request
-from PIL import Image
 import hashlib, datetime, jwt, os, json, io, requests
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
 S3 = aws_s3_connection()
+IMAGE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "images")
+
 db = MongodbConntect("chunws")
 jwt_token_key = os.environ["jwt_token_key"]
 
@@ -142,17 +143,19 @@ async def kakao_login(kakao_token: Kakao_Login):
     response = requests.get(requset_url, headers=headers)
     profile = response.json()
     
-    # 일반 로그인과 중복 검사를 할 것인가
     # 프로필 이미지 저장이 되려나..
     image_content = False
     image_url = profile["properties"]["profile_image"]
     
-    image_content = request.urlopen(image_url).read()
-    convert_image = io.BytesIO(image_content)
-    img = Image.open(convert_image)
-    return
+    kakao_id = profile["id"]
     extension = image_url.split(".")[-1]
     
-    S3.upload_fileobj(convert_image, "levupbucket", "users/" + "test_data.jpg", ExtraArgs={"ContentType": extension})
-
+    kakao_profile = f"{IMAGE_DIR}/{kakao_id}.{extension}"
+    request.urlretrieve(image_url, kakao_profile)
+    
+    with open(kakao_profile, "rb") as image_file:
+        kakao_image = image_file.read()
+        
+    convert_image = io.BytesIO(kakao_image)
+    S3.upload_fileobj(convert_image, "levupbucket", f"users/{kakao_id}.{extension}", ExtraArgs={"ContentType": extension})
     return

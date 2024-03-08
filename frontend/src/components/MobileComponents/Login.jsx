@@ -1,9 +1,10 @@
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
-import { Form, Button, Container } from 'react-bootstrap'
+import { Form, Button, Container, Image } from 'react-bootstrap'
 import { useState } from "react";
 import KakaoLogin from "react-kakao-login";
 import { API } from "../../API";
+import KakaoLoginBtn from "../../images/kakao_login.png"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
@@ -67,9 +68,8 @@ const Login = () => {
                     <Button variant="dark" onClick={() => {naviage("/signup")}}>
                         회원가입
                     </Button>
-                    
-                    <KakaoLogin token={key} onSuccess={KakaoLoginSuccess} />
-                    
+                    <Image src = {KakaoLoginBtn}/>
+                    <KakaoLogin token={key} onSuccess={KakaoLoginSuccess}/>
                 </div>
                 
             </Form>
