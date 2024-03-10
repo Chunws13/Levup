@@ -26,6 +26,7 @@ def signup(Users: User_Create):
     hash_pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
     user_info = {
         "id" : id,
+        "nickname": id,
         "email" : email,
         "password" : hash_pw,
         "level": 1,
@@ -148,14 +149,47 @@ async def kakao_login(kakao_token: Kakao_Login):
     image_url = profile["properties"]["profile_image"]
     
     kakao_id = profile["id"]
+    kakao_nickname = profile["properties"]["nickname"]
     extension = image_url.split(".")[-1]
+    file_name = f"{kakao_id}.{extension}"
     
-    kakao_profile = f"{IMAGE_DIR}/{kakao_id}.{extension}"
+    kakao_profile = f"{IMAGE_DIR}/{file_name}"
     request.urlretrieve(image_url, kakao_profile)
     
     with open(kakao_profile, "rb") as image_file:
         kakao_image = image_file.read()
         
     convert_image = io.BytesIO(kakao_image)
-    S3.upload_fileobj(convert_image, "levupbucket", f"users/{kakao_id}.{extension}", ExtraArgs={"ContentType": extension})
-    return
+    S3.upload_fileobj(convert_image, "levupbucket", f"users/{file_name}", ExtraArgs={"ContentType": extension})
+    
+    if os.path.exists(kakao_profile):
+        os.remove(kakao_profile)
+    
+    k_id = f"k{kakao_id}"
+    
+    check_user_exist = db.users.find_one({"id" : k_id})
+    
+    if check_user_exist:
+        payload = {"id" : k_id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
+        token = jwt.encode(payload, jwt_token_key, algorithm="HS256")
+        return {"status" : True , "token" : token}
+    
+    user_info = {
+        "id" : k_id,
+        "nickname": kakao_nickname,
+        "level": 1,
+        "exp": 0,
+        "like": 0,
+        "board": 0,
+        "point" : 0,
+        "profile": file_name,
+        "mission_start": 0,
+        "mission_complete": 0
+    }
+    
+    db.users.insert_one(user_info)
+    
+    payload = {"id" : k_id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
+    token = jwt.encode(payload, jwt_token_key, algorithm="HS256")
+    return {"status" : True , "token" : token}
+    

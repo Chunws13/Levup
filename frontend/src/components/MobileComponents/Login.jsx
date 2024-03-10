@@ -2,7 +2,6 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
 import { Form, Button, Container, Image } from 'react-bootstrap'
 import { useState } from "react";
-import KakaoLogin from "react-kakao-login";
 import { API } from "../../API";
 import KakaoLoginBtn from "../../images/kakao_login.png"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,16 +12,25 @@ const Login = () => {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     
-    // const redirectUri = process.env.REACT_APP_KAKAO_URI;
-    // const kakaoRestApiKey = process.env.REACT_APP_KAKAO_REST_API_KEY;
-    // const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${redirectUri}&response_type=code`
-    const key = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY
-    
+    const KakaoLogin = () => {
+        window.Kakao.Auth.login({
+            success: async function(data) {
+                await KakaoLoginSuccess(data);
+            },
+            fail: function(data){
+                alert(data);
+            }
+        });
+    }
     const KakaoLoginSuccess = async(data) => {
-        const access_token = data.response.access_token;
+        const access_token = data.access_token;
         const body = {access_token: access_token};
-        
-        const response = await API.kakoLoginRequset(body);
+        const cookie = new Cookies();
+
+        const login_request = await API.kakoLoginRequset(body);
+        cookie.set("token", login_request.data.token, {path: "/"});
+        naviage("/");
+
     };
 
     const SubmitFunc = async(event) => {
@@ -68,10 +76,11 @@ const Login = () => {
                     <Button variant="dark" onClick={() => {naviage("/signup")}}>
                         회원가입
                     </Button>
-                    <Image src = {KakaoLoginBtn}/>
-                    <KakaoLogin token={key} onSuccess={KakaoLoginSuccess}/>
+                    
+                    <Button style={{ border: 'none', padding: 0, backgroundColor: 'transparent' }}>
+                        <Image onClick={KakaoLogin} src={KakaoLoginBtn}/>
+                    </Button>                       
                 </div>
-                
             </Form>
         </div>
     </Container>
