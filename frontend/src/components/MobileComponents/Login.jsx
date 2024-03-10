@@ -1,8 +1,9 @@
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
-import { Form, Button, Container } from 'react-bootstrap'
+import { Form, Button, Container, Image } from 'react-bootstrap'
 import { useState } from "react";
 import { API } from "../../API";
+import KakaoLoginBtn from "../../images/kakao_login.png"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
@@ -10,6 +11,27 @@ const Login = () => {
     const [loginFail, setLoginFail] = useState(false);
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    
+    const KakaoLogin = () => {
+        window.Kakao.Auth.login({
+            success: async function(data) {
+                await KakaoLoginSuccess(data);
+            },
+            fail: function(data){
+                alert(data);
+            }
+        });
+    }
+    const KakaoLoginSuccess = async(data) => {
+        const access_token = data.access_token;
+        const body = {access_token: access_token};
+        const cookie = new Cookies();
+
+        const login_request = await API.kakoLoginRequset(body);
+        cookie.set("token", login_request.data.token, {path: "/"});
+        naviage("/");
+
+    };
 
     const SubmitFunc = async(event) => {
         event.preventDefault();
@@ -54,8 +76,11 @@ const Login = () => {
                     <Button variant="dark" onClick={() => {naviage("/signup")}}>
                         회원가입
                     </Button>
+                    
+                    <Button style={{ border: 'none', padding: 0, backgroundColor: 'transparent' }}>
+                        <Image onClick={KakaoLogin} src={KakaoLoginBtn}/>
+                    </Button>                       
                 </div>
-                
             </Form>
         </div>
     </Container>

@@ -1,14 +1,17 @@
 from fastapi import APIRouter, HTTPException, Header, UploadFile
 from typing import Union, Annotated
-from models.users import User_Login, User_Create
+from models.users import User_Login, User_Create, Kakao_Login
 from bson.json_util import dumps
 from auth.login_auth import User_Auth
 from connections.mongodb import MongodbConntect
 from connections.aws_s3 import aws_s3_connection
-import hashlib, datetime, jwt, os, json, io
+from urllib import request
+import hashlib, datetime, jwt, os, json, io, requests
 
 router = APIRouter(prefix = "/api/users", tags=["users"])
 S3 = aws_s3_connection()
+IMAGE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "images")
+
 db = MongodbConntect("chunws")
 jwt_token_key = os.environ["jwt_token_key"]
 
@@ -23,6 +26,7 @@ def signup(Users: User_Create):
     hash_pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
     user_info = {
         "id" : id,
+        "nickname": id,
         "email" : email,
         "password" : hash_pw,
         "level": 1,
@@ -131,3 +135,61 @@ def delete_profile(Authorization : Annotated[Union[str, None], Header()] = None)
             raise HTTPException(status_code=404, detail="서버 에러")
     else:
         raise HTTPException(status_code=404, detail="로그인이 필요한 서비스입니다.")
+    
+@router.post("/kakao/login")
+async def kakao_login(kakao_token: Kakao_Login):
+    requset_url = "https://kapi.kakao.com/v2/user/me"
+    headers = { "Authorization": f"Bearer {kakao_token.access_token}" }
+    
+    response = requests.get(requset_url, headers=headers)
+    profile = response.json()
+    
+    # 프로필 이미지 저장이 되려나..
+    image_content = False
+    image_url = profile["properties"]["profile_image"]
+    
+    kakao_id = profile["id"]
+    kakao_nickname = profile["properties"]["nickname"]
+    extension = image_url.split(".")[-1]
+    file_name = f"{kakao_id}.{extension}"
+    
+    kakao_profile = f"{IMAGE_DIR}/{file_name}"
+    request.urlretrieve(image_url, kakao_profile)
+    
+    with open(kakao_profile, "rb") as image_file:
+        kakao_image = image_file.read()
+        
+    convert_image = io.BytesIO(kakao_image)
+    S3.upload_fileobj(convert_image, "levupbucket", f"users/{file_name}", ExtraArgs={"ContentType": extension})
+    
+    if os.path.exists(kakao_profile):
+        os.remove(kakao_profile)
+    
+    k_id = f"k{kakao_id}"
+    
+    check_user_exist = db.users.find_one({"id" : k_id})
+    
+    if check_user_exist:
+        payload = {"id" : k_id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
+        token = jwt.encode(payload, jwt_token_key, algorithm="HS256")
+        return {"status" : True , "token" : token}
+    
+    user_info = {
+        "id" : k_id,
+        "nickname": kakao_nickname,
+        "level": 1,
+        "exp": 0,
+        "like": 0,
+        "board": 0,
+        "point" : 0,
+        "profile": file_name,
+        "mission_start": 0,
+        "mission_complete": 0
+    }
+    
+    db.users.insert_one(user_info)
+    
+    payload = {"id" : k_id, "exp" : datetime.datetime.now() + datetime.timedelta(minutes=30)}
+    token = jwt.encode(payload, jwt_token_key, algorithm="HS256")
+    return {"status" : True , "token" : token}
+    

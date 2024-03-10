@@ -6,3 +6,7 @@ class User_Login(BaseModel):
 
 class User_Create(User_Login):
     email : str
+    
+
+class Kakao_Login(BaseModel):
+    access_token: str
