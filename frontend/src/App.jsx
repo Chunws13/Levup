@@ -4,11 +4,11 @@ import './App.css';
 import MobileRouter from './components/MobileComponents/MobileRouter'
 
 const App = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.outerWidth < 868);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.outerWidth < 868);
     };
 
     window.addEventListener('resize', handleResize);
