@@ -56,8 +56,7 @@ const Report = () => {
 
     return (
         <Container fluid style={{padding: "3vw", height: "75vh"}}>
-            <Container style={{height: "55%", overflow:"auto"}}>
-            
+            <Container fluid style={{height: "55%", overflow:"auto"}}>
                 <Stack gap={3}>
                     {reportData.map((item, index) => {
                         return (
@@ -72,20 +71,22 @@ const Report = () => {
                 </Stack>
             </Container>
 
-            <Container style={{height: "25%"}}>
+            <Container fluid style={{height: "25%"}}>
                 <Form onSubmit={SubmitReport} style={{padding: '2vh'}}>
-                    <Form.Group>
+                    <Form.Group style={{fontSize: "5vw"}}>
                             <Form.Label> 버그 / 오류 제보 </Form.Label>
                             <Form.Control type="text"
-                                value={reportTitle} onChange={(event) => setReportTitle(event.target.value)}/> 
+                                value={reportTitle} onChange={(event) => setReportTitle(event.target.value)} style={{fontSize: "5vw"}}/> 
                     </Form.Group>
-                    <Form.Group>
+
+                    <Form.Group style={{fontSize: "5vw"}}>
                         <Form.Label> 상세 내용 </Form.Label>
-                        <Form.Control as="textarea" rows={6} 
+                        <Form.Control as="textarea" rows={6} style={{fontSize: "5vw"}} 
                             value={reportContent} onChange={(event) => setReportContent(event.target.value)}/>
                     </Form.Group>
+
                     <Form.Group>
-                        <Button type='submit' style={{width: "100%", marginTop: "3vw"}}> 제보하기 </Button>
+                        <Button type='submit' style={{width: "100%", marginTop: "3vw", fontSize: "5vw"}}> 제보하기 </Button>
                     </Form.Group>
                 </Form>
             </Container>

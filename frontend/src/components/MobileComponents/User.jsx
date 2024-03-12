@@ -72,7 +72,7 @@ const User = () => {
     }, [expPercent])
 
     return (
-        <Container style={{height : "75vh", padding: "3vh"}}>
+        <Container fluid style={{height : "75vh", padding: "3vh"}}>
             <Row>
                 <Dropdown style={{display: "flex", justifyContent: "flex-end"}}>
                     <Dropdown.Toggle variant="dark" id="dropdown-basic">

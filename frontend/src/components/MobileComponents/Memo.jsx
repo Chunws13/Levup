@@ -3,11 +3,12 @@ import { Cookies } from "react-cookie";
 import { useNavigate  } from 'react-router-dom';
 import { Form, Button, Container, Stack, Row, Col, Badge } from 'react-bootstrap'
 import { API } from '../../API';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import EachMemo from "./EachMemo"
 import Calendar from 'react-calendar';
 import moment from 'moment';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css'; // css import
+import './css/Memo.css'
 
 function Memo() {
     const cookie = new Cookies();
@@ -212,22 +213,23 @@ function Memo() {
                 </Stack>
                 : 
                 <Row>
-                    <Col style={{display: "flex", justifyContent: "center"}}>
+                    <Col style={{display: "flex", justifyContent: "center", fontSize: "5vw"}}>
                         <del> 아무것도 안하기 </del> 
                     </Col>
                 </Row>
                 }
         </Container>
             <Container fluid style={{ justifyContent: 'center', height: '8vh' }}>
-                <Form onSubmit={SubmitMemo}>
-                    <Row>
+                {/* 크기 조정 */}
+                <Form onSubmit={SubmitMemo} style={{height: '100%'}}> 
+                    <Row style={{height: '60%'}}>
                         <Col xs={8}>
-                            <Form.Control onChange={(event) => setWriteMemo(event.target.value)} 
+                            <Form.Control style={{fontSize: '5vw'}} onChange={(event) => setWriteMemo(event.target.value)} 
                                 value={writeMemo} type="text" name="memo" placeholder=''/>
                         </Col>
                         <Col>
-                            <div className="d-grid gap-2">
-                                <Button variant="success" type='submit'> 메모 </Button>
+                            <div className="d-grid gap-2" >
+                                <Button variant="success" type='submit' style={{fontSize: '5vw'}} > 메모 </Button>
                             </div>
                         </Col>
                     </Row>

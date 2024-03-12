@@ -1,6 +1,6 @@
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
-import { Form, Button, Container, Image } from 'react-bootstrap'
+import { Form, Button, Container, Image, Stack } from 'react-bootstrap'
 import { useState } from "react";
 import { API } from "../../API";
 import KakaoLoginBtn from "../../images/kakao_login.png"
@@ -49,40 +49,41 @@ const Login = () => {
     }
 
   return (
-    <Container className="d-flex align-items-center justify-content-center" 
-        style={{ height: '70vh', width: '90vw'}}>
-        <div className="border border-warning border-3 rounded-3 p-5">
-            <Form onSubmit={SubmitFunc}>
+    <Container fluid
+        style={{ height: '70vh', width: '90vw', display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <Container style={{height: "60%", border: "3px solid black", borderRadius: "1vh"}}>
 
-                <Form.Group className="mb-2" controlId="formbasicEmail" style={{fontSize: "5vw"}}>
+            <Form onSubmit={SubmitFunc} style={{height: "100%", padding: "2vw"}}>
+                
+                <Form.Group controlId="formbasicEmail" style={{fontSize: "5vw", height: "30%"}}>
                     <Form.Label> ID </Form.Label>
-                    <Form.Control onChange={(event) => setId(event.target.value)} 
+                    <Form.Control onChange={(event) => setId(event.target.value)} style={{fontSize: "5vw"}} 
                         value={id} type="text" name='id'/>
                 </Form.Group>
 
-                <Form.Group className="mb-3" style={{fontSize: "5vw"}}>
+                <Form.Group style={{fontSize: "5vw", height:"30%"}}>
                     <Form.Label> Password </Form.Label>
-                    <Form.Control onChange={(event) => setPassword(event.target.value)} 
+                    <Form.Control onChange={(event) => setPassword(event.target.value)} style={{fontSize: "5vw"}} 
                         value={password} type="password" name="pw"/>
+
                     {loginFail ? <Form.Label style={{color : "red", fontSize : "12px"}}> 아이디 또는 비밀번호를 확인하세요 </Form.Label> : '' }
-                    
                 </Form.Group>
                 
-                <div className="d-grid gap-2">
-                    <Button type="submit" variant="primary">
+                <Stack gap={3}>
+                    <Button type="submit" variant="primary" style={{fontSize: "5vw"}}>
                         로그인
                     </Button>
 
-                    <Button variant="dark" onClick={() => {naviage("/signup")}}>
+                    <Button variant="dark" onClick={() => {naviage("/signup")}} style={{fontSize: "5vw"}}>
                         회원가입
                     </Button>
                     
-                    <Button style={{ border: 'none', padding: 0, backgroundColor: 'transparent' }}>
-                        <Image onClick={KakaoLogin} src={KakaoLoginBtn}/>
+                    <Button style={{ border: 'none', padding: 0, backgroundColor: 'transparent'}}>
+                        <Image onClick={KakaoLogin} src={KakaoLoginBtn} style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
                     </Button>                       
-                </div>
+                </Stack>
             </Form>
-        </div>
+        </Container>
     </Container>
   )
 }

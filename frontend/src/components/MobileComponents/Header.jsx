@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
-        <Container>
+        <Container fluid>
             <Row style={{height : "7vh"}}>
                 <Col style={{margin : "auto"}}>
                     <Image src={Pl} style={{ width: '40%', height: "auto"}} alt='로고'/>

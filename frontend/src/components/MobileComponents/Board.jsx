@@ -4,6 +4,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../API";
 import ViewBoard from "./ViewBoard";
+import "./css/Board.css"
 
 const Board = () => {
     const [board, setBoard] = useState([]);
@@ -19,7 +20,7 @@ const Board = () => {
 
     for (let number = Math.max(1, selectPage - 2); number <= Math.min(allPages, selectPage + 2); number ++){
         pageList.push(
-            <Pagination.Item key = {number} active= {number === selectPage} onClick={() => setSelectPage(number)}>
+            <Pagination.Item style={{fontSize: "5vw"}} key={number} active={number === selectPage} onClick={()=> setSelectPage(number)}>
                 {number}
             </Pagination.Item>
         )
@@ -89,7 +90,7 @@ const Board = () => {
     }, [selectPage]);
 
     return (
-        <Container>
+        <Container fluid style={{height: "97vh"}}>
             { board.map((item, index) => {
                 return (
                     <Row key={index}>
@@ -110,13 +111,15 @@ const Board = () => {
                     </Row>
                 )
             })}
-            <Pagination style={{display: "flex", justifyContent: "center"}}>
+            
+            <Pagination className="pageNav" style={{display:"flex", justifyContent: "center", height: "10%"}}>
                 <Pagination.First onClick={() => setSelectPage(1)}/>
                 <Pagination.Prev onClick={() => {setSelectPage(Math.max(1, selectPage - 1))}}/>
                     {pageList}
                 <Pagination.Next onClick={() => {setSelectPage(Math.max(allPages, selectPage - 1))}}/>
                 <Pagination.Last onClick={() => setSelectPage(allPages)}/> 
             </Pagination>
+            
         </Container>
     )
 }
