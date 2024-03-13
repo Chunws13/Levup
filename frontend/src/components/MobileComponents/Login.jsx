@@ -1,9 +1,10 @@
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom"
 import { Form, Button, Container, Image, Stack } from 'react-bootstrap'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API } from "../../API";
 import KakaoLoginBtn from "../../images/kakao_login.png"
+import './css/Login.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
@@ -48,10 +49,16 @@ const Login = () => {
         }
     }
 
+    useEffect(() => {
+        if(!window.Kakao.isInitialized()){
+            window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY);
+        }
+    });
+
   return (
     <Container fluid
         style={{ height: '70vh', width: '90vw', display: "flex", alignItems: "center", justifyContent: "center"}}>
-        <Container style={{height: "60%", border: "3px solid black", borderRadius: "1vh"}}>
+        <Container style={{height: "70%", border: "3px solid black", borderRadius: "1vh"}}>
 
             <Form onSubmit={SubmitFunc} style={{height: "100%", padding: "2vw"}}>
                 
@@ -77,7 +84,9 @@ const Login = () => {
                     <Button variant="dark" onClick={() => {naviage("/signup")}} style={{fontSize: "5vw"}}>
                         회원가입
                     </Button>
-                    
+                    <div className="section">
+                        <span>또는</span>
+                    </div>
                     <Button style={{ border: 'none', padding: 0, backgroundColor: 'transparent'}}>
                         <Image onClick={KakaoLogin} src={KakaoLoginBtn} style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
                     </Button>                       

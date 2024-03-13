@@ -137,20 +137,20 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                 <Col xs={8}>
 
                 </Col>
-                <Col xs={2} onClick={Like} style={{display:"flex", justifyContent:"center"}}>
-                    <Col>
+                <Col xs={2} onClick={Like} style={{display:"flex", justifyContent:"center", fontSize: "5vw"}}>
+                    <Col style={{display:"flex", justifyContent:"center"}}>
                     { likeState ? 
-                        <Image src={LikeImage} style={{width: "60%", objectFit: "cover", backgroundColor: "red"}}/>
+                        <Image src={LikeImage} style={{width: "60%", backgroundColor: "red"}}/>
                         
-                        : <Image src={LikeImage} style={{width: "60%", objectFit: "cover"}}/>
+                        : <Image src={LikeImage} style={{width: "60%"}}/>
                     }
                     </Col>
                         {like}
                 </Col>
                 
-                <Col xs={2} onClick={() => setCommentState(!commentState)} style={{display:"flex", justifyContent:"center"}}>
-                    <Col>
-                        <Image src={CommentImage} id="reply" size="sm" style={{width: "60%", objectFit: "cover"}}/>
+                <Col xs={2} onClick={() => setCommentState(!commentState)} style={{display:"flex", justifyContent:"center", fontSize: "5vw"}}>
+                    <Col style={{display:"flex", justifyContent:"center"}}>
+                        <Image src={CommentImage} id="reply" size="sm" style={{width: "60%"}}/>
                     </Col>
                         {allReply.length}
                 </Col>
