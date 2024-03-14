@@ -1,0 +1,16 @@
+.calendar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    left: 300px;
+    width: 40%;
+    height: 100%;
+    border: 3px solid black;
+}
+
+.react-calendar {
+    height: 80%;
+}

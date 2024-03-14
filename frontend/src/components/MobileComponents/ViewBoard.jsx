@@ -165,15 +165,15 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                                             borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}>
 
                                 <Container style ={{height: "85%", overflow: "auto" }}>
-                                        { allReply.map((item, index) => {
-                                            return (
-                                                <Comment key={index}
-                                                writer = {item.writer}
-                                                created_datetime = {item.created_datetime}
-                                                content = {item.content}
-                                                />
-                                                )
-                                            })}
+                                    { allReply.map((item, index) => {
+                                        return (
+                                            <Comment key={index}
+                                            writer = {item.writer}
+                                            created_datetime = {item.created_datetime}
+                                            content = {item.content}
+                                            />
+                                            )
+                                        })}
                                 </Container>
                                 <Form onSubmit={CreateComment} style={{padding: '1vh'}}>
                                     <Row>
