@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,8 +21,13 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
             DeleteMemo({memoId, token});
         }
 
+        useEffect(() => {
+            setText(content);
+
+        }, [content]);
+        
         return (
-            <Container fluid id={ memoId }>
+            <Container fluid id={ memoId } className='oneMemo'>
                 { status ? // 완료되었는가?
                     <Row>
                         <Col xs={1}></Col>
@@ -43,18 +48,21 @@ const EachMemo = ({ memoId, content, token, EditMemo, DeleteMemo, status, admit_
                     </Row>
                     :  // 완료하지 않았는가?
                     <Row >
-                        <Col xs={1}>
-                            <input type='checkbox' onClick={Delete}/>
+                        <Col xs={2}>
+                            { editable ? ""
+                                : <Button variant="outline-info" size="sm" onClick={ClickOption}> 수정 </Button>
+                            }
                         </Col>
-                        <Col xs={8}>
+                        <Col xs={7}>
                             { editable ? 
-                                <input className='memo' value={ text } onChange={ChangeText} style={{border: "none", outline: "none", overflow: "auto"}}/> : 
+                                <input className='memo' value={ content } onChange={ChangeText} style={{border: "none", outline: "none", overflow: "auto"}}/> : 
                                 <label className='memo' style={{display:"block"}}> { content } </label>}
                         </Col>
                         <Col xs={3}>
                             { editable ? 
                                 <Button variant="outline-success" size="sm" onClick={Save}> 저장 </Button> : 
-                                <Button variant="outline-info" size="sm" onClick={ClickOption}> 수정 </Button>}
+                                <Button variant="outline-danger" size="sm" onClick={Delete}> 완료 </Button>
+                            }
                         </Col>                        
                     </Row>
                     }

@@ -77,7 +77,6 @@ const Memo = ({ token, date, memoList }) => {
     return (
         <Container fluid className="memoArea">
             <Container fluid className="memoSection">
-                {date.toString()}오늘의 할일
                 <Container fluid className="memoList">
                     {memoList.length > 0 ?
                         <Stack gap={1}>

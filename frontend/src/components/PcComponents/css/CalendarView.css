@@ -5,12 +5,54 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    left: 300px;
-    width: 40%;
+    left: 500px;
+    width: 600px;
     height: 100%;
-    border: 3px solid black;
+    
 }
 
 .react-calendar {
-    height: 80%;
+    margin-top: 10px;
+    height: 65%;
+    font-size: 24px;
+    border: none;
+}
+
+.badge {
+    font-size: 8px;
+}
+
+.memoArea {
+    padding: 0;
+    height: 35%;
+}
+
+.memoSection {
+    text-align: center;
+    height: 100%;
+}
+
+.memoList {
+    font-size: 18px;
+    height: 70%;
+    overflow: auto;
+}
+
+.memoSubmit {
+    padding: 0;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+
+.eachMemo {
+    font-size: 24px;
+}
+
+.eachMemo.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    height: 100%;
 }
