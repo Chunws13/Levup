@@ -8,6 +8,7 @@ import "./css/CalendarView.css"
 import "./css/Board.css"
 import "./css/Comment.css"
 import "./css/User.css"
+import "./css/CreateBoard.css"
 
 const PcRouter = () => {
     return (
