@@ -104,7 +104,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                     { files.length > 0 ? 
                         files.map((file, index) => {
                             return ( 
-                                    <Carousel.Item data-bs-theme="dark" key={index}>
+                                    <Carousel.Item key={index}>
                                         <Image thumbnail src = {`https://levupbucket.s3.ap-northeast-2.amazonaws.com/boards/${file.file_name}`} 
                                             alt={`slide ${index}`}/>
                                     </Carousel.Item>
@@ -118,41 +118,47 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                     {title}
                 </Row>
                 <Row onClick={()=> setContentState(!contentState)} className="justify-content-start">
-                    { contentState ? {content} : "더보기" }
+                    { contentState ? 
+                        <Row className="justify-content-start" onClick={()=> setContentState(!contentState)}>
+                            {content}
+                        </Row>
+                        :    
+                        <Row className="justify-content-start" onClick={()=>setContentState(!contentState)}>
+                            더보기
+                        </Row>
+                    }
                 </Row>
             </Row>
             
         
             <Row className="likeNReply">
-                <Col xs={8}>
-
-                </Col>
+                
                 <Col xs={2} onClick={Like}>
-                    <Col style={{display:"flex", justifyContent:"center"}}>
+                    <Col>
                     { likeState ? 
-                        <Image src={LikeImage} style={{width: "60%", objectFit: "cover"}}/>
-                        
-                        : <Image src={LikeImage} style={{width: "60%", objectFit: "cover"}}/>
+                        <Image src={LikeImage} id="like"/>
+                        : <Image src={LikeImage} id="like"/>
                     }
                     </Col>
+                    <Col>
                         {like}
+                    </Col>
                 </Col>
                 
                 <Col xs={2} onClick={() => setCommentState(!commentState)}>
                     <Col>
-                        <Image src={CommentImage} id="reply" size="sm" style={{width: "60%", objectFit: "cover"}}/>
+                        <Image src={CommentImage} id="reply" size="sm"/>
                     </Col>
+                    <Col>
                         {allReply.length}
+                    </Col>
                 </Col>
                     { commentState &&(
-                        <Container style={{ position:"fixed",
-                            bottom: 0, left: 0, width: "100vw", height: "100vh", padding: 0,
-                            zIndex: 1000}}>
+                        <Container className="commentBox" >
                             <Container onClick={() => setCommentState(!commentState)} style={{height: "50%"}}>
                             </Container>
 
-                            <Container style={{height: "50%", backgroundColor: "black",
-                                            borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}>
+                            <Container className="commentList" >
 
                                 <Container style ={{height: "85%", overflow: "auto" }}>
                                     { allReply.map((item, index) => {

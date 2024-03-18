@@ -1,0 +1,57 @@
+.userArea {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    left: 40%;
+    width: 25%;
+    min-width: 400px;
+}
+
+.userProfile {
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+
+.userProfile .imageArea{
+    position: relative;
+}
+
+.edit {
+    position: absolute;
+    top: 0;
+}
+
+.imageArea img {
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid black;
+}
+
+.userInfo.col .row{
+    padding-left: 10px;
+    justify-content: start;
+    font-size: 1.5rem;
+    margin-bottom: 1vh;
+}
+
+.logoutBtn {
+    padding: 1vw;
+    width: 80%;
+}
+
+.expBar.row .progress{
+    height: 3vh;
+    font-size: 1rem;
+    margin-bottom: 2vh;
+    padding: 0;
+}
+
+.missionScore {
+    font-size: 1.5rem;
+}
+
+.activityScore {
+    font-size: 1.5rem;
+    border-bottom: 1px solid black;
+}

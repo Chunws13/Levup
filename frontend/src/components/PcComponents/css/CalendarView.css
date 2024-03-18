@@ -1,12 +1,12 @@
 .calendar {
-    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    left: 500px;
-    width: 600px;
+    position: absolute;
+    left: 30%;
+    width: 50%;
     height: 100%;
     
 }

@@ -2,7 +2,6 @@ import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
 import LoginForm from "../utils/LoginForm";
-import User from "../utils/User";
 import Pl from '../../images/PL.png'
 import "./css/Sidebar.css"
 import "./css/SidebarLogin.css"
@@ -26,15 +25,20 @@ const Sidebar = () => {
                         <Row className="logo">
                             <Image className="logoImage" src={Pl}/>
                         </Row>
-                        <User className="profile"
-                            token={token}/>
+                        <Row onClick={() => {navigate("/users")}}> 
+                            <Button>
+                                프로필
+                            </Button>
+                        </Row>
                         <Row className="memoMenu">
                             <Button onClick={() => {navigate("/memo")}}>
                                 메모
                             </Button>
                         </Row>
                         <Row className="authMenu">
-                            인증 게시판
+                            <Button onClick={() => {navigate("/boards")}}>
+                                인증 게시판
+                            </Button>
                         </Row>
                         <Row className="reportMenu">
                             버그 제보 게시판
