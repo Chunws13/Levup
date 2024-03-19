@@ -1,7 +1,7 @@
 .sideBar {
     position: fixed;
-    width: 15%;
-    min-width: 15%;
+    width: 20%;
+    min-width: 20%;
     height: 100%;
     /* background-color: #DADCE0; */
     border-right: 1px solid #DADCE0;
@@ -10,7 +10,6 @@
 .menu {
     padding: 20px;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;

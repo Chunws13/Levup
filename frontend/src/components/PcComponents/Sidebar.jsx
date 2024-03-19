@@ -73,7 +73,7 @@ const Sidebar = () => {
                         </Row>
                     </Container>:
 
-                    <Row className="loginArea">
+                    <Row id="loginArea">
                         <Row className="logo">
                             <Image className="logoImage" src={Pl}/>
                         </Row>

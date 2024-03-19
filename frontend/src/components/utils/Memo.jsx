@@ -79,7 +79,7 @@ const Memo = ({ token, date, memoList }) => {
             <Container fluid className="memoSection">
                 <Container fluid className="memoList">
                     {memoList.length > 0 ?
-                        <Stack gap={4}>
+                        <Stack gap={3}>
                             {memoList.map((item, index) => {
                                 return (
                                     <Container fluid key={index} className='eachMemo'>

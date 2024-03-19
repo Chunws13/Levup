@@ -62,8 +62,12 @@
 }
 
 .oneMemo .row button{
-    padding: 1;
+    padding: 0;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .oneMemo img {
