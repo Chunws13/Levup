@@ -26,7 +26,7 @@ const KakaoLogin = () => {
 
         const login_request = await API.kakoLoginRequset(body);
         cookie.set("token", login_request.data.token, {path: "/"});
-        naviage("/");
+        naviage("memo/");
     };
 
     useEffect(() => {

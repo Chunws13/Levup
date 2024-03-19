@@ -44,15 +44,29 @@
     width: 100%;
 }
 
-
 .eachMemo {
     font-size: 24px;
 }
 
-.eachMemo.row {
+.eachMemo .row {
     display: flex;
     justify-content: center;
     align-items: center;
+
     font-size: 24px;
     height: 100%;
+}
+
+.oneMemo .memo{
+    border-bottom: 1px solid black;
+}
+
+.oneMemo .row button{
+    padding: 1;
+    border: none;
+}
+
+.oneMemo img {
+    width: 100%;
+    object-fit: contain;
 }

@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { ConvertDate } from "../utils/ConvertDate";
 import { API } from "../../API";
 import Comment from "./Comment";
+
 import LikeImage from '../../images/likeIcon.png'
+import LikeFillImage from '../../images/likeFillIcon.png';
 import CommentImage from '../../images/commentIcon.png'
 import Profile from '../../images/basicProfile.jpeg'
 
@@ -136,7 +138,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                 <Col xs={2} onClick={Like}>
                     <Col>
                     { likeState ? 
-                        <Image src={LikeImage} id="like"/>
+                        <Image src={LikeFillImage} id="like"/>
                         : <Image src={LikeImage} id="like"/>
                     }
                     </Col>

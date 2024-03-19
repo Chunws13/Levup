@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Container, Row, Form, Image } from 'react-bootstrap'
+import { Button, Container, Row, Form, Image, Carousel } from 'react-bootstrap'
 import { Cookies } from "react-cookie";
 import { API } from '../../API';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,41 +12,31 @@ const CreateBaord = () => {
     const token = cookie.get("token");
 
     const [title, setTitle] = useState("");
-    const [file, setFile] = useState(null);
-    const [img, setImg] = useState(null);
+    const [files, setFiles] = useState(null);
+    const [index, setIndex] = useState(0);
     const [content, setContent] = useState("");
 
     const FileSet = (event) => {
-        const selectedFiles = event.target.files[0];
-        setFile(selectedFiles);
-
-        if (selectedFiles) {
-            const imgReader = new FileReader();
-
-            imgReader.onload = (event) => {
-                setImg(event.target.result);
-            }
-
-            imgReader.readAsDataURL(selectedFiles);
-        };
+        const selectedFiles = Array.from(event.target.files);
+        setFiles(selectedFiles);
     };
 
     const PostBoard = async(event) => {
         event.preventDefault();
-        if (title && file && content) {
+        if (title && files && content) {
 
             const query = new URLSearchParams(location.search);
             const memoId = query.get('id');
             
             const formData = new FormData();
             
-            for (let num = 0; num < file.length; num ++){
-                formData.append("files", file[num]);
+            for (let num = 0; num < files.length; num ++){
+                formData.append("files", files[num]);
             };
             
             formData.append("title", title);
             formData.append("content", content);
-            
+
             if (memoId === null || memoId === undefined){
                 return navigate("/");
             };
@@ -78,14 +68,27 @@ const CreateBaord = () => {
                 </Form.Group>
 
                 <Form.Group className='files'>
-                    <Form.Label> 필수 - 인증 사진 첨부 </Form.Label>
+                    <Form.Label> 인증 사진 선택 </Form.Label>
                     <Form.Control onChange={FileSet} type="file" accept='image/*' multiple /> 
                 </Form.Group>
 
                 <Row className='imgArea'>
-                    { img ? <Image className='preview' src={img}/>
-                        : "이미지 미리보기 영역"
-                    }
+                    <Carousel id="previewArea" controls={ files !== null && files.length > 1 ? true : false}
+                        activeIndex={index} slide={false} fade variant='dark'
+                        onSelect={(selectedIndex) => setIndex(selectedIndex)} >
+                        { files !== null && files.length > 0 ?
+                            files.map((file, index) => {
+                                return ( 
+                                        <Carousel.Item className='eachPreview' key={index}>
+                                            <Image src = {URL.createObjectURL(file)} alt={file.name}/>
+                                        </Carousel.Item>
+                                    )
+                                }) : 
+                                <Carousel.Item className='eachPreview'>
+                                    미리보기 영역
+                                </Carousel.Item>
+                        }
+                    </Carousel>
                 </Row>
 
                 <Form.Group className='content'>

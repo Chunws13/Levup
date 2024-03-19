@@ -21,7 +21,7 @@ const LoginForm = () => {
         try {
             const login_request = await API.userLogin(body);
             cookie.set("token", login_request.data.token, {path: "/"});
-            window.location.reload();
+            naviage("memo/")
 
         } catch {
             setLoginFail(true);

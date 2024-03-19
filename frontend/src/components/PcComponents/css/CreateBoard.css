@@ -24,10 +24,27 @@
     height: 30%;
 }
 
-.createBoard .imgArea .preview {
+#previewArea {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+}
+
+#previewArea .carousel-inner{
+    height: 100%;
+    width: 100%;
+}
+
+#previewArea .carousel-inner .eachPreview.active.carousel-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+#previewArea .carousel-inner .eachPreview.active.carousel-item img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .createBoard .content {

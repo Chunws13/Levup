@@ -12,7 +12,6 @@ const User = () => {
     const token = cookie.get("token", {path: "/"});
 
     const [userInfo, setUserInfo] = useState({});
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [expPercent, setExpPercent ] = useState(0);
 
     const GetUser = async() => {
@@ -65,7 +64,7 @@ const User = () => {
 
     const LogOut = () => {
         cookie.remove("token", {path: "/"});
-        window.location.reload();
+        navigate("/");
     }
 
     useEffect( () => {
@@ -81,7 +80,7 @@ const User = () => {
             <Row className="userProfile">
                 <Col xs={6} className="imageArea">
                     { userInfo.profile ? 
-                        <Image 
+                        <Image style={{aspectRatio: "1/1"}}
                             roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${userInfo.profile}?timestamp=${Date.now()}`}/>
                         :
                         <Image roundedCircle src={Profile}/>

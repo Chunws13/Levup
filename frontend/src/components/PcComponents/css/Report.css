@@ -1,0 +1,45 @@
+.reportArea {
+    position: absolute;
+    left: 40%;
+    width: 25%;
+    min-width: 400px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.reportArea .writeReport{
+    padding: 0;
+}
+
+.reportArea .writeReport form div{
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+
+.reportArea .writeReport .submitBtn {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+.eachReport{
+    padding: 0;
+    /* height: 10%; */
+}
+
+.reportDetail {
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.reportDetail .reportWriter {
+    font-weight: 800;
+}
+
+.reportDetail .reportCreateTime {
+    font-weight: 800;
+    text-align: right;
+}

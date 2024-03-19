@@ -25,7 +25,7 @@ const CalendarView = () => {
     const DotOragne = () => {
         return (
             <div>
-                <Badge bg="orange" pill>&nbsp;</Badge>
+                <Badge bg="warning" pill>&nbsp;</Badge>
             </div>)
         }
 
