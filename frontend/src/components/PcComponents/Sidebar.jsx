@@ -9,8 +9,8 @@ import Auth from "../../images/authIcon.png";
 import Memo from "../../images/memoIcon.png";
 import Profile from "../../images/myInfoIcon.png"
 
-import "./css/Sidebar.css"
-import "./css/SidebarLogin.css"
+import "../css/Sidebar.css"
+import "../css/SidebarLogin.css"
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {

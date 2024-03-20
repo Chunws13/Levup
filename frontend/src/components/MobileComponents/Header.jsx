@@ -6,7 +6,7 @@ import Ai from '../../images/authIcon.png'
 import Mi from '../../images/memoIcon.png'
 import Ni from '../../images/noticeIcon.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./css/Header.css";
+import "../css/Header.css";
 
 const Header = () => {
     const navigate = useNavigate();

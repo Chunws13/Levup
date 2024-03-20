@@ -43,7 +43,7 @@
     .commentContent .col{
         font-size: 3vw;
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
     }
 }
 
@@ -90,7 +90,7 @@
     
     .commentContent .col{
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
     }    
 }
 

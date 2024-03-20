@@ -2,7 +2,7 @@
     #loginBox form {
         margin-top: 10vh;
         padding: 1vh;
-        border-radius: 20px;
+        border-radius: 5vw;
         font-size: 5vw;
         background-color: whitesmoke;
     }
@@ -16,6 +16,7 @@
     }
 
     #loginBox Button {
+        margin-top: 1vh;
         margin-bottom: 1vh;
     }
 
@@ -28,7 +29,7 @@
     }
     
     .section span {
-        font-size: 5vw;
+        font-size: 3vw;
     }
     
     .section::after,

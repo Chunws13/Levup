@@ -4,7 +4,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../API";
 import ViewBoard from "./ViewBoard";
-// import "./css/Board.css"
+import "../css/Board.css"
 
 const Board = () => {
     const [board, setBoard] = useState([]);

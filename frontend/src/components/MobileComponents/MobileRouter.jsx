@@ -9,7 +9,7 @@ import CreateBaord from '../utils/CreateBoard';
 import User from '../utils/User';
 import Report from '../utils/Report';
 
-import "./css/LoginForm.css"
+import "../css/LoginForm.css"
 
 const MobileRouter = () => {
     return (

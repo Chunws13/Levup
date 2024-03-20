@@ -6,8 +6,7 @@ import User from '../utils/User';
 import CreateBaord from '../utils/CreateBoard';
 import Report from '../utils/Report';
 
-import "./css/Board.css"
-import "./css/Report.css"
+import "../css/Report.css"
 
 const PcRouter = () => {
     return (
