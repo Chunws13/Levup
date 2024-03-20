@@ -1,0 +1,172 @@
+/* Mobile CSS */
+@media screen and (max-width: 1000px) {
+    .calendar {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        margin-top: 1vh;
+        width: 100%;
+        height: 100%;
+
+        /* border: 1px solid black; */
+    }
+
+    .react-calendar {
+        width: 90%;
+        height: 70%;
+        font-size: 5vw;
+        border: none;
+    }
+
+    .badge {
+        font-size: 0.5rem;
+    }
+
+    .memoArea {
+        padding: 0;
+        height: 35%;
+    }
+    
+    .memoSection {
+        text-align: center;
+        height: 100%;
+    }
+    
+    .memoList {
+        font-size: 18px;
+        height: 70%;
+        overflow: auto;
+    }
+    
+    .memoSubmit {
+        padding: 0;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .eachMemo {
+        font-size: 24px;
+    }
+    
+    /* memo font size */
+    .eachMemo .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 5vw;
+        height: 100%;
+    }
+    
+    .oneMemo .memo{
+        border-bottom: 1px solid black;
+    }
+    
+    .oneMemo .row button{
+        padding: 0;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .oneMemo img {
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .memoSubmit {
+        margin-top: 2vh;   
+    }
+
+    .memoSubmit Button{
+        font-size: 5vw;
+    }
+
+    .memoSubmit input{
+        font-size: 5vw;
+    }
+}
+
+/* PC CSS */
+@media screen and (min-width: 1001px) {
+    .calendar {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: absolute;
+        left: 30%;
+        width: 50%;
+        height: 100%;
+        
+    }
+    
+    .react-calendar {
+        margin-top: 10px;
+        height: 65%;
+        width: 100%;
+        font-size: 24px;
+        border: none;
+    }
+    
+    .badge {
+        font-size: 8px;
+    }
+    
+    .memoArea {
+        padding: 0;
+        height: 35%;
+    }
+    
+    .memoSection {
+        text-align: center;
+        height: 100%;
+    }
+    .memoList {
+        font-size: 18px;
+        height: 70%;
+        overflow: auto;
+    }
+    
+    .memoSubmit {
+        padding: 0;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .eachMemo {
+        font-size: 24px;
+    }
+    
+    .eachMemo .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        font-size: 24px;
+        height: 100%;
+    }
+    
+    .oneMemo .memo{
+        border-bottom: 1px solid black;
+    }
+    
+    .oneMemo .row button{
+        padding: 0;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+    }
+    
+    .oneMemo img {
+        width: 100%;
+        object-fit: contain;
+    }
+}
+

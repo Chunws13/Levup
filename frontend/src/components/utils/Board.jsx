@@ -90,7 +90,7 @@ const Board = () => {
     }, [selectPage]);
 
     return (
-        <Container className="boardContainer">
+        <Container fluid className="boardContainer">
             { board.map((item, index) => {
                 return (
                     <Row key={index}>

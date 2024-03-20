@@ -4,6 +4,8 @@ import { API } from "../../API";
 import { ConvertDate } from "../utils/ConvertDate";
 import Profile from '../../images/basicProfile.jpeg'
 
+
+
 const Comment = ({writer, created_datetime, content}) => {
 
     const [commenter, setCommenter] = useState(false);
@@ -24,12 +26,12 @@ const Comment = ({writer, created_datetime, content}) => {
     });
 
     return (
-        <Container className="eachComment">
+        <Container fluid className="eachComment">
             <Row>
                 <Col className="commnterImg" xs={2}>
                     { commenter ?  
                         <Image roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${commenter}`} style={{width: "80%", height: "auto"}}/>
-                        : <Image roundedCircle src={Profile} style={{width: "100%", height: "auto", objectFit: "cover"}}/>
+                        : <Image roundedCircle src={Profile} style={{width: "90%", height: "auto%", objectFit: "cover"}}/>
                     }    
                 </Col>
                 <Col>

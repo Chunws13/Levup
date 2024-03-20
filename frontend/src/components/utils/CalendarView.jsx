@@ -2,13 +2,17 @@ import { API } from '../../API';
 import { Cookies } from 'react-cookie';
 import { Badge, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Memo from './Memo';
 import Calendar from 'react-calendar';
 import moment from 'moment';
+
 import 'react-calendar/dist/Calendar.css'; // css import
+import "../css/CalendarView.css"
+import "../css/Comment.css"
 
 const CalendarView = () => {
-
+    const navigate = useNavigate();
     const cookie = new Cookies();
     const token = cookie.get("token");
     const [date, setDate] = useState(new Date());
@@ -52,7 +56,7 @@ const CalendarView = () => {
             setMemo(response.data.data);
 
         } catch {
-            window.location.href("/");
+            navigate("/");
         }
     }
 
@@ -63,7 +67,7 @@ const CalendarView = () => {
             setMonthMemo(response.data.data);
             
         } catch {
-            window.location.href("/");
+            navigate("/");
         }
     }
 

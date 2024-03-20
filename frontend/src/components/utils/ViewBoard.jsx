@@ -131,7 +131,6 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                     }
                 </Row>
             </Row>
-            
         
             <Row className="likeNReply">
                 
@@ -156,13 +155,13 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                     </Col>
                 </Col>
                     { commentState &&(
-                        <Container className="commentBox" >
+                        <Container fluid className="commentBox" >
                             <Container onClick={() => setCommentState(!commentState)} style={{height: "50%"}}>
                             </Container>
 
-                            <Container className="commentList" >
+                            <Container fluid className="commentList" >
 
-                                <Container style ={{height: "85%", overflow: "auto" }}>
+                                <Container fluid style ={{height: "85%", overflow: "auto" }}>
                                     { allReply.map((item, index) => {
                                         return (
                                             <Comment key={index}
@@ -176,7 +175,7 @@ const ViewBoard = ({board_id, writer, title, content, files, like, likeList, rep
                                 <Form onSubmit={CreateComment} style={{padding: '1vh'}}>
                                     <Row>
                                         <Col xs={9} className="d-flex align-items-center">
-                                            <Form.Control style={{height: "4.5vh"}} 
+                                            <Form.Control
                                                 value={text} onChange={ChangeText}
                                                 type="text" name="memo" placeholder=''/>
                                         </Col>

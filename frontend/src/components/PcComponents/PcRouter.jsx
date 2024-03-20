@@ -5,11 +5,8 @@ import Board from '../utils/Board';
 import User from '../utils/User';
 import CreateBaord from '../utils/CreateBoard';
 import Report from '../utils/Report';
-import "./css/CalendarView.css"
+
 import "./css/Board.css"
-import "./css/Comment.css"
-import "./css/User.css"
-import "./css/CreateBoard.css"
 import "./css/Report.css"
 
 const PcRouter = () => {

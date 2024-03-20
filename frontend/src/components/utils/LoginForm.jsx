@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Stack, Form, Button } from "react-bootstrap";
+import { Stack, Form, Button, Container } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { API } from "../../API";
 import KakaoLogin from "./KakaoLogin";
@@ -28,39 +28,45 @@ const LoginForm = () => {
         }
     }
     return (
-        <Form onSubmit={SubmitFunc}>
-            <Form.Group>
-                <Form.Label> ID </Form.Label>
-                <Form.Control onChange={(event) => setId(event.target.value)}
-                    value={id} type="text" name='id'/>
-            </Form.Group>
+        <Container id="loginBox">
 
-            <Form.Group>
-                <Form.Label> Password </Form.Label>
-                <Form.Control onChange={(event) => setPassword(event.target.value)}
-                    value={password} type="password" name="pw"/>
+            <Form onSubmit={SubmitFunc}>
+                <Form.Group>
+                    <Form.Label> ID </Form.Label>
+                    <Form.Control onChange={(event) => setId(event.target.value)}
+                        value={id} type="text" name='id'/>
+                </Form.Group>
 
-                {loginFail ? 
-                    <Form.Label style={{color : "red"}}> 
-                    아이디 또는 비밀번호를 확인하세요 
-                    </Form.Label> : 
-                '' }
-            </Form.Group>
-            
-            <Stack gap={3}>
-                <Button type="submit" variant="primary">
-                    로그인
-                </Button>
+                <Form.Group>
+                    <Form.Label> Password </Form.Label>
+                    <Form.Control onChange={(event) => setPassword(event.target.value)}
+                        value={password} type="password" name="pw"/>
 
-                <Button variant="dark" onClick={() => {naviage("/signup")}}>
-                    회원가입
-                </Button>
-                <div className="section">
-                    <span>또는</span>
-                </div>
-                <KakaoLogin/>
-            </Stack>
-        </Form>
+                    {loginFail ? 
+                        <Form.Label style={{color : "red"}}> 
+                        아이디 또는 비밀번호를 확인하세요 
+                        </Form.Label> : 
+                    '' }
+                </Form.Group>
+                
+                <Stack gap={3}>
+                    <Button type="submit" variant="primary">
+                        로그인
+                    </Button>
+
+                    <Button variant="dark" onClick={() => {naviage("/signup")}}>
+                        회원가입
+                    </Button>
+                    
+                    <div className="section">
+                        <span>또는</span>
+                    </div>
+                    
+                    <KakaoLogin/>
+                
+                </Stack>
+            </Form>
+        </Container>
     )
 
 };

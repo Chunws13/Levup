@@ -4,6 +4,8 @@ import { Cookies } from "react-cookie";
 import { API } from '../../API';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import "../css/CreateBoard.css"
+
 const CreateBaord = () => {
     const navigate = useNavigate();
     const location = useLocation();

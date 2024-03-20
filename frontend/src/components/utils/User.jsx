@@ -5,6 +5,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Profile from '../../images/basicProfile.jpeg'
+import "../css/User.css"
 
 const User = () => {
     const navigate = useNavigate();
@@ -73,7 +74,7 @@ const User = () => {
     }, [expPercent])
 
     return (
-        <Container className="userArea">
+        <Container fluid className="userArea">
             <Row >
                 
             </Row>

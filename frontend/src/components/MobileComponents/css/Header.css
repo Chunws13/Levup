@@ -1,0 +1,23 @@
+.headContainer{
+    margin-top: 1vh;
+    height: 10%;
+}
+
+.headContainer .menuArea {
+    margin-top: 2vh;
+}
+
+.headContainer .menuArea .row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 1px solid black; */
+    font-size: 3vw;
+}
+
+.headContainer .menuArea img {
+    width: 50%;
+    text-align: center;
+    object-fit: contain;
+}
