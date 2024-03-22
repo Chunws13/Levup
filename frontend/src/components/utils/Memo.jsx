@@ -1,13 +1,10 @@
 import { Container, Form, Stack, Row, Col, Button } from "react-bootstrap";
 import { API } from "../../API";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import EachMemo from "./EachMemo";
 
-const Memo = ({ token, date, memoList }) => {
-    const [memo, setMemo] = useState('');
+const Memo = ({ token, date, memoList, setMemoList }) => {
     const [writeMemo, setWriteMemo] = useState("");
-    const navigate = useNavigate();
 
     const SubmitMemo = async(event) => {
         event.preventDefault();
@@ -25,9 +22,9 @@ const Memo = ({ token, date, memoList }) => {
         };
 
         try { 
-            await API.submitMomo(body, headers);
+            const response = await API.submitMomo(body, headers);
+            setMemoList([...memoList, response.data.data]);
             setWriteMemo("");
-            Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
             } 
 
         catch {
@@ -42,8 +39,15 @@ const Memo = ({ token, date, memoList }) => {
                     "Content-Type": "application/json"
                     };
 
-                await API.editMemo(memoId, body, headers);
-                Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
+                const response = await API.editMemo(memoId, body, headers);
+                const newMemoList =  memoList.map(memo => {
+                    if (memo._id.$oid == response.data.data._id.$oid) {
+                        return {...memo, content: response.data.data.content};
+                    };
+                    return memo;
+                })
+
+                setMemoList(newMemoList);
 
         } catch {
             alert("에러가 발생했습니다");
@@ -56,23 +60,18 @@ const Memo = ({ token, date, memoList }) => {
                     "Content-Type": "application/json"
                     };
 
-                await API.deleteMemo(memoId, headers);
-                Get_memo({year: date.getFullYear(), month: date.getMonth()+ 1, day: date.getDate()});
-                
+                const response = await API.deleteMemo(memoId, headers);
+                const newMemoList =  memoList.map(memo => {
+                    if (memo._id.$oid == response.data.data._id.$oid) {
+                        return {...memo, complete_status: response.data.data.complete_status};
+                    };
+                    return memo;
+                });
+                setMemoList(newMemoList);
+
         } catch {
             alert("에러가 발생했습니다.");
         }}
-
-    const Get_memo = async({year, month, day}) => {
-        try{
-            const headers = {"Authorization" : token };
-            const response = await API.getMemo(year, month, day, headers);
-            setMemo(response.data.data);
-
-        } catch {  
-            navigate("login");   
-        }
-    };
         
     return (
         <Container fluid className="memoArea">
@@ -103,7 +102,7 @@ const Memo = ({ token, date, memoList }) => {
                             </Col>
                         </Row>}
                 </Container>
-                <Container className="memoSubmit">
+                <Container fluid className="memoSubmit">
                     <Form onSubmit={SubmitMemo}>
                         <Row>
                             <Col xs={8}>

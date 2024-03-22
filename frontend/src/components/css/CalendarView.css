@@ -78,7 +78,9 @@
     }
 
     .memoSubmit {
-        margin-top: 2vh;   
+        margin-top: 2vh;
+        position: fixed;
+        bottom: 0;
     }
 
     .memoSubmit Button{

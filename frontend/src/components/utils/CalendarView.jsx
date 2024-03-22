@@ -123,7 +123,11 @@ const CalendarView = () => {
                                 }
                             }}}
                         />
-            <Memo token={token} date={date} memoList={memo}/>
+            <Memo 
+                token={token} 
+                date={date} 
+                memoList={memo} 
+                setMemoList={setMemo}/>
         </Container>
     );
 };
