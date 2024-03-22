@@ -1,5 +1,5 @@
 import { Form, Button, Container, Stack } from 'react-bootstrap'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import { API } from '../../API';
@@ -51,8 +51,9 @@ const Report = () => {
             navigate("/login")
         }
     }
-    
-    GetReports();
+    useEffect(() => {
+        GetReports();
+    }, [])
 
     return (
         <Container className='reportArea'>
