@@ -1,0 +1,51 @@
+@media screen and (max-width: 1000px) {
+    #loginBox form {
+        margin-top: 10vh;
+        padding: 1vh;
+        border-radius: 5vw;
+        font-size: 5vw;
+        background-color: whitesmoke;
+    }
+
+    #loginBox form div {
+        margin-bottom: 1vh;
+    }
+
+    #loginBox form div input.form-control {
+        font-size: 5vw;
+    }
+
+    #loginBox Button {
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    #loginBox Button.btn {
+        font-size: 5vw;
+    }
+
+    .section {
+        text-align: center;
+    }
+    
+    .section span {
+        font-size: 3vw;
+    }
+    
+    .section::after,
+    .section::before {
+        content: "";
+        display: inline-block;
+        width: 40%;
+        height: 1px;
+        background-color: #000;
+        vertical-align: middle;
+    }
+    
+    .section span {
+        display: inline-block;
+        padding: 0 10px;
+        font-weight: bold;
+    }
+}
+

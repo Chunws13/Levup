@@ -71,8 +71,8 @@ def create_memo(Memo: Memo, Authorization : Annotated[Union[str, None], Header()
         db.users.update_one({"id": writer}, {"$set": {
             "mission_start": user["mission_start"] + 1
             }})
-
-        return {"status" : "success", "data" : "저장되었습니다."}
+        
+        return {"status" : "success", "data" : json.loads(dumps(memo_data))}
     
     else:
         raise HTTPException(status_code=404, detail=result["data"])
@@ -89,7 +89,8 @@ def edit_memo(memo_id: str, Memo: Edit_Memo, Authorization : Annotated[Union[str
         
         try:
             db.memo.update_one({"_id" : target_id}, {"$set" : { "content" : Memo.content }})
-            return {"status" : "success", "data" : "수정되었습니다."}
+            update_data = db.memo.find_one({"_id" : target_id})
+            return {"status" : "success", "data" : json.loads(dumps(update_data))}
         
         except:
             return {"status" : "fail", "data" : "수정 실패했습니다."}
@@ -120,11 +121,12 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
                 user["level"] += 1
             
             db.users.update_one({"id": result["data"]}, {"$set": {"level": user["level"]}})
-
-            return {"status" : "success", "data" : "삭제되었습니다."}
+            complete_data = db.memo.find_one({"_id": target_id})
+            
+            return {"status" : "success", "data" : json.loads(dumps(complete_data))}
         
         except:
-            return {"status" : "fail", "data" : "삭제 실패했습니다."}
+            raise HTTPException(status_code=404, detail="삭제 실패")
     
     else:
         raise HTTPException(status_code=404, detail=result["data"])

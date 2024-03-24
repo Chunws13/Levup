@@ -1,0 +1,24 @@
+#loginArea {
+    height: 60%;
+    background-color: whitesmoke;
+    border-radius: 20px;
+}
+
+#loginArea .row{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.vstack {
+    margin-top: 10px;
+}
+
+.vstack button {
+    padding: 5px;
+}
+
+.section {
+    font-size: 1rem;
+}

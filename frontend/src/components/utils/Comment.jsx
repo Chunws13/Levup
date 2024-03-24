@@ -4,6 +4,8 @@ import { API } from "../../API";
 import { ConvertDate } from "../utils/ConvertDate";
 import Profile from '../../images/basicProfile.jpeg'
 
+
+
 const Comment = ({writer, created_datetime, content}) => {
 
     const [commenter, setCommenter] = useState(false);
@@ -24,25 +26,25 @@ const Comment = ({writer, created_datetime, content}) => {
     });
 
     return (
-        <Container style={{padding: "1.5vw", color: "wheat"}}>
-            <Row style={{fontSize : "4vw"}}>
-                <Col xs={2} style={{display: "flex", alignItems: "center", justifyContent: "left"}}>
+        <Container fluid className="eachComment">
+            <Row>
+                <Col className="commnterImg" xs={2}>
                     { commenter ?  
                         <Image roundedCircle src={`https://levupbucket.s3.ap-northeast-2.amazonaws.com/users/${commenter}`} style={{width: "80%", height: "auto"}}/>
-                        : <Image roundedCircle src={Profile} style={{width: "80%", height: "auto"}}/>
+                        : <Image roundedCircle src={Profile} style={{width: "90%", height: "auto%", objectFit: "cover"}}/>
                     }    
                 </Col>
                 <Col>
                     <Row>
-                        <Col style={{display: 'flex', justifyContent: 'left'}}>
+                        <Col className="commentWriter">
                             {writer}
                         </Col>
-                        <Col style={{display: 'flex', justifyContent: 'flex-end'}}>
+                        <Col className="commentWirteTime">
                             {ConvertDate(created_datetime)}
                         </Col>
                     </Row>
-                    <Row>
-                        <Col xs={9}>
+                    <Row className="commentContent" xs={9}>
+                        <Col >
                             {content}
                         </Col>
                     </Row>

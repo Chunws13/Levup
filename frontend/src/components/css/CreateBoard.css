@@ -1,0 +1,67 @@
+/* Mobile CSS */
+@media screen and (max-width: 100px) {
+
+}
+
+/* PC CSS */
+@media screen and (min-width: 1001px) {
+    .createBoard {
+        position: absolute;
+        left: 40%;
+        width: 25%;
+        height: 100vh;
+        min-width: 400px;
+    }
+    
+    .createBoard form {
+        height: 100%;
+        padding: 0;
+    }
+    
+    .createBoard .title {
+        margin-top: 3vh;
+    }
+    
+    .createBoard .files {
+        margin-top: 3vh;
+    }
+    
+    .createBoard .imgArea.row {
+        margin-top: 1vh;
+        height: 30%;
+    }
+    
+    #previewArea {
+        width: 100%;
+        height: 100%;
+    }
+    
+    #previewArea .carousel-inner{
+        height: 100%;
+        width: 100%;
+    }
+    
+    #previewArea .carousel-inner .eachPreview.active.carousel-item{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+    }
+    
+    #previewArea .carousel-inner .eachPreview.active.carousel-item img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    
+    .createBoard .content {
+        height: 30%;
+        margin-top: 1vh;
+        margin-bottom: 3vh;
+    }
+    
+    .createBoard .content textarea{
+        height: 100%;
+    }    
+}
+

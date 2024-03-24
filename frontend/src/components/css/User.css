@@ -1,0 +1,144 @@
+/* Mobile CSS */
+@media screen and (max-width: 1000px) {
+    .userArea {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .userProfile.row {
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+    
+    .userProfile .imageArea{
+        position: relative;
+    }
+    
+    .edit {
+        position: absolute;
+        top: 0;
+    }
+    
+    .imageArea.col-6 {
+        text-align: center;
+    }
+
+    .imageArea img {
+        width: 80%;
+        object-fit: contain;
+        border: 1px solid gray;
+    }
+    
+    .userInfo.col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        
+    }
+
+    .userInfo.col .row{
+        padding-left: 10px;
+        height: 20%;
+        font-size: 5vw;
+    }
+    
+    .logoutBtn {
+        padding: 1vw;
+        width: 80%;
+    }
+    
+    .logoutBtn Button {
+        font-size: 3vw;
+    }
+
+    .expBar.row {
+        margin: 1vh;
+    }
+
+    .expBar.row .progress{
+        height: 3vh;
+        font-size: 3vw;
+        padding: 0;
+    }
+    
+    .expBar.row .progress .progress-bar{
+        color: black;
+    }
+    
+    .missionScore {
+        font-size: 5vw;
+        text-align: center;
+    }
+    
+    .activityScore {
+        font-size: 5vw;
+        text-align: center;
+        border-bottom: 1px solid black;
+    }
+
+}
+
+@media screen and (min-width: 1001px) {
+    .userArea {
+        display: flex;
+        flex-direction: column;
+    
+        position: absolute;
+        left: 40%;
+        width: 25%;
+        min-width: 400px;
+    }
+    
+    .userProfile {
+        margin-top: 5vh;
+        margin-bottom: 2vh;
+    }
+    
+    .userProfile .imageArea{
+        position: relative;
+    }
+    
+    .edit {
+        position: absolute;
+        top: 0;
+    }
+    
+    .imageArea img {
+        max-width: 100%;
+        max-height: 100%;
+        border: 1px solid gray;
+    }
+    
+    .userInfo.col .row{
+        padding-left: 10px;
+        justify-content: start;
+        font-size: 1.5rem;
+        margin-bottom: 1vh;
+    }
+    
+    .logoutBtn {
+        padding: 1vw;
+        width: 80%;
+    }
+    
+    .expBar.row .progress{
+        height: 3vh;
+        font-size: 1rem;
+        margin-bottom: 2vh;
+        padding: 0;
+    }
+    
+    .expBar.row .progress .progress-bar{
+        color: black;
+    }
+    
+    .missionScore {
+        font-size: 1.5rem;
+    }
+    
+    .activityScore {
+        font-size: 1.5rem;
+        border-bottom: 1px solid black;
+    }
+}

@@ -1,5 +1,5 @@
 import { Form, Button, Container, Stack } from 'react-bootstrap'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import { API } from '../../API';
@@ -51,12 +51,13 @@ const Report = () => {
             navigate("/login")
         }
     }
-    
-    GetReports();
+    useEffect(() => {
+        GetReports();
+    }, [])
 
     return (
-        <Container fluid style={{padding: "3vw", height: "75vh"}}>
-            <Container fluid style={{height: "55%", overflow:"auto"}}>
+        <Container className='reportArea'>
+            <Container className='eachReport'>
                 <Stack gap={3}>
                     {reportData.map((item, index) => {
                         return (
@@ -71,23 +72,22 @@ const Report = () => {
                 </Stack>
             </Container>
 
-            <Container fluid style={{height: "25%"}}>
-                <Form onSubmit={SubmitReport} style={{padding: '2vh'}}>
-                    <Form.Group style={{fontSize: "5vw"}}>
+            <Container className='writeReport'>
+                <Form onSubmit={SubmitReport}>
+                    <Form.Group>
                             <Form.Label> 버그 / 오류 제보 </Form.Label>
-                            <Form.Control type="text"
-                                value={reportTitle} onChange={(event) => setReportTitle(event.target.value)} style={{fontSize: "5vw"}}/> 
+                            <Form.Control type="text" value={reportTitle} 
+                                onChange={(event) => setReportTitle(event.target.value)}/> 
                     </Form.Group>
 
-                    <Form.Group style={{fontSize: "5vw"}}>
+                    <Form.Group >
                         <Form.Label> 상세 내용 </Form.Label>
-                        <Form.Control as="textarea" rows={6} style={{fontSize: "5vw"}} 
+                        <Form.Control as="textarea" rows={10}
                             value={reportContent} onChange={(event) => setReportContent(event.target.value)}/>
                     </Form.Group>
 
-                    <Form.Group>
-                        <Button type='submit' style={{width: "100%", marginTop: "3vw", fontSize: "5vw"}}> 제보하기 </Button>
-                    </Form.Group>
+                    <Button className='submitBtn' type='submit'> 제보하기 </Button>
+                    
                 </Form>
             </Container>
 

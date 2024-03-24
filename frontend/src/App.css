@@ -9,14 +9,6 @@
   height: 10vh;
 }
 
-.memoBoard {
-  margin: auto;
-  text-align: center;
-  border: solid black;
-  width: 500px;
-  height: 50vh;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -1,0 +1,142 @@
+/* Mobile CSS */
+@media screen and (max-width: 1000px) {
+    .boardContainer {
+        width: 100%;
+        margin-left: 2vw;
+        margin-right: 2vw;
+    }
+    
+    .eachBoard {
+        margin-bottom: 1vh;
+        margin-top: 1vh;
+    }
+    
+    .pageNav {
+        display: flex;
+        justify-content: center;
+        margin: 1.5vh;
+    }
+    
+    .pageNav .page-link{
+        font-size: 5vw;
+    }
+    
+    .writerNDate {
+        text-align: left;
+        font-size: 5vw;
+    }
+    
+    .active.carousel-item {
+        text-align: center;
+    }
+    
+    .titleNContent{
+        margin: 10px;
+        font-size: 5vw;
+    }
+    
+    .likeNReply {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    
+    .likeNReply .col-2 {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .likeNReply .col {
+        font-size: 5vw;
+        text-align: center;
+        align-items: center;
+    }
+    
+    #like {
+        width: 100%;
+    }
+    
+    #reply {
+        width: 100%;
+    }
+    .commentBox input {
+        font-size: 5vw;
+    }
+
+    .commentBox Button {
+        font-size: 5vw;
+    }
+}
+
+/* PC CSS */
+@media screen and (min-width: 1001px) {
+    .boardContainer {
+        position: absolute;
+        left: 40%;
+        width: 25%;
+        min-width: 400px;
+    }
+    
+    .eachBoard {
+        margin-bottom: 1vh;
+        margin-top: 1vh;
+    }
+    
+    .pageNav {
+        display: flex;
+        justify-content: center;
+        margin: 1.5vh;
+    }
+    
+    .pageNav .page-link{
+        font-size: 1vw;
+    }
+    
+    .writerNDate {
+        text-align: left;
+        font-size: 1vw;
+    }
+    
+    .active.carousel-item {
+        text-align: center;
+    }
+    
+    .titleNContent{
+        margin: 10px;
+        font-size: 1vw;
+    }
+    
+    .likeNReply {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        /* height: 10vh; */
+    }
+    
+    .likeNReply .col-2 {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .likeNReply .col {
+        font-size: 1vw;
+        text-align: center;
+        align-items: center;
+    }
+    
+    #like {
+        width: 100%;
+    }
+    
+    #reply {
+        width: 100%;
+    }
+
+    .commentBox input {
+        font-size: 1rem;
+    }
+
+    .commentBox Button {
+        font-size: 1rem;
+    }
+}

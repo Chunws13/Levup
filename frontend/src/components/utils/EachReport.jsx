@@ -6,12 +6,12 @@ const EachReport = ({writer, title, content, reported_date}) => {
     const [contentCheck, setContentCheck] = useState(false);
     
     return (
-        <Container style={{border: "solid gray", borderRadius: "5px"}}>
+        <Container className="reportDetail">
             <Row>
-                <Col>  
+                <Col className="reportWriter">  
                     {writer}
                 </Col>
-                <Col>
+                <Col className="reportCreateTime">
                     {ConvertDate(reported_date)}
                 </Col>
             </Row>

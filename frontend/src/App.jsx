@@ -2,16 +2,18 @@ import { useState, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import './App.css';
 import MobileRouter from './components/MobileComponents/MobileRouter'
+import PcRouter from './components/PcComponents/PcRouter';
 
 const App = () => {
-  const [isMobile, setIsMobile] = useState(window.outerWidth < 868);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.outerWidth < 868);
+      setIsMobile(window.innerWidth < 1000);
     };
 
     window.addEventListener('resize', handleResize);
+    console.log(window.innerWidth);
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -19,21 +21,11 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <div className='allDevice'>
       {isMobile ?  
         <MobileRouter/>
         : 
-        <Container style={{ display:"flex", justifyContent: "center", height: "100vh", alignItems: "center"}}>
-          <Row>
-            <Row style={{justifyContent : "center", fontSize: "5vw"}}>
-              현재 PC 버전은 지원되지 않습니다. 
-            </Row>
-            
-            <Row style={{justifyContent : "center", fontSize: "5vw"}}>
-              모바일로 이용해 주세요
-            </Row>
-          </Row>
-        </Container>
+        <PcRouter/>
       }
     </div>
   );
