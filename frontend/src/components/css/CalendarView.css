@@ -10,8 +10,6 @@
         margin-top: 1vh;
         width: 100%;
         height: 100%;
-
-        /* border: 1px solid black; */
     }
 
     .react-calendar {
@@ -25,20 +23,19 @@
         font-size: 0.5rem;
     }
 
-    .memoArea {
+    .memoArea.container-fluid {
+        height: 5%;
         padding: 0;
-        height: 35%;
-    }
-    
-    .memoSection {
-        text-align: center;
-        height: 100%;
-    }
-    
-    .memoList {
-        font-size: 18px;
-        height: 70%;
         overflow: auto;
+    }
+    
+    .memoSection.container-fluid {
+        text-align: center;
+    }
+    
+
+    .memoList.container-fluid{
+        font-size: 5vw;
     }
     
     .memoSubmit {

@@ -1,6 +1,68 @@
 /* Mobile CSS */
-@media screen and (max-width: 100px) {
+@media screen and (max-width: 1000px) {
+    .createBoard {
+        height: 80vh;
+    }
+    
+    .createBoard form {
+        height: 100%;
+        padding: 0;
+        font-size: 5vw;
+    }
 
+    .createBoard form input {
+        font-size: 3vw;
+    }
+    
+    .createBoard .title {
+        margin-top: 3vh;
+    }
+    
+    .createBoard .files {
+        margin-top: 3vh;
+    }
+    
+    .createBoard .imgArea.row {
+        height: 30%;
+    }
+    
+    #previewArea {
+        width: 100%;
+        height: 100%;
+    }
+    
+    #previewArea .carousel-inner{
+        height: 100%;
+        width: 100%;
+    }
+    
+    #previewArea .carousel-inner .eachPreview.active.carousel-item{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+    }
+    
+    #previewArea .carousel-inner .eachPreview.active.carousel-item img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    
+    .createBoard .content {
+        height: 30%;
+    }
+    
+    .createBoard .content textarea{
+        height: 100%;
+        font-size: 3vw;
+    }
+
+    .createBoard .submitArea Button {
+        position: fixed;
+        bottom: 0;
+        font-size: 5vw;
+    }
 }
 
 /* PC CSS */

@@ -61,7 +61,7 @@ const CreateBaord = () => {
     };
 
     return (
-        <Container className="createBoard">
+        <Container fluid className="createBoard">
             <Form onSubmit={PostBoard}>
                 <Form.Group className="title">
                     <Form.Label> 완료한 미션 </Form.Label>
