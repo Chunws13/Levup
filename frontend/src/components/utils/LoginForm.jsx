@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Stack, Form, Button, Container } from "react-bootstrap";
+import { Stack, Form, Button, Container, Image } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { API } from "../../API";
 import KakaoLogin from "./KakaoLogin";
+import Logo from "../../images/PL.png"
 
 const LoginForm = () => {
 
@@ -28,6 +29,9 @@ const LoginForm = () => {
         }
     }
     return (
+        <Container fluid id="loginBody">
+
+        
         <Container id="loginBox">
 
             <Form onSubmit={SubmitFunc}>
@@ -66,6 +70,7 @@ const LoginForm = () => {
                 
                 </Stack>
             </Form>
+        </Container>
         </Container>
     )
 

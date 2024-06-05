@@ -15,9 +15,9 @@ const MobileRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path = "users/" element={[<Header/>, <User />]} />
+                <Route path = "/" element={[<Login/>]} />
                 <Route path = "memo/" element={[<Header/>, <CalendarView/>]}  />
-                <Route path = "/" element={[<Header/>, <Login/>]} />
+                <Route path = "users/" element={[<Header/>, <User />]} />
                 {/* <Route path = "/signup" element={<Signup/>} /> */}
                 <Route path = "boards/" element={[<Header/>, <Board/>]} />
                 <Route path = "memo/boards/create" element={[<Header/>, <CreateBaord/>]}/>

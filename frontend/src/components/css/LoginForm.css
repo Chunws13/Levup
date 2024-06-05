@@ -1,6 +1,15 @@
 @media screen and (max-width: 1000px) {
+    #loginBody {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(../../images/wallpaper/baduck_wallpaper_mo.png);
+        background-size: cover;
+
+    }
+
     #loginBox form {
-        margin-top: 10vh;
         padding: 1vh;
         border-radius: 5vw;
         font-size: 5vw;
@@ -8,6 +17,8 @@
     }
 
     #loginBox form div {
+
+        margin-top: 1vh;
         margin-bottom: 1vh;
     }
 
