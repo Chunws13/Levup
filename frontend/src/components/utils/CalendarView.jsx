@@ -202,7 +202,7 @@ const CalendarView = () => {
                 date={date} 
                 memoList={memo}
                 SubmitMemo={SubmitMemo}
-                EidtMemo={EditMemo}
+                EditMemo={EditMemo}
                 DeleteMemo={DeleteMemo}
                 />
         </Container>

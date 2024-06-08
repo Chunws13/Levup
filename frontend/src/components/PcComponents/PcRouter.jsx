@@ -5,6 +5,7 @@ import Board from '../utils/Board';
 import User from '../utils/User';
 import CreateBaord from '../utils/CreateBoard';
 import Report from '../utils/Report';
+import Background from './background';
 
 import "../css/Report.css"
 
@@ -12,7 +13,7 @@ const PcRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path = "/" element={[<Sidebar/>]}/>
+                <Route path = "/" element={[<Sidebar/>, <Background/>]}/>
                 <Route path = "memo/" element={[<Sidebar/>, <CalendarView/>]}/>
                 <Route path = "boards/" element={[<Sidebar/>, <Board/>]}/>
                 <Route path = "memo/boards/create" element={[<Sidebar/>, <CreateBaord/>]}/>

@@ -15,7 +15,7 @@ const Memo = ({ token, date, memoList, SubmitMemo, EditMemo, DeleteMemo }) => {
     return (
         <Container fluid className="memoArea">
             <Container fluid className="memoSection">
-                <Container fluid className="memoList">
+                <Container fluid className="memoList" style={{overflow: "auto"}}>
                     {memoList.length > 0 ?
                         <Stack gap={3}>
                             {memoList.map((item, index) => {
