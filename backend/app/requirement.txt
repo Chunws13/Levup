@@ -15,6 +15,7 @@ h11==0.14.0
 httptools==0.6.1
 idna==3.4
 jmespath==1.0.1
+psycopg2-binary==2.9.9
 pydantic==2.5.0
 pydantic_core==2.14.1
 PyJWT==2.8.0
