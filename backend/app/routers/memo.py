@@ -120,6 +120,7 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
             while user["level"] * 20 + (user["level"] - 1) * 5 <= user["exp"]: # 유저 레벨 업 공식
                 user["level"] += 1
             
+            user["exp"] = 0
             db.users.update_one({"id": result["data"]}, {"$set": {"level": user["level"]}})
             complete_data = db.memo.find_one({"_id": target_id})
             
@@ -130,3 +131,20 @@ def delete_memo(memo_id: str, Authorization : Annotated[Union[str, None], Header
     
     else:
         raise HTTPException(status_code=404, detail=result["data"])
+    
+### 유저 개인 페이지
+@router.get("/userMemo")
+def get_user_memo(skip: int, limit: int, Authorization : Annotated[Union[str, None], Header()] = None):
+    checker = User_Auth(Authorization)
+    result = checker.check_auth()
+
+    if result["status"]:
+        try:
+            user_memo = db.memo.find({"writer": result["data"]}).sort("_id", -1).skip(skip).limit(limit)
+            return {"status": "success", "data": json.loads(dumps(user_memo))}
+        
+        except:
+            raise HTTPException(status_code=404, detail="서버 에러")
+    
+    else:
+        raise HTTPException(status_code=404, detail="유저 정보 없음")
