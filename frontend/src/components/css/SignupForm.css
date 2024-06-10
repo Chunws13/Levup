@@ -1,0 +1,37 @@
+@media screen and (max-width: 1000px) {
+    #signUpBody {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(../../images/wallpaper/baduck_wallpaper_mo.png);
+        background-size: cover;
+
+    }
+
+    #signUpBox form {
+        padding: 1vh;
+        border-radius: 5vw;
+        font-size: 5vw;
+        background-color: whitesmoke;
+    }
+
+    #signUpBox form div {
+
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    #signUpBox form div input.form-control {
+        font-size: 5vw;
+    }
+
+    #signUpBox Button {
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    #signUpBox Button.btn {
+        font-size: 5vw;
+    }
+}

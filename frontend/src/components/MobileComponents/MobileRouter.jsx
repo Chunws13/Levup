@@ -3,7 +3,7 @@ import Header from './Header'
 
 import Login from '../utils/LoginForm';
 import CalendarView from '../utils/CalendarView';
-// import Signup from '../utils/Signup';
+import Signup from '../utils/SignupForm';
 import Board from '../utils/Board';
 import CreateBaord from '../utils/CreateBoard';
 import User from '../utils/User';
@@ -18,7 +18,7 @@ const MobileRouter = () => {
                 <Route path = "/" element={[<Login/>]} />
                 <Route path = "memo/" element={[<Header/>, <CalendarView/>]}  />
                 <Route path = "users/" element={[<Header/>, <User />]} />
-                {/* <Route path = "/signup" element={<Signup/>} /> */}
+                <Route path = "/signup" element={<Signup/>} />
                 <Route path = "boards/" element={[<Header/>, <Board/>]} />
                 <Route path = "memo/boards/create" element={[<Header/>, <CreateBaord/>]}/>
                 <Route path = "reports/" element={<Report/>} />
