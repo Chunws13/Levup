@@ -1,0 +1,27 @@
+.historyContainer{
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 1vh;
+    text-align: center;    
+}
+
+.historyContainer .content {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* Mobile CSS */
+@media screen and (max-width: 1000px) {
+    .historyContainer{
+        font-size: 5vw;
+    }
+}
+
+/* PC CSS */
+@media screen and (min-width: 1001px){
+    .historyContainer{
+        font-size: 1.5rem;
+    }
+}

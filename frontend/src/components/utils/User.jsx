@@ -4,8 +4,10 @@ import { Container, Dropdown, Image, Row, Col, Button, ProgressBar } from "react
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import MemoHistory from "./MemoHistory";
 import Profile from '../../images/basicProfile.jpeg'
 import "../css/User.css"
+import { all } from "axios";
 
 const User = () => {
     const navigate = useNavigate();
@@ -13,7 +15,21 @@ const User = () => {
     const token = cookie.get("token", {path: "/"});
 
     const [userInfo, setUserInfo] = useState({});
-    const [expPercent, setExpPercent ] = useState(0);
+    const [expPercent, setExpPercent] = useState(0);
+
+    const [startMemoNum, setStartMemoNum] = useState(0);
+    const [userMemo, setUserMemo] = useState([]);
+
+    const [scrollPercent, setScrollPercent] = useState(0);
+
+    const ScrollEventTrack = () => {
+        const scrollPosition = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight;
+
+        const winHeight = window.innerHeight; // 윈도우 높이
+        const percent = (scrollPosition / (docHeight - winHeight)) * 100; // 비율
+        setScrollPercent(percent);
+    };
 
     const GetUser = async() => {
         try{
@@ -23,10 +39,13 @@ const User = () => {
             };
 
             const response = await API.getUser(headers);
+            const userData = response.data.data;
 
-            setUserInfo(response.data.data);
+            setUserInfo(userData);
             setExpPercent(Math.round(
-                userInfo.exp / (userInfo.level * 20 + (userInfo.level - 1) * 5) * 100, 1));
+                userData.exp / (userData.level * 20 + (userData.level - 1) * 5) * 100, 1));
+            
+            GetHistory({startMemoNum});
 
         } catch (error) {
             alert(error.response.data.detail);
@@ -63,15 +82,44 @@ const User = () => {
         };
     };
 
+    const GetHistory = async({startMemoNum}) => {
+        const headers = {
+            "Authorization" : token
+        }
+        
+        try {
+            const response = await API.getHistory(startMemoNum, headers);
+            const allMemo = response.data.data
+            setUserMemo(userMemo => [...userMemo, ...allMemo]);
+            
+        } catch(error) {
+            alert(error.response.data.detail);
+        }
+    };
+
     const LogOut = () => {
         cookie.remove("token", {path: "/"});
         navigate("/");
-    }
+    };
 
+    
     useEffect( () => {
         GetUser();
-        
-    }, [expPercent])
+        window.addEventListener("scroll", ScrollEventTrack);
+
+        return () => {
+            window.removeEventListener("scroll", ScrollEventTrack);
+        };
+
+    }, []);
+
+    useEffect(() => {
+        if (scrollPercent >= 100){
+            setStartMemoNum(startMemoNum + 16);
+                
+            GetHistory({startMemoNum});
+        }
+    }, [scrollPercent])
 
     return (
         <Container fluid className="userArea">
@@ -136,7 +184,16 @@ const User = () => {
                     인정 받은 횟수 : {userInfo.like}
                 </Col>
             </Row>
-            
+            {userMemo.map((item, index) => {
+                return (
+                    <MemoHistory
+                        key = {index}
+                        created_date = {item.created_date.$date}
+                        content = {item.content}
+                        status = {item.complete_status.toString()}
+                    />
+                )
+            })}
         </Container>
     );
 };

@@ -37,6 +37,7 @@ export const API = {
     deleteProfile: (headers) => api.delete(`/users/profile`, { headers }),
     userLogin: (body) => api.post(`users/login`, body),
     userSignUp: (body) => api.post(`/users/signup`, body),
+    getHistory: (startMemoNum, headers) => api.get(`/memo/userMemo?skip=${startMemoNum}&limit=15`, { headers }),
 
     // Users - Social Login
     kakoLoginRequset: (body)=> api.post(`users/kakao/login`, body),
