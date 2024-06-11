@@ -9,6 +9,15 @@
 
     }
 
+    #signUpBox .logoArea{
+        text-align: center;
+    }
+
+    #signUpBox .logoArea .logo {
+        max-width: 100%; 
+        height: auto;
+    }
+
     #signUpBox form {
         padding: 1vh;
         border-radius: 5vw;
@@ -33,5 +42,45 @@
 
     #signUpBox Button.btn {
         font-size: 5vw;
+    }
+}
+
+@media screen and (min-width: 1001px){
+    #signUpBody {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(../../images/wallpaper/baduck_wallpaper_pc.png);
+        background-size: cover;
+
+    }
+    #signUpBox .logoArea{
+        text-align: center;
+    }
+
+    #signUpBox .logoArea .logo {
+        max-width: 100%; 
+        height: auto;
+    }
+
+    #signUpBox form {
+        padding: 1vh;
+        border-radius: 5vw;
+        font-size: 1.5rem;
+        background-color: whitesmoke;
+    }
+
+    #signUpBox {
+        height: 65%;
+        width: 30%;
+        background-color: whitesmoke;
+        border-radius: 20px;
+    }
+
+    #signUpBox form Button{
+        height: 5vh;
+        margin-top: 1vh;
+        margin-bottom: 1vh;   
     }
 }
